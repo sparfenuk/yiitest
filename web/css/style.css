@@ -1,0 +1,6 @@
+body{
+    /*background: red!important;*/
+}
+.single-post .image img{
+    max-width: 100%;
+}
