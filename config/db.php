@@ -2,11 +2,11 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=testyii',
+    'dsn' => 'mysql:host=localhost;dbname=db_shop',
     'username' => 'mysql',
     'password' => 'mysql',
     'charset' => 'utf8',
-    'tablePrefix'=>'qwerty_'
+    'tablePrefix'=>''
     // Schema cache options (for production environment)
     //'enableSchemaCache' => true,
     //'schemaCacheDuration' => 60,
