@@ -21,13 +21,38 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/site.css',
-        'css/style.css'
+        'css/style.css',
+        'css/bootstrap.min.css',
+        'css/css/slick.css',
+        'css/nouislider.min.css',
+        'css/font-awesome.min.css'
     ];
     public $js = [
-        'js/scripts.js'
+        'js/jquery.min.js',
+        'js/bootstrap.min.js',
+        'js/slick.min.js',
+        'js/nouislider.min.js',
+        'js/jquery.zoom.min.js',
+        'js/main.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
     ];
 }
+//$this->registerJsFile('@web/js/jquery.min.js');
+//$this->registerJsFile('@web/js/bootstrap.min.js');
+//$this->registerJsFile('@web/js/slick.min.js');
+//$this->registerJsFile('@web/js/nouislider.min.js');
+//$this->registerJsFile('@web/js/jquery.zoom.min.js');
+//$this->registerJsFile('@web/js/main.js');
+//
+//$this->registerJsFile('https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js');
+//$this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
+//
+//$this->registerCssFile('@web/css/bootstrap.min.css');
+//$this->registerCssFile('@web/css/css/slick.css');
+//$this->registerCssFile('@web/css/slick-theme.css');
+//$this->registerCssFile('@web/css/nouislider.min.css');
+//$this->registerCssFile('@web/css/font-awesome.min.css');
+//$this->registerCssFile('@web/css/style.css');

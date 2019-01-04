@@ -16,6 +16,14 @@ class SiteController extends Controller
     /**
      * {@inheritdoc}
      */
+
+
+    /*public function actionSay($message = "hello"){
+        return $this->render('say',['message' => $message]);
+    }*/
+
+
+
     public function behaviors()
     {
         return [
