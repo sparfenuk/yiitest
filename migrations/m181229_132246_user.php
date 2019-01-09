@@ -39,7 +39,6 @@ class m181229_132246_user extends Migration
                 'description' => $this->string(1000)->notNull(),
                 'reviews_count' => $this->integer(7)->defaultValue(0),
                 'colors' => $this->string(200), //розділювач - ";"
-                'photos_id' => $this->integer(),
                 'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
                 'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP')
             ],
