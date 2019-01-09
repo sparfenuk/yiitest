@@ -10,7 +10,8 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
-
+use yii\data\ActiveDataProvider;
+use app\models\Goods;
 class SiteController extends Controller
 {
     /**
@@ -71,7 +72,14 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        /** @var TYPE_NAME $dataProvider */
+        $dataProvider = new ActiveDataProvider([
+            'query' => Goods::find(),
+        ]);
+        return $this->render('index', [
+            'dataProvider' => $dataProvider,
+        ]);
+
     }
 
     /**

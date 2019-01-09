@@ -9,6 +9,9 @@ $this->title = 'E-Shop';
 
 ?>
 
+<p>
+   site index adwadawawdddddddddddddddddddddddddddddddddddddddddddddd
+</p>
 
 <div>
 	<div id="navigation">
