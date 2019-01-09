@@ -12,6 +12,7 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
+        'mailer' => 'yii\swiftmailer\Mailer',
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],

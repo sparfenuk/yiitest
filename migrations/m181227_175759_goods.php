@@ -12,7 +12,7 @@ class m181227_175759_goods extends Migration
      */
     public function safeUp()
     {
-      $tableOptions=null;
+      /*$tableOptions=null;
       if($this->db->driverName==='mysql')
       {
           $tableOptions='CHARSET utf8 COLLATE utf8_unicode_ci';
@@ -83,7 +83,7 @@ class m181227_175759_goods extends Migration
             'id'=>Schema::TYPE_PK,
             'name'=>$this->string()->notNull()
         ],$tableOptions);
-
+    */
     }
 
     /**ma

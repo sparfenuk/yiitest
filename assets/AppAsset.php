@@ -22,7 +22,7 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/style.css',
         'css/bootstrap.min.css',
-        'css/css/slick.css',
+        'css/slick.css',
         'css/nouislider.min.css',
         'css/font-awesome.min.css',
         'https://fonts.googleapis.com/css?family=Hind:400,700'
