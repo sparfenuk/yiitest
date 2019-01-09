@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Goods;
+use app\models\Product;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -39,7 +40,7 @@ class GoodsController extends \yii\web\Controller
     {
         /** @var TYPE_NAME $dataProvider */
         $dataProvider = new ActiveDataProvider([
-            'query' => Goods::find(),
+            'query' => Product::find(),
         ]);
         return $this->render('index', [
             'dataProvider' => $dataProvider,

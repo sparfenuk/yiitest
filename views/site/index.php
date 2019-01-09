@@ -9,8 +9,6 @@ $this->title = 'E-Shop';
 
 ?>
 
-
-<div>
 	<div id="navigation">
 		<!-- container -->
 		<div class="container">
@@ -1235,7 +1233,7 @@ $this->title = 'E-Shop';
 		<!-- /container -->
 	</div>
 	<!-- /section -->
-</div>
+
 
 
 

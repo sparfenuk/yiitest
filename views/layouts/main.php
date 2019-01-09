@@ -1,7 +1,7 @@
 <?php
 
 /* @var $this \yii\web\View */
-
+/* @var $this \yii\
 /* @var $content string */
 
 use app\widgets\Alert;
@@ -31,11 +31,7 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
     <?= Html::csrfMetaTags() ?>
 
     <title><?= Html::encode($this->title) ?>
-</title>
-
-
-
-
+    </title>
     <?php $this->head(); ?>
 
 </head>
@@ -59,9 +55,8 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                         <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">ENG <i class="fa fa-caret-down"></i></a>
                         <ul class="custom-menu">
                             <li><a href="#">English (ENG)</a></li>
+                            <li><a href="#">Ukrainian (UA)</a></li>
                             <li><a href="#">Russian (Ru)</a></li>
-                            <li><a href="#">French (FR)</a></li>
-                            <li><a href="#">Spanish (Es)</a></li>
                         </ul>
                     </li>
                     <li class="dropdown default-dropdown">
@@ -69,6 +64,7 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                         <ul class="custom-menu">
                             <li><a href="#">USD ($)</a></li>
                             <li><a href="#">EUR (€)</a></li>
+                            <li><a href="#">UAN (₴)</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -84,8 +80,7 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                 <!-- Logo -->
                 <div class="header-logo">
                     <a class="logo" href="#">
-                        <img src="<?= Yii::getAlias('@webroot').'/'.'web/img/logo.png' ?>
-" alt="">
+                        <?php echo Html::img('@web/img/logo.png',['alt' => '']); ?>
                     </a>
                 </div>
                 <!-- /Logo -->
@@ -114,14 +109,17 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                             </div>
                             <strong class="text-uppercase">My Account <i class="fa fa-caret-down"></i></strong>
                         </div>
-                        <a href="#" class="text-uppercase">Login</a> / <a href="#" class="text-uppercase">Join</a>
+                        <?php echo Yii::$app->user->isGuest?
+                        '<a href="#" class="text-uppercase">Login</a> / <a href="#" class="text-uppercase">Join</a>':
+                        '<a href="#" class="text-uppercase">Loged as </a> : <a href="#" class="text-uppercase">name</a>';?>
+
                         <ul class="custom-menu">
                             <li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
                             <li><a href="#"><i class="fa fa-heart-o"></i> My Wishlist</a></li>
-                            <li><a href="#"><i class="fa fa-exchange"></i> Compare</a></li>
                             <li><a href="#"><i class="fa fa-check"></i> Checkout</a></li>
-                            <li><a href="#"><i class="fa fa-unlock-alt"></i> Login</a></li>
-                            <li><a href="#"><i class="fa fa-user-plus"></i> Create An Account</a></li>
+                            <?php echo Yii::$app->user->isGuest?
+                            '<li><a href="#"><i class="fa fa-unlock-alt"></i> Login</a></li>':
+                            '<li><a href="#"><i class="fa fa-unlock-alt"></i> Log Out</a></li>';?>
                         </ul>
                     </li>
                     <!-- /Account -->
@@ -142,8 +140,7 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                                 <div class="shopping-cart-list">
                                     <div class="product product-widget">
                                         <div class="product-thumb">
-                                            <img src="<?= Yii::getAlias('@webroot').'/'.'web/img/thumb-product01.jpg' ?>
-" alt="">
+                                            <?php echo Html::img('@web/img/thumb-product01.jpg',['alt' => '']); ?>
                                         </div>
                                         <div class="product-body">
                                             <h3 class="product-price">$32.50 <span class="qty">x3</span></h3>
@@ -153,8 +150,7 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                                     </div>
                                     <div class="product product-widget">
                                         <div class="product-thumb">
-                                            <img src="<?= Yii::getAlias('@webroot').'/'.'web/img/thumb-product01.jpg' ?>
-" alt="">
+                                            <?php echo Html::img('@web/img/thumb-product01.jpg',['alt' => '']); ?>
                                         </div>
                                         <div class="product-body">
                                             <h3 class="product-price">$32.50 <span class="qty">x3</span></h3>
@@ -187,8 +183,17 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
 <!--/header-->
 
 <!--content-->
+<div class="wrap">
+    <div class="container">
+<!--        --><?//= Breadcrumbs::widget([
+//            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+//        ]) ?>
 
-<?//= $content ?>
+
+        <?= $content ?>
+
+    </div>
+</div>
 
 <!--/content-->
 
@@ -286,72 +291,3 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
 </body>
 </html>
 <?php $this->endPage(); ?>
-
-
-
-<!---->
-<!--<div class="wrap">-->
-<!--    --><?php
-//    NavBar::begin([
-//        'brandLabel' => Yii::$app->name,
-//        'brandUrl' => Yii::$app->homeUrl,
-//        'options' => [
-//            'class' => 'navbar-inverse navbar-fixed-top',
-//        ],
-//    ]);
-//    $items = [
-//        ['label' => 'Home', 'url' => ['/site/index']],
-//        ['label' => 'About', 'url' => ['/site/about']],
-//        ['label' => 'Contact', 'url' => ['/site/contact']],
-//        Yii::$app->user->isGuest ? (
-//        ['label' => 'Login', 'url' => ['/site/login']]
-//        ) : (
-//            '<li>'
-//            . Html::beginForm(['/site/logout'], 'post')
-//            . Html::submitButton(
-//                'Logout (' . Yii::$app->user->identity->username . ')',
-//                ['class' => 'btn btn-link logout']
-//            )
-//            . Html::endForm()
-//            . '</li>'
-//        )
-//    ];
-//    if (Yii::$app->user->isGuest)
-//        array_push($items, ['label' => 'SignUp', 'url' => ['/site/sign-up']]);
-//
-//    echo Nav::widget([
-//        'options' => ['class' => 'navbar-nav navbar-right'],
-//        'items' => $items,
-//    ]);
-//    NavBar::end();
-//    ?>
-
-<!---->
-<!--    <div class="container">-->
-<!--        --><?//= Breadcrumbs::widget([
-//            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-//        ]) ?>
-
-<!--        --><?////= Alert::widget() ?>
-
-<!--        --><?//= $content ?>
-
-<!--    </div>-->
-<!--</div>-->
-<!---->
-<!--<footer class="footer">-->
-<!--    <div class="container">-->
-<!--        <p class="pull-left">PS--><?//= date('Y') ?>
-<!--</p>-->
-<!---->
-<!--        <p class="pull-right">--><?//= Yii::powered() ?>
-<!--</p>-->
-<!--    </div>-->
-<!--</footer>-->
-
-<?php //$this->endBody() ?>
-
-<!--</body>-->
-<!--</html>-->
-<?php //$this->endPage() ?>
-

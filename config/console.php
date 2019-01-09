@@ -6,7 +6,6 @@ $db = require __DIR__ . '/db.php';
 $config = [
     'id' => 'basic-console',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
     'controllerNamespace' => 'app\commands',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -25,6 +24,16 @@ $config = [
             ],
         ],
         'db' => $db,
+    ],
+    'assetManager' => [
+        'bundles' => [
+            'yii\bootstrap\BootstrapPluginAsset' => [
+                'js'=>[]
+            ],
+            'yii\bootstrap\BootstrapAsset' => [
+                'css' => [],
+            ],
+        ]
     ],
     'params' => $params,
     /*
