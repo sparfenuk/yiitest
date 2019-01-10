@@ -30,10 +30,15 @@ class GoodsController extends \yii\web\Controller
 
 
 
-    public function  actionGoods()
+    public function  actionsProductPage()
     {
 
-        
+        $dataProvider = new ActiveDataProvider([
+            'query' => Product::find(),
+        ]);
+        return $this->render('productPage', [
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     public function actionIndex()
