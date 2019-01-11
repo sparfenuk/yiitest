@@ -6,6 +6,7 @@
 
 use app\widgets\Alert;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
@@ -40,38 +41,38 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
 
 <!--header-->
 <header>
-    <!-- top Header -->
-    <div id="top-header">
-        <div class="container">
-            <div class="pull-left">
-                <span>Welcome to E-shop!</span>
-            </div>
-            <div class="pull-right">
-                <ul class="header-top-links">
-                    <li><a href="#">Store</a></li>
-                    <li><a href="#">Newsletter</a></li>
-                    <li><a href="#">FAQ</a></li>
-                    <li class="dropdown default-dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">ENG <i class="fa fa-caret-down"></i></a>
-                        <ul class="custom-menu">
-                            <li><a href="#">English (ENG)</a></li>
-                            <li><a href="#">Ukrainian (UA)</a></li>
-                            <li><a href="#">Russian (Ru)</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown default-dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">USD <i class="fa fa-caret-down"></i></a>
-                        <ul class="custom-menu">
-                            <li><a href="#">USD ($)</a></li>
-                            <li><a href="#">EUR (€)</a></li>
-                            <li><a href="#">UAN (₴)</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <!-- /top Header -->
+<!--    <!-- top Header -->
+<!--    <div id="top-header">-->
+<!--        <div class="container">-->
+<!--            <div class="pull-left">-->
+<!--                <span>Welcome to E-shop!</span>-->
+<!--            </div>-->
+<!--            <div class="pull-right">-->
+<!--                <ul class="header-top-links">-->
+<!--                    <li><a href="#">Store</a></li>-->
+<!--                    <li><a href="#">Newsletter</a></li>-->
+<!--                    <li><a href="#">FAQ</a></li>-->
+<!--                    <li class="dropdown default-dropdown">-->
+<!--                        <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">ENG <i class="fa fa-caret-down"></i></a>-->
+<!--                        <ul class="custom-menu">-->
+<!--                            <li><a href="#">English (ENG)</a></li>-->
+<!--                            <li><a href="#">Ukrainian (UA)</a></li>-->
+<!--                            <li><a href="#">Russian (Ru)</a></li>-->
+<!--                        </ul>-->
+<!--                    </li>-->
+<!--                    <li class="dropdown default-dropdown">-->
+<!--                        <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">USD <i class="fa fa-caret-down"></i></a>-->
+<!--                        <ul class="custom-menu">-->
+<!--                            <li><a href="#">USD ($)</a></li>-->
+<!--                            <li><a href="#">EUR (€)</a></li>-->
+<!--                            <li><a href="#">UAN (₴)</a></li>-->
+<!--                        </ul>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <!-- /top Header -->
 
     <!-- header -->
     <div id="header">
@@ -79,7 +80,9 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
             <div class="pull-left">
                 <!-- Logo -->
                 <div class="header-logo">
-                    <a class="logo" href="#">
+<!--                    --><?//= Url::toRoute(['site/index', 'src' =>'@web/img/logo.png'])?>
+
+                    <a class="logo" href="http://yiitest/">
                         <?php echo Html::img('@web/img/logo.png',['alt' => '']); ?>
                     </a>
                 </div>
@@ -110,16 +113,17 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                             <strong class="text-uppercase">My Account <i class="fa fa-caret-down"></i></strong>
                         </div>
                         <?php echo Yii::$app->user->isGuest?
-                        '<a href="#" class="text-uppercase">Login</a> / <a href="#" class="text-uppercase">Join</a>':
-                        '<a href="#" class="text-uppercase">Loged as </a> : <a href="#" class="text-uppercase">name</a>';?>
+                            Html::a('Login', ['/site/login'], ['class'=>'text-uppercase']).'/'.Html::a('Join', ['/site/sign-up'], ['class'=>'text-uppercase']):
+                            '<a href="#" class="text-uppercase">Loged as </a> : <a href="#" class="text-uppercase">name</a>';?>
 
                         <ul class="custom-menu">
-                            <li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
+                             <?php echo !Yii::$app->user->isGuest?
+                            '<li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
                             <li><a href="#"><i class="fa fa-heart-o"></i> My Wishlist</a></li>
                             <li><a href="#"><i class="fa fa-check"></i> Checkout</a></li>
-                            <?php echo Yii::$app->user->isGuest?
-                            '<li><a href="#"><i class="fa fa-unlock-alt"></i> Login</a></li>':
-                            '<li><a href="#"><i class="fa fa-unlock-alt"></i> Log Out</a></li>';?>
+                            <li><a href="#"><i class="fa fa-lock"></i> Log Out</a></li>':
+                            '<li><a href="#"><i class="fa fa-unlock-alt"></i> Login</a></li>
+                            <li><a href="#"><i class="fa fa-user-plus"></i> Join</a></li>';?>
                         </ul>
                     </li>
                     <!-- /Account -->
