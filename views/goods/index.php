@@ -24,22 +24,28 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
      //var_dump($dataProvider);
-
+echo '<div class="row">';
     foreach ($dataProvider->models as $goods) {
-       echo '<div class="row">';
+       echo '<div class="col-md-3 col-sm-6 col-xs-6">'.'<div class="product product-single">';
 
-        $url = Url::toRoute(['goods/productPage', 'id' => $goods->id]);
+        $url = Url::toRoute(['goods/product', 'id' => $goods->id]);
 
        $name=ProductPhoto::findByProductId($goods->id);
-        echo '<div class="image col-md-3"><img style="max-width: 50%" src="' . Yii::$app->params['basePath'] . '/images/'.$name->image_name.'" > </div>';
+        echo '<div class="product-thumb"><img style="width: 300px;" src="' . Yii::$app->params['basePath'] . '/images/'. HTML::encode($name->image_name).'" > </div>';
 
-        echo '<div class="col-md-9">' . '<div class="name">'. '<a href='.$url.'>' .HTML::encode($goods->name) .'</a>'.'</div>'. '</div>';
+        echo '<div class="product-body">'
 
-        echo '<div class="col-md-9">' . '<div class="price">' . HTML::encode($goods->price) . '</div>'.'</div>';
+            .'<div class="name">'
+              .'<a href='.$url.'>' .HTML::encode($goods->name) .'</a>'
+            .'</div>'
+              .'<div class="product-price">' . HTML::encode($goods->price)
+              .'</div>'
+            .'</div>';
 
-        echo '</div>';
+
+        echo '</div>'.'</div>';
     }
-       echo '</pre>';
+echo '</div>';
 
  ?>
 

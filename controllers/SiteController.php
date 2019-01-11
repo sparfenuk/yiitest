@@ -116,6 +116,7 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
+
     /**
      * Displays contact page.
      *
@@ -143,6 +144,8 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
+
 
     public function actionSignUp()
     {

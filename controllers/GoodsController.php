@@ -28,17 +28,33 @@ class GoodsController extends \yii\web\Controller
     }
 
 
-
-
-    public function  actionsProductPage()
+    public function actionSearch()
     {
+      if(isset($_POST))
+      {
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => Product::find(),
-        ]);
-        return $this->render('productPage', [
-            'dataProvider' => $dataProvider,
-        ]);
+      }
+    }
+
+    public function  actionProduct($id=null)
+    {
+//
+//            /** @var TYPE_NAME $dataProvider */
+//            $dataProvider = new ActiveDataProvider([
+//                'query' => Product::find(),
+//            ]);
+
+        if($id!==null) {
+           $product=Product::findProductById($id);
+
+        }
+        if($product!==null) {
+            return $this->render('product', [
+                'product' => $product
+            ]);
+        }
+
+
     }
 
     public function actionIndex()

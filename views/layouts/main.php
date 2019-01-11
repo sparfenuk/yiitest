@@ -92,14 +92,9 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
 
                 <!-- Search -->
                 <div class="header-search">
-                    <form>
+                    <form action="POST">
                         <input class="input search-input" type="text" placeholder="Enter your keyword">
-                        <select class="input search-categories">
-                            <option value="0">All Categories</option>
-                            <option value="1">Category 01</option>
-                            <option value="1">Category 02</option>
-                        </select>
-                        <button class="search-btn"><i class="fa fa-search"></i></button>
+                        <button class="search-btn" type="submit"><i class="fa fa-search"></i></button>
                     </form>
                 </div>
                 <!-- /Search -->
@@ -188,9 +183,7 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
 <!--content-->
 
 <?= $content?>
-<p>
-  Main adwadawawdddddddddddddddddddddddddddddddddddddddddddddd
-</p>
+
 <!--/content-->
 <!-- FOOTER -->
 <footer id="footer" class="section section-grey">

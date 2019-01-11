@@ -23,7 +23,7 @@ class AppAsset extends AssetBundle
         'css/site.css',
         'css/style.css',
         'css/bootstrap.min.css',
-        'css/css/slick.css',
+        'css/slick.css',
         'css/nouislider.min.css',
         'css/font-awesome.min.css'
     ];
@@ -51,7 +51,7 @@ class AppAsset extends AssetBundle
 //$this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
 //
 //$this->registerCssFile('@web/css/bootstrap.min.css');
-//$this->registerCssFile('@web/css/css/slick.css');
+//$this->registerCssFile('@web/css/slick.css');
 //$this->registerCssFile('@web/css/slick-theme.css');
 //$this->registerCssFile('@web/css/nouislider.min.css');
 //$this->registerCssFile('@web/css/font-awesome.min.css');
