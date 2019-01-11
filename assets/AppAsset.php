@@ -20,12 +20,16 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/site.css',
         'css/style.css',
         'css/bootstrap.min.css',
-        'css/css/slick.css',
+        'css/slick.css',
         'css/nouislider.min.css',
-        'css/font-awesome.min.css'
+        'css/font-awesome.min.css',
+        'https://fonts.googleapis.com/css?family=Hind:400,700'
+    ];
+    public $cssOptions =[
+        'type' => 'text/css',
+        'rel' => 'stylesheet'
     ];
     public $js = [
         'js/jquery.min.js',

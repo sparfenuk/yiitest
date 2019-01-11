@@ -25,10 +25,11 @@ class SignupForm extends Model
     {
         return [
             // name, email, subject and body are required
-            [['username', 'email', 'password_hash', 'password_hash_confirm'], 'required'],
+            [['username', 'email', 'password', 'password_confirm','mobile_number','country'], 'required'],
             // email has to be a valid email address
             ['email', 'validateEmail'],
-            ['password_hash', 'validatePassword'],
+            ['password', 'validatePassword'],
+            ['password_conform','validatePassword']
             // verifyCode needs to be entered correctly
 //            ['verifyCode', 'captcha'],
         ];
@@ -71,12 +72,8 @@ class SignupForm extends Model
             if ($this->_user !== false)
                 $this->_user->setAttributes([
                     'username' => $this->username,
-                    'auth_key' => 'randomly generated auth',
-                    'password_hash' => password_hash($this->password_hash . Yii::$app->params['SALT'], PASSWORD_ARGON2I),
-                    'password_reset_token' => 'Randomly generated password reset token',
                     'email' => $this->email,
-                    'status' => 1,
-                    'AccessToken' => 'Randomly generated ',
+                    'status' => 0,
                     'crated_at' => time(),
                     'updated_at' => time()
 

@@ -2,14 +2,13 @@
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
-
-/* @var $model app\models\ContactForm */
+/* @var $model app\models\SignupForm */
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 
-$this->title = 'SignUp';
+$this->title = 'Sign Up';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-contact">
@@ -26,23 +25,24 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php else: ?>
 
-        <p>
-            If you have business inquiries or other questions, please fill out the following form to contact us.
-            Thank you.
-        </p>
 
         <div class="row">
             <div class="col-lg-5">
 
                 <?php $form = ActiveForm::begin(['id' => 'signUp-form']); ?>
 
-                <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+                <?= $form->field($model, 'username')->textInput(['autofocus' => true])->input('text') ?>
 
-                <?= $form->field($model, 'email') ?>
+                <?= $form->field($model, 'email')->input('email') ?>
 
-                <?= $form->field($model, 'password_hash') ?>
+                <?= $form->field($model, 'password')->input('password') ?>
 
-                <?= $form->field($model, 'password_hash_confirm') ?>
+                <?= $form->field($model, 'password_confirm')->input('password') ?>
+
+                <?= $form->field($model, 'mobile number')->input('number') ?>
+
+                <?= $form->field($model, 'country')->input('text') ?>
+
 
 
                 <!--                    --><? //= $form->field($model, 'verifyCode')->widget(Captcha::className(), [

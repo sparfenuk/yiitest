@@ -83,14 +83,12 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['username', 'password_hash', 'email'], 'required'],
+            [['username', 'password', 'email','password_confirm','mobile_number','country'], 'required'],
             [['status'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['username', 'auth_key'], 'string', 'max' => 32],
-            [['password_hash', 'password_reset_token', 'email'], 'string', 'max' => 255],
             [['username'], 'unique'],
             [['email'], 'unique'],
-            [['password_reset_token'], 'unique'],
         ];
     }
 
@@ -102,32 +100,31 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return [
             'id' => 'ID',
             'username' => 'Username',
-            'auth_key' => 'Auth Key',
-            'password_hash' => 'Password Hash',
-            'password_hash_confirm'=>'Confirm password',
-            'password_reset_token' => 'Password Reset Token',
+            'password' => 'Password',
+            'mobile_number' => 'Mobile number',
             'email' => 'Email',
             'status' => 'Status',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'country' => 'Country',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPostUsers()
-    {
-        return $this->hasMany(PostUser::className(), ['user_id' => 'id']);
-    }
+//    public function getPostUsers()
+//    {
+//        return $this->hasMany(PostUser::className(), ['user_id' => 'id']);
+//    }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPosts()
-    {
-        return $this->hasMany(Posts::className(), ['id' => 'post_id'])->viaTable('{{%post_user}}', ['user_id' => 'id']);
-    }
+//    public function getPosts()
+//    {
+//        return $this->hasMany(Posts::className(), ['id' => 'post_id'])->viaTable('{{%post_user}}', ['user_id' => 'id']);
+//    }
 
     public function validatePassword($password)
     {
