@@ -159,13 +159,11 @@ class SiteController extends Controller
         if ($model->load($post = Yii::$app->request->post()) && $model->signUp()) {
             Yii::$app->session->setFlash('success',
                 'ty for registration check your email for instructions');
-//            return $this->goBack();
+            return $this->goBack();
         } else if (!empty($post))
             Yii::$app->session->setFlash('error',
                 'Username already exists');
+        return $this->render('signUp');
 
-        return $this->render('signUp', [
-            'model' => $model,
-        ]);
     }
 }

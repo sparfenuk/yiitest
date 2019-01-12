@@ -9,11 +9,6 @@ $this->title = 'E-Shop';
 
 ?>
 
-<p>
-   site index adwadawawdddddddddddddddddddddddddddddddddddddddddddddd
-</p>
-
-<div>
 	<div id="navigation">
 		<!-- container -->
 		<div class="container">
@@ -67,6 +62,7 @@ $this->title = 'E-Shop';
 										<hr>
 										<a class="banner banner-1" href="#">
                                             <?php echo Html::img('@web/img/banner05.jpg',['alt' => '']);?>
+
                                             <div class="banner-caption text-center">
                                                 <h2 class="white-color">NEW COLLECTION</h2>
                                                 <h3 class="white-color font-weak">HOT DEAL</h3>
@@ -126,6 +122,7 @@ $this->title = 'E-Shop';
                                     <div class="col-md-4 hidden-sm hidden-xs">
                                         <a class="banner banner-2" href="#">
                                             <?php echo Html::img('@web/img/banner04.jpg',['alt' => '']);?>
+
 											<div class="banner-caption">
 												<h3 class="white-color">NEW<br>COLLECTION</h3>
 											</div>
@@ -264,6 +261,7 @@ $this->title = 'E-Shop';
 										<hr>
 										<a class="banner banner-1" href="#">
 											<?php echo Html::img('@web/img/banner05.jpg',['alt' => '']);?>
+
 											<div class="banner-caption text-center">
 												<h2 class="white-color">NEW COLLECTION</h2>
 												<h3 class="white-color font-weak">HOT DEAL</h3>
@@ -280,6 +278,7 @@ $this->title = 'E-Shop';
 										<div class="hidden-sm hidden-xs">
 											<a class="banner banner-1" href="#">
 												<?php echo Html::img('@web/img/banner06.jpg',['alt' => '']);?>
+
 												<div class="banner-caption text-center">
 													<h3 class="white-color text-uppercase">Women’s</h3>
 												</div>
@@ -300,6 +299,7 @@ $this->title = 'E-Shop';
 										<div class="hidden-sm hidden-xs">
 											<a class="banner banner-1" href="#">
 												<?php echo Html::img('@web/img/banner07.jpg',['alt' => '']);?>
+
 												<div class="banner-caption text-center">
 													<h3 class="white-color text-uppercase">Men’s</h3>
 												</div>
@@ -320,6 +320,7 @@ $this->title = 'E-Shop';
 										<div class="hidden-sm hidden-xs">
 											<a class="banner banner-1" href="#">
 												<?php echo Html::img('@web/img/banner08.jpg',['alt' => '']);?>
+
 												<div class="banner-caption text-center">
 													<h3 class="white-color text-uppercase">Accessories</h3>
 												</div>
@@ -340,6 +341,7 @@ $this->title = 'E-Shop';
 										<div class="hidden-sm hidden-xs">
 											<a class="banner banner-1" href="#">
 												<?php echo Html::img('@web/img/banner09.jpg',['alt' => '']);?>
+
 												<div class="banner-caption text-center">
 													<h3 class="white-color text-uppercase">Bags</h3>
 												</div>
@@ -388,6 +390,7 @@ $this->title = 'E-Shop';
 					<!-- banner -->
 					<div class="banner banner-1">
 						<?php echo Html::img('@web/img/banner01.jpg',['alt' => '']);?>
+
 						<div class="banner-caption text-center">
 							<h1>Bags sale</h1>
 							<h3 class="white-color font-weak">Up to 50% Discount</h3>
@@ -399,6 +402,7 @@ $this->title = 'E-Shop';
 					<!-- banner -->
 					<div class="banner banner-1">
 						<?php echo Html::img('@web/img/banner02.jpg',['alt' => '']);?>
+
 						<div class="banner-caption">
 							<h1 class="primary-color">HOT DEAL<br><span class="white-color font-weak">Up to 50% OFF</span></h1>
 							<button class="primary-btn">Shop Now</button>
@@ -409,6 +413,7 @@ $this->title = 'E-Shop';
 					<!-- banner -->
 					<div class="banner banner-1">
 						<?php echo Html::img('@web/img/banner03.jpg',['alt' => '']);?>
+
 						<div class="banner-caption">
 							<h1 class="white-color">New Product <span>Collection</span></h1>
 							<button class="primary-btn">Shop Now</button>
@@ -434,6 +439,7 @@ $this->title = 'E-Shop';
 				<div class="col-md-4 col-sm-6">
 					<a class="banner banner-1" href="#">
 						<?php echo Html::img('@web/img/banner10.jpg',['alt' => '']);?>
+
 						<div class="banner-caption text-center">
 							<h2 class="white-color">NEW COLLECTION</h2>
 						</div>
@@ -445,6 +451,7 @@ $this->title = 'E-Shop';
 				<div class="col-md-4 col-sm-6">
 					<a class="banner banner-1" href="#">
 						<?php echo Html::img('@web/img/banner11.jpg',['alt' => '']);?>
+
 						<div class="banner-caption text-center">
 							<h2 class="white-color">NEW COLLECTION</h2>
 						</div>
@@ -456,6 +463,7 @@ $this->title = 'E-Shop';
 				<div class="col-md-4 col-md-offset-0 col-sm-6 col-sm-offset-3">
 					<a class="banner banner-1" href="#">
 						<?php echo Html::img('@web/img/banner12.jpg',['alt' => '']);?>
+
 						<div class="banner-caption text-center">
 							<h2 class="white-color">NEW COLLECTION</h2>
 						</div>
@@ -491,6 +499,7 @@ $this->title = 'E-Shop';
 				<div class="col-md-3 col-sm-6 col-xs-6">
 					<div class="banner banner-2">
 						<?php echo Html::img('@web/img/banner14.jpg',['alt' => '']);?>
+
 						<div class="banner-caption">
 							<h2 class="white-color">NEW<br>COLLECTION</h2>
 							<button class="primary-btn">Shop Now</button>
@@ -517,6 +526,7 @@ $this->title = 'E-Shop';
 									</ul>
 									<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
 									<?php echo Html::img('@web/img/product01.jpg',['alt' => '']);?>
+
 								</div>
 								<div class="product-body">
 									<h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
@@ -550,6 +560,7 @@ $this->title = 'E-Shop';
 									</ul>
 									<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
 									<?php echo Html::img('@web/img/product07.jpg',['alt' => '']);?>
+
 								</div>
 								<div class="product-body">
 									<h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
@@ -584,6 +595,7 @@ $this->title = 'E-Shop';
 									</ul>
 									<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
 									<?php echo Html::img('@web/img/product06.jpg',['alt' => '']);?>
+
 								</div>
 								<div class="product-body">
 									<h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
@@ -618,6 +630,7 @@ $this->title = 'E-Shop';
 									</ul>
 									<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
 									<?php echo Html::img('@web/img/product08.jpg',['alt' => '']);?>
+
 								</div>
 								<div class="product-body">
 									<h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
@@ -672,6 +685,7 @@ $this->title = 'E-Shop';
 							</ul>
 							<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
 							<?php echo Html::img('@web/img/product01.jpg',['alt' => '']);?>
+
 						</div>
 						<div class="product-body">
 							<h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
@@ -702,6 +716,7 @@ $this->title = 'E-Shop';
 								<div class="product-thumb">
 									<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
 									<?php echo Html::img('@web/img/product06.jpg',['alt' => '']);?>
+
 								</div>
 								<div class="product-body">
 									<h3 class="product-price">$32.50</h3>
@@ -730,6 +745,7 @@ $this->title = 'E-Shop';
 									</div>
 									<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
 									<?php echo Html::img('@web/img/product05.jpg',['alt' => '']);?>
+
 								</div>
 								<div class="product-body">
 									<h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
@@ -755,6 +771,7 @@ $this->title = 'E-Shop';
 								<div class="product-thumb">
 									<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
 									<?php echo Html::img('@web/img/product04.jpg',['alt' => '']);?>
+
 								</div>
 								<div class="product-body">
 									<h3 class="product-price">$32.50</h3>
@@ -784,6 +801,7 @@ $this->title = 'E-Shop';
 									</div>
 									<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
 									<?php echo Html::img('@web/img/product03.jpg',['alt' => '']);?>
+
 								</div>
 								<div class="product-body">
 									<h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
@@ -825,6 +843,7 @@ $this->title = 'E-Shop';
 				<div class="col-md-8">
 					<div class="banner banner-1">
 						<?php echo Html::img('@web/img/banner13.jpg',['alt' => '']);?>
+
 						<div class="banner-caption text-center">
 							<h1 class="primary-color">HOT DEAL<br><span class="white-color font-weak">Up to 50% OFF</span></h1>
 							<button class="primary-btn">Shop Now</button>
@@ -837,6 +856,7 @@ $this->title = 'E-Shop';
 				<div class="col-md-4 col-sm-6">
 					<a class="banner banner-1" href="#">
 						<?php echo Html::img('@web/img/banner11.jpg',['alt' => '']);?>
+
 						<div class="banner-caption text-center">
 							<h2 class="white-color">NEW COLLECTION</h2>
 						</div>
@@ -848,6 +868,7 @@ $this->title = 'E-Shop';
 				<div class="col-md-4 col-sm-6">
 					<a class="banner banner-1" href="#">
 						<?php echo Html::img('@web/img/banner12.jpg',['alt' => '']);?>
+
 						<div class="banner-caption text-center">
 							<h2 class="white-color">NEW COLLECTION</h2>
 						</div>
@@ -881,6 +902,7 @@ $this->title = 'E-Shop';
 						<div class="product-thumb">
 							<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
 							<?php echo Html::img('@web/img/product01.jpg',['alt' => '']);?>
+
 						</div>
 						<div class="product-body">
 							<h3 class="product-price">$32.50</h3>
@@ -912,6 +934,7 @@ $this->title = 'E-Shop';
 							</div>
 							<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
 							<?php echo Html::img('@web/img/product02.jpg',['alt' => '']);?>
+
 						</div>
 						<div class="product-body">
 							<h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
@@ -943,6 +966,7 @@ $this->title = 'E-Shop';
 							</div>
 							<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
 							<?php echo Html::img('@web/img/product03.jpg',['alt' => '']);?>
+
 						</div>
 						<div class="product-body">
 							<h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
@@ -973,6 +997,7 @@ $this->title = 'E-Shop';
 							</div>
 							<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
 							<?php echo Html::img('@web/img/product04.jpg',['alt' => '']);?>
+
 						</div>
 						<div class="product-body">
 							<h3 class="product-price">$32.50</h3>
@@ -1002,6 +1027,7 @@ $this->title = 'E-Shop';
 				<div class="col-md-3 col-sm-6 col-xs-6">
 					<div class="banner banner-2">
 						<?php echo Html::img('@web/img/banner15.jpg',['alt' => '']);?>
+
 						<div class="banner-caption">
 							<h2 class="white-color">NEW<br>COLLECTION</h2>
 							<button class="primary-btn">Shop Now</button>
@@ -1020,6 +1046,7 @@ $this->title = 'E-Shop';
 							</div>
 							<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
 							<?php echo Html::img('@web/img/product07.jpg',['alt' => '']);?>
+
 						</div>
 						<div class="product-body">
 							<h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
@@ -1051,6 +1078,7 @@ $this->title = 'E-Shop';
 							</div>
 							<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
 							<?php echo Html::img('@web/img/product06.jpg',['alt' => '']);?>
+
 						</div>
 						<div class="product-body">
 							<h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
@@ -1082,6 +1110,7 @@ $this->title = 'E-Shop';
 							</div>
 							<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
 							<?php echo Html::img('@web/img/product05.jpg',['alt' => '']);?>
+
 						</div>
 						<div class="product-body">
 							<h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
@@ -1121,6 +1150,7 @@ $this->title = 'E-Shop';
 						<div class="product-thumb">
 							<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
 							<?php echo Html::img('@web/img/product04.jpg',['alt' => '']);?>
+
 						</div>
 						<div class="product-body">
 							<h3 class="product-price">$32.50</h3>
@@ -1151,6 +1181,7 @@ $this->title = 'E-Shop';
 							</div>
 							<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
 							<?php echo Html::img('@web/img/product03.jpg',['alt' => '']);?>
+
 						</div>
 						<div class="product-body">
 							<h3 class="product-price">$32.50</h3>
@@ -1181,6 +1212,7 @@ $this->title = 'E-Shop';
 							</div>
 							<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
 							<?php echo Html::img('@web/img/product02.jpg',['alt' => '']);?>
+
 						</div>
 						<div class="product-body">
 							<h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
@@ -1212,6 +1244,7 @@ $this->title = 'E-Shop';
 							</div>
 							<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
 							<?php echo Html::img('@web/img/product01.jpg',['alt' => '']);?>
+
 						</div>
 						<div class="product-body">
 							<h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
@@ -1238,7 +1271,6 @@ $this->title = 'E-Shop';
 		<!-- /container -->
 	</div>
 	<!-- /section -->
-</div>
 
 
 

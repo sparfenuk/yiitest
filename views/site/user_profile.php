@@ -6,7 +6,10 @@
 <!--  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
 <!--  <script>-->
 <?php
-  $this->registerJs('$(document).ready(function() {
+    $this->registerCssFile("https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css");
+    $this->registerJsFile("https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js");
+    $this->registerJsFile("https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js");
+    $this->registerJs('$(document).ready(function() {
 
     
     var readURL = function(input) {
@@ -14,7 +17,7 @@
             var reader = new FileReader();
 
             reader.onload = function (e) {
-                $(\'.avatar\').attr('src', e.target.result);
+                $(\'.avatar\').attr(\'src\', e.target.result);
             }
     
             reader.readAsDataURL(input.files[0]);
@@ -22,14 +25,11 @@
     }
     
 
-    $(".file-upload").on('change', function(){
+    $(".file-upload").on(\'change\', function(){
         readURL(this);
     });
   });');
-	</script>
-</head>
-
-
+	?>
 <hr>
 <div class="container bootstrap snippet">
 
