@@ -51,6 +51,19 @@ class Product extends \yii\db\ActiveRecord
             [['id'], 'unique'],
         ];
     }
+public  static  function findProductById($id)
+{
+   $product=self::find()->where(['id'=>$id])->one();
+    if ($product === null) return null;
+    return new static($product);
+}
+public static function findProductByName($name)
+{
+    $product=self::find()->where(['name'=>$name])->all();
+    if ($product === null) return null;
+    return new static($product);
+}
+
 
     /**
      * {@inheritdoc}
