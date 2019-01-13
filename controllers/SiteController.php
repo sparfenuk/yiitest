@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\SignupForm;
 use app\models\UploadAvatarFile;
+use app\models\User;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -15,7 +16,7 @@ use yii\data\ActiveDataProvider;
 use app\models\Goods;
 use yii\web\UploadedFile;
 
-class SiteController extends Controller
+class SiteController extends AppController
 {
     /**
      * {@inheritdoc}
@@ -112,7 +113,7 @@ class SiteController extends Controller
      *
      * @return Response
      */
-    public function actionLogout()
+    public function actionLogouts()
     {
         Yii::$app->user->logout();
 
@@ -148,6 +149,9 @@ class SiteController extends Controller
         return $this->render('about');
     }
 
+    public function actionEmailConfirm($authKey){
+        User::findByAuthKey($authKey);
+    }
 
     public function actionSignUp()
     {
@@ -167,6 +171,7 @@ class SiteController extends Controller
 
             $model->photo_name = $imageModel->upload();
             $model->image = $_FILES ['name'];
+            $model->auth_key = self::generateRandomString(30);
             //$model->id=0;
             // $model->created_at = date('Y/m/d');
             //$model->updated_at = date('Y/m/d');
@@ -187,12 +192,20 @@ class SiteController extends Controller
 
              $model->save(false);
 
+            Yii::$app->mailer->compose()
+                ->setFrom(Yii::$app->params['mailEmail'])
+                ->setTo($model->email)
+                ->setSubject('Registration on E-Shop')
+                ->setTextBody('Welcome to E-Shop.
+                 To confirm your email press this <a href="http://yiitest/site/email-confirm?authKey='.$model->auth_key.'">LINK</a>')
+                ->send();
 
 
-            //return $this->goBack();
+            return $this->goBack();
         } else if (!empty($post))
             Yii::$app->session->setFlash('error',
                 'Username already exists');
+
         return $this->render('signUp',array('model'=>$model));
 
     }

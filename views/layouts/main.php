@@ -114,14 +114,14 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                         </div>
                         <?php echo Yii::$app->user->isGuest?
                             Html::a('Login', ['/site/login'], ['class'=>'text-uppercase']).'/'.Html::a('Join', ['/site/sign-up'], ['class'=>'text-uppercase']):
-                            '<a href="#" class="text-uppercase">Loged as </a> : <a href="#" class="text-uppercase">name</a>';?>
+                            '<a href="#" class="text-uppercase">Loged as </a> : <a href="#" class="text-uppercase">'.Yii::$app->user->identity->username.'</a>';?>
 
                         <ul class="custom-menu">
                             <?php echo !Yii::$app->user->isGuest?
                                 '<li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
                             <li><a href="#"><i class="fa fa-heart-o"></i> My Wishlist</a></li>
                             <li><a href="#"><i class="fa fa-check"></i> Checkout</a></li>
-                            <li><a href="#"><i class="fa fa-lock"></i> Log Out</a></li>':
+                            <li><a href="site/logouts"><i class="fa fa-lock"></i> Log Out</a></li>':
                                 '<li><a href="#"><i class="fa fa-unlock-alt"></i> Login</a></li>
                             <li><a href="#"><i class="fa fa-user-plus"></i> Join</a></li>';?>
                         </ul>
@@ -176,7 +176,7 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                     <li class="nav-toggle">
                         <button class="nav-toggle-btn main-btn icon-btn"><i class="fa fa-bars"></i></button>
                     </li>
-                    <!-- / Mobile nav toggle -->`
+                    <!-- / Mobile nav toggle -->
                 </ul>
             </div>
         </div>

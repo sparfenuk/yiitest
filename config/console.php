@@ -24,6 +24,9 @@ $config = [
                 ],
             ],
         ],
+        'user' =>[
+            'class' => 'app\models\User',
+        ],
         'db' => $db,
     ],
     'params' => $params,

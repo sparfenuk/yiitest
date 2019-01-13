@@ -16,12 +16,12 @@ class m181229_132246_user extends Migration
                 'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
                 'username' => $this->string(32)->notNull()->unique(),
                 'password' => $this->string()->notNull(),
-                'is_admin' => $this->tinyInteger(1)->defaultValue(0),
                 'photo_name' => $this->string(),
                 'mobile_number' => $this->integer()->unique(),
                 'location' => $this->string(),
                 'email' => $this->string(255)->notNull()->unique(),
-                'status' => $this->smallInteger()->notNull()->defaultValue(0),//0 - unconfirmed email, 1 - confirmed email
+                'status' => $this->smallInteger()->notNull()->defaultValue(0),//0 - unconfirmed email, 1 - confirmed email, 2-admin
+                'auth_key' => $this->string()->notNull()->unique(), //created for confirming email and changing password via email
                 'bought_items_count' => $this->integer()->defaultValue(0),
                 'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
                 'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP')
