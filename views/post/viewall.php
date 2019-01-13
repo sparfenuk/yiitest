@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="single-post">
         <?php
-        //        var_dump($admin);
+        //        var_dump($product);
         //    echo '<pre>';
 
         foreach ($dataProvider->models as $post) {
