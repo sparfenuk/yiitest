@@ -6,10 +6,11 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-use yii\captcha\Captcha;
 
 $this->title = 'Sign Up';
-$this->params['breadcrumbs'][] = $this->title;
+
+
+//$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-contact">
     <h1><?= Html::encode($this->title) ?></h1>
@@ -29,19 +30,24 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
             <div class="col-lg-5">
 
-                <?php $form = ActiveForm::begin(['id' => 'signUp-form']); ?>
+                <?php $form = ActiveForm::begin([
+                        'id' => 'signup-form',
+                        'options' => ['class' => 'form-horizontal']
+                ]   ); ?>
 
                 <?= $form->field($model, 'username')->textInput(['autofocus' => true])->input('text') ?>
 
                 <?= $form->field($model, 'email')->input('email') ?>
 
-                <?= $form->field($model, 'password')->input('password') ?>
+                <?= $form->field($model, 'password')->passwordInput() ?>
 
-                <?= $form->field($model, 'password_confirm')->input('password') ?>
+                <?= $form->field($model, 'password_confirm')->passwordInput() ?>
 
-                <?= $form->field($model, 'mobile number')->input('number') ?>
+                <?= $form->field($model, 'mobile_number')->input('number') ?>
 
-                <?= $form->field($model, 'country')->input('text') ?>
+                <?= $form->field($model, 'location')->input('text') ?>
+
+                <?= $form->field($model,'photo_name')
 
 
 

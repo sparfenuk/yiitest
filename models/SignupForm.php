@@ -3,100 +3,101 @@
 namespace app\models;
 
 use Yii;
-use yii\base\Model;
 
 /**
- * ContactForm is the model behind the contact form.
+ * This is the model class for table "{{%user}}".
+ *
+ * @property int $id
+ * @property string $username
+ * @property string $password
+ * @property int $is_admin
+ * @property string $photo_name
+ * @property int $mobile_number
+ * @property string $location
+ * @property string $email
+ * @property int $status
+ * @property int $bought_items_count
+ * @property string $created_at
+ * @property string $updated_at
+ *
+ * @property Favourites[] $favourites
  */
-class SignupForm extends Model
+class SignupForm extends \yii\db\ActiveRecord
 {
-
     public $username;
+    public $password;
+    public $password_confirm;
     public $email;
-    public $password_hash;
-    public $password_hash_confirm;
-    public $verifyCode;
-    protected $_user = false; // object of user from UserModel
+    public $mobile_number;
+    /**
+     * @var uploadedAvatar
+     */
+    public $image;
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName()
+    {
+        return '{{%user}}';
+    }
 
     /**
-     * @return array the validation rules.
+     * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            // name, email, subject and body are required
-            [['username', 'email', 'password', 'password_confirm','mobile_number','country'], 'required'],
-            // email has to be a valid email address
-            ['email', 'validateEmail'],
-            ['password', 'validatePassword'],
-            ['password_conform','validatePassword']
-            // verifyCode needs to be entered correctly
-//            ['verifyCode', 'captcha'],
+            [['id', 'username', 'password', 'email'], 'required'],
+            [['id', 'is_admin', 'mobile_number', 'status', 'bought_items_count'], 'integer'],
+            [['created_at', 'updated_at'], 'safe'],
+            [['username'], 'string', 'max' => 32],
+            [['password', 'photo_name', 'location', 'email'], 'string', 'max' => 255],
+            [['username'], 'unique'],
+            [['email'], 'unique'],
+            [['photo_name'], 'unique'],
+            [['mobile_number'], 'unique'],
+            [['id'], 'unique'],
+            [['image'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],]
         ];
     }
 
-    public function validateEmail($attribute, $params)
-    {
-        return filter_var($this->email, FILTER_VALIDATE_EMAIL);
-    }
-
-    public function validatePassword($attribute, $params)
-    {
-        if ($this->password_hash != $this->password_hash_confirm) {
-            $this->addError($attribute, 'Passwords do not matches');
-            return false;
-        }
-        return true;
-    }
-
     /**
-     * @return array customized attribute labels
+     * {@inheritdoc}
      */
     public function attributeLabels()
     {
         return [
-            'verifyCode' => 'Verification Code',
+            'id' => 'ID',
+            'username' => 'Username',
+            'password' => 'Password',
+            'is_admin' => 'Is Admin',
+            'photo_name' => 'Photo Name',
+            'mobile_number' => 'Mobile Number',
+            'location' => 'Location',
+            'email' => 'Email',
+            'status' => 'Status',
+            'bought_items_count' => 'Bought Items Count',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
         ];
     }
 
     /**
-     * Sends an email to the specified email address using the information collected by this model.
-     * @param string $email the target email address
-     * @return bool whether the model passes validation
+     * @return \yii\db\ActiveQuery
      */
-    public function signUp()
+    public function getFavourites()
     {
-        if ($this->validate()) {
-            $this->_user = $this->getUser();
-            //todo: all "randomly generated data make rly randomly generated"
-            if ($this->_user !== false)
-                $this->_user->setAttributes([
-                    'username' => $this->username,
-                    'email' => $this->email,
-                    'status' => 0,
-                    'crated_at' => time(),
-                    'updated_at' => time()
-
-                ]);
-            else return false;
-            $this->_user->save();
-            return true;
-        }
-
-
+        return $this->hasMany(Favourites::className(), ['user_id' => 'id']);
     }
 
-    public
-    function getUser()
-    {
-        if ($this->_user === false) {
-            $this->_user = User::findByUsername($this->username);
-            //todo:: user already exist !it is error
-            if ($this->_user === null) {
-                $this->_user = new User();
-            } else return false;
 
-        }
-        return $this->_user;
+
+    /**
+     * {@inheritdoc}
+     * @return UserQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new UserQuery(get_called_class());
     }
 }

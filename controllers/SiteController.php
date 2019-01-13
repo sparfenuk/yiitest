@@ -156,14 +156,15 @@ class SiteController extends Controller
         }
 
         $model = new SignupForm();
-        if ($model->load($post = Yii::$app->request->post()) && $model->signUp()) {
+        if ($model->load($post = Yii::$app->request->post())) {
             Yii::$app->session->setFlash('success',
                 'ty for registration check your email for instructions');
             return $this->goBack();
         } else if (!empty($post))
             Yii::$app->session->setFlash('error',
                 'Username already exists');
-        return $this->render('signUp');
+        return $this->render('signUp',array('model'=>$model));
 
     }
+
 }
