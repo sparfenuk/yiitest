@@ -31,7 +31,7 @@ $this->title = 'Sign Up';
             <div class="col-lg-5">
 
                 <?php $form = ActiveForm::begin([
-                        'id' => 'signup-form',
+                        'id' => 'signUp-form',
                         'options' => ['class' => 'form-horizontal']
                 ]   ); ?>
 
@@ -47,11 +47,11 @@ $this->title = 'Sign Up';
 
                 <?= $form->field($model, 'location')->input('text') ?>
 
-                <?= $form->field($model,'photo_name')
+                <?= $form->field($model,'image')->label('Your avatar')->fileInput(['accept' => '.jpg,.png']) ?>
 
 
 
-                <!--                    --><? //= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
+               <?//= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
                 //                        'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
                 //                    ]) ?>
 

@@ -24,11 +24,10 @@ use Yii;
  */
 class SignupForm extends \yii\db\ActiveRecord
 {
-    public $username;
-    public $password;
+
     public $password_confirm;
-    public $email;
-    public $mobile_number;
+
+
     /**
      * @var uploadedAvatar
      */
@@ -57,7 +56,7 @@ class SignupForm extends \yii\db\ActiveRecord
             [['photo_name'], 'unique'],
             [['mobile_number'], 'unique'],
             [['id'], 'unique'],
-            [['image'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],]
+            [['image'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
         ];
     }
 

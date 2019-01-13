@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\SignupForm;
+use app\models\UploadAvatarFile;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -12,6 +13,8 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 use yii\data\ActiveDataProvider;
 use app\models\Goods;
+use yii\web\UploadedFile;
+
 class SiteController extends Controller
 {
     /**
@@ -146,7 +149,6 @@ class SiteController extends Controller
     }
 
 
-
     public function actionSignUp()
     {
 
@@ -156,10 +158,38 @@ class SiteController extends Controller
         }
 
         $model = new SignupForm();
-        if ($model->load($post = Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post())) {
             Yii::$app->session->setFlash('success',
                 'ty for registration check your email for instructions');
-            return $this->goBack();
+
+            $imageModel = new UploadAvatarFile();
+            $imageModel->imageFile = UploadedFile::getInstance($model,'image');
+
+            $model->photo_name = $imageModel->upload();
+            $model->image = $_FILES ['name'];
+            //$model->id=0;
+            // $model->created_at = date('Y/m/d');
+            //$model->updated_at = date('Y/m/d');
+            $model->password = md5($model->password . Yii::$app->params['SALT']);
+            $model->password_confirm = $model->password;
+            $model->image = $imageModel->imageFile->getBaseName();
+           // $model->is_admin = 0;
+           // $model->status = 0;
+            //$model->bought_items_count = 0;
+
+//            echo '<pre>';
+//            print_r($model);
+//            echo '</pre>';
+//
+//            echo '<pre>';
+//            print_r(Yii::$app->request->post());
+//            echo '</pre>';
+
+             $model->save(false);
+
+
+
+            //return $this->goBack();
         } else if (!empty($post))
             Yii::$app->session->setFlash('error',
                 'Username already exists');

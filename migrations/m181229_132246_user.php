@@ -13,11 +13,11 @@ class m181229_132246_user extends Migration
         if($this->db->driverName === 'mysql') {
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=INNODB';
             $this->createTable('{{%user}}', [
-                'id' => $this->integer()->notNull(),
+                'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
                 'username' => $this->string(32)->notNull()->unique(),
                 'password' => $this->string()->notNull(),
                 'is_admin' => $this->tinyInteger(1)->defaultValue(0),
-                'photo_name' => $this->string()->unique(),
+                'photo_name' => $this->string(),
                 'mobile_number' => $this->integer()->unique(),
                 'location' => $this->string(),
                 'email' => $this->string(255)->notNull()->unique(),
@@ -27,9 +27,9 @@ class m181229_132246_user extends Migration
                 'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP')
             ],
                 $tableOptions);
-            $this->addPrimaryKey('pk_user','{{%user}}','id');
+
             $this->createTable('{{%product}}',[
-                'id' => $this->integer()->notNull(),
+                'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
                 'name' => $this->string(32)->notNull(),
                 'brand' => $this->string(100),
                 'category_id' => $this->integer()->notNull(),
@@ -44,10 +44,10 @@ class m181229_132246_user extends Migration
                 'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP')
             ],
                 $tableOptions);
-            $this->addPrimaryKey('pk_product','{{%product}}','id');
+
 
             $this->createTable('{{%review}}',[
-                'id' => $this->integer()->notNull(),
+                'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
                 'user_id' => $this->integer()->notNull(),
                 'product_id' => $this->integer()->notNull(),
                 'mark' => $this->integer()->notNull(),
@@ -55,24 +55,26 @@ class m181229_132246_user extends Migration
                 'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP')
             ],
                 $tableOptions);
-            $this->addPrimaryKey('pk_review','{{%review}}','id');
+
             $this->createTable('{{%favourites}}',[ // якщо запис існує то продукт є улюбленим
                 'user_id' => $this->integer()->notNull(),
                 'product_id' => $this->integer()->notNull()
             ],$tableOptions);
+
+
             $this-> createTable('{{%product_photo}}',[
-                'id' => $this->integer()->notNull(),
+                'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
                 'image_name' => $this->string(200)->notNull(),
                 'product_id' => $this->integer()->notNull(),
                 'product_color' => $this->string(60)
             ],$tableOptions);
-            $this->addPrimaryKey('pk_product_photo','{{%product_photo}}','id');
+
 
             $this->createTable('{{%category}}',[
-                'id' => $this->integer()->notNull(),
+                'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
                 'name' => $this->string()->unique()->notNull()
             ],$tableOptions);
-             $this->addPrimaryKey('pk_category','{{%category}}','id');
+
 
             $this->createIndex('idx-review-product',
                 '{{%review}}',
@@ -129,11 +131,7 @@ class m181229_132246_user extends Migration
         $this->dropTable('{{%review}}');
         $this->dropTable('{{%favourites}}');
         $this->dropTable('{{%category}}');
-        $this->dropPrimaryKey('pk_user','{{%user}}');
-        $this->dropPrimaryKey('pk_product','{{%product}}');
-        $this->dropPrimaryKey('pk_product_photo','{{%product_photo}}');
-        $this->dropPrimaryKey('pk_review','{{%review}}');
-        $this->dropPrimaryKey('pk_category','{{%category}}');
+
         $this->dropIndex('idx-review-product','review');
         $this->dropForeignKey('fk-review-product','review');
         $this->dropIndex('idx-favourites-user','favourites');

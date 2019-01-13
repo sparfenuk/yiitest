@@ -4,7 +4,7 @@ namespace app\models;
 use yii\base\Model;
 use yii\web\UploadedFile;
 
-class UploadForm extends Model
+class UploadAvatarFile extends Model
 {
     /**
      * @var UploadedFile
@@ -20,11 +20,11 @@ class UploadForm extends Model
 
     public function upload()
     {
-        if ($this->validate()) {
-            $this->imageFile->saveAs('@web/images/user_images/' . $this->imageFile->baseName.'-'.uniqid(). '.' . $this->imageFile->extension);
-            return true;
+        if (isset($this->imageFile) && $this->validate()) {
+            $this->imageFile->saveAs('images/user_images/' . $this->imageFile->baseName.'_'.uniqid(). '.' . $this->imageFile->extension);
+            return $this->imageFile->baseName.'_'.uniqid(). '.' . $this->imageFile->extension;
         } else {
-            return false;
+            return 'noimage.png';
         }
     }
 }

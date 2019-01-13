@@ -38,14 +38,13 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'username', 'password', 'email'], 'required'],
+            [['username', 'password', 'email'], 'required'],
             [['id', 'is_admin', 'mobile_number', 'status', 'bought_items_count'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['username'], 'string', 'max' => 32],
             [['password', 'photo_name', 'location', 'email'], 'string', 'max' => 255],
             [['username'], 'unique'],
             [['email'], 'unique'],
-            [['photo_name'], 'unique'],
             [['mobile_number'], 'unique'],
             [['id'], 'unique'],
         ];
