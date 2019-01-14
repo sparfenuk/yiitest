@@ -192,6 +192,23 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
         <!--        --><?//= Breadcrumbs::widget([
         //            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         //        ]) ?>
+        <?php
+        if (Yii::$app->session->hasFlash('success')): ?>
+            <div class="alert alert-success" role="alert">
+                <?= Yii::$app->session->getFlash('success'); ?>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <?php elseif (Yii::$app->session->hasFlash('error')): ?>
+            <div class="alert alert-error" role="alert">
+                <?= Yii::$app->session->getFlash('error'); ?>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <?php endif; ?>
+
 
 
         <?= $content ?>

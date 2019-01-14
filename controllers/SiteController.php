@@ -6,6 +6,7 @@ use app\models\SignupForm;
 use app\models\UploadAvatarFile;
 use app\models\User;
 use Yii;
+use yii\db\Exception;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
@@ -113,7 +114,7 @@ class SiteController extends AppController
      *
      * @return Response
      */
-    public function actionLogouts()
+    public function actionLogouts() // logout чомусь не працює довелось перейменувати так
     {
         Yii::$app->user->logout();
 
@@ -150,7 +151,24 @@ class SiteController extends AppController
     }
 
     public function actionEmailConfirm($authKey){
-        User::findByAuthKey($authKey);
+         try{
+
+             $user = User::findByAuthKey($authKey);
+             $user->status = '1';
+             $user->updated_at = date('Y-m-d H:i:s');
+             //$user->setIsNewRecord(0);
+             $user->save(false);
+
+
+
+             Yii::$app->session->setFlash('success', 'email confirmed successfully');
+             $this->goHome();
+         }
+         catch (\Exception $e){
+             self::debug($e);
+             Yii::$app->session->setFlash('error', 'email not confirmed, something wrong');
+             $this->goHome();
+         }
     }
 
     public function actionSignUp()
@@ -172,15 +190,11 @@ class SiteController extends AppController
             $model->photo_name = $imageModel->upload();
             $model->image = $_FILES ['name'];
             $model->auth_key = self::generateRandomString(30);
-            //$model->id=0;
-            // $model->created_at = date('Y/m/d');
-            //$model->updated_at = date('Y/m/d');
+
             $model->password = md5($model->password . Yii::$app->params['SALT']);
             $model->password_confirm = $model->password;
-            $model->image = $imageModel->imageFile->getBaseName();
-           // $model->is_admin = 0;
-           // $model->status = 0;
-            //$model->bought_items_count = 0;
+            $model->image = $model->photo_name;
+
 
 //            echo '<pre>';
 //            print_r($model);
@@ -190,8 +204,13 @@ class SiteController extends AppController
 //            print_r(Yii::$app->request->post());
 //            echo '</pre>';
 
-             $model->save(false);
+            try {
+                $model->save(false);
+            }
+            catch (\yii\db\IntegrityException $e){
+                Yii::$app->session->setFlash('error', 'user with same username or email already exists try another one');
 
+            }
             Yii::$app->mailer->compose()
                 ->setFrom(Yii::$app->params['mailEmail'])
                 ->setTo($model->email)

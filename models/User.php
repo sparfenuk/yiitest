@@ -11,7 +11,6 @@ use yii\web\IdentityInterface;
  * @property int $id
  * @property string $username
  * @property string $password
- * @property int $is_admin
  * @property string $photo_name
  * @property int $mobile_number
  * @property string $location
@@ -40,7 +39,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return [
             [['username', 'password', 'email'], 'required'],
-            [['id', 'is_admin', 'mobile_number', 'status', 'bought_items_count'], 'integer'],
+            [['id',  'mobile_number', 'status', 'bought_items_count'], 'integer'],
             [['created_at', 'updated_at','auth_key'], 'safe'],
             [['username'], 'string', 'max' => 32],
             [['password', 'photo_name', 'location', 'email'], 'string', 'max' => 255],
@@ -60,7 +59,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'id' => 'ID',
             'username' => 'Username',
             'password' => 'Password',
-            'is_admin' => 'Is Admin',
             'photo_name' => 'Photo Name',
             'mobile_number' => 'Mobile Number',
             'location' => 'Location',
@@ -110,7 +108,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
     public static function findByAuthKey($authKey){
         $user = self::find()->where(['auth_key' => $authKey])->one();
-        return new static ($user);
+        return $user;
 
     }
     public function validatePassword($password) {
@@ -207,6 +205,10 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
     }
 
+
+//    public static function confirmEmail($auth_key){
+//
+//    }
 
 
 

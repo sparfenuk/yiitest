@@ -12,6 +12,20 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'useFileTransport' => false,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.gmail.com',
+                'username' => 'e.shop.yii2@gmail.com',
+                'password' => 'amgxdrcqbdfyknoi',
+                'port' => '587',
+                'encryption' => 'tls'
+            ],
+            'viewPath' => '@runtime/mail'
+
+        ],
         'assetManager' => [
             'bundles' => [
                 'yii\web\JqueryAsset' => [
@@ -43,19 +57,7 @@ $config = [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
-            'transport' => [
-                'class' => 'Swift_SmtpTransport',
-                'host' => 'smtp.gmail.com',
-                'username' => 'e.shop.yii2@gmail.com',
-                'password' => 'shagshag',
-                'port' => '587',
-                'encryption' => 'tls'
-                ],
-            'viewPath' => 'mail/',
-            'useFileTransport' => true,
-        ],
+
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
