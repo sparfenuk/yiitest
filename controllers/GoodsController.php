@@ -127,7 +127,9 @@ class GoodsController extends \yii\web\Controller
 
       }
     }
-
+    public function actionProductPage(){
+        return $this->render('product-page');
+    }
 
 
     public function  actionProduct($id=null)
