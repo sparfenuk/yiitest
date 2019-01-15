@@ -32,8 +32,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
 //
 
-     var_dump($product);
+//     var_dump();
+     if(Yii::$app->user->identity->status==2)
+     {
+         echo '<p>awdawdaw22222222dawda</p>';
+         //HTML::button("Update");
+
+     }
 $name=ProductPhoto::findByProductId($product->id);
+     var_dump($name);
 echo '<div class="product-details">
 <img style="width: 500px" src="'. Yii::$app->params['basePath'] . '/images/'. HTML::encode($name->image_name).'">
 <div class="product-name">

@@ -37,56 +37,6 @@ class ProductController extends \yii\web\Controller
 
 
 
-public  function  actionCreate($id=null)
-{
-    $product=new Product();
-    $uploader=new UploadFile();
-    $photo=new ProductPhoto();
-
-
-    if($id!==null) {
-        $product=Product::findProductById($id);
-        return var_dump($product);
-        return $this->render('create',['product'=>$product,'uploader'=>$uploader]);
-    }
-
-    else if ($product->load(Yii::$app->request->post())) {
-
-
-        $colors='';
-        foreach ($product->colors as $color)
-        {
-           $colors=$colors.$color.';';
-
-        }
-        $product->colors=$colors;
-        $uploader->imageFiles = UploadedFile::getInstances($uploader, 'imageFiles');
-
-//        if ($uploader->uploadImages()) {
-//
-//          foreach (  $uploader->imageFiles as $imageFile)
-//          {
-//              $photo->image_name=$imageFile->name;
-//              $photo->product_color='black';
-//              $photo->product_id=$product->id;
-//             if(! $photo->save())
-//             {
-//                 return 'Oopsy dupsy1';
-//
-//             }
-//          }
-//
-//        }
-        $product->save(false);
-//        if(!$product->save())
-//         {
-//
-//             return var_dump($_POST);
-//         }
-       // return $this->redirect(['view','id'=>$product->id]);
-    }
-   return $this->render('create',['product'=>$product,'uploader'=>$uploader]);
-}
 
 
     public function  actionView($id=null)
@@ -103,7 +53,7 @@ public  function  actionCreate($id=null)
         }
         if($product!==null) {
             return $this->render('product', [
-                'view' => $product
+                'product' => $product
             ]);
         }
 

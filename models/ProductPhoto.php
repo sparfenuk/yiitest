@@ -41,7 +41,7 @@ class ProductPhoto extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'image_name', 'product_id'], 'required'],
+            [['image_name', 'product_id'], 'required'],
             [['id', 'product_id'], 'integer'],
             [['image_name'], 'string', 'max' => 200],
             [['product_color'], 'string', 'max' => 60],

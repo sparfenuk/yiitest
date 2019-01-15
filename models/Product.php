@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property string $name
  * @property string $brand
+ * @property int $category_id
  * @property string $price
  * @property int $availability
  * @property int $is_new
@@ -17,10 +18,10 @@ use Yii;
  * @property string $description
  * @property int $reviews_count
  * @property string $colors
- * @property int $photos_id
  * @property string $created_at
  * @property string $updated_at
  *
+ * @property Category $category
  * @property ProductPhoto[] $productPhotos
  * @property Review[] $reviews
  */
@@ -40,30 +41,17 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'name', 'price', 'description'], 'required'],
-            [['id', 'availability', 'is_new', 'discount', 'reviews_count'], 'integer'],
+            [['name', 'category_id', 'price', 'description'], 'required'],
+            [['category_id', 'availability', 'is_new', 'discount', 'reviews_count'], 'integer'],
             [['price'], 'number'],
             [['created_at', 'updated_at'], 'safe'],
             [['name'], 'string', 'max' => 32],
             [['brand'], 'string', 'max' => 100],
             [['description'], 'string', 'max' => 1000],
             [['colors'], 'string', 'max' => 200],
-            [['id'], 'unique'],
+            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
         ];
     }
-public  static  function findProductById($id)
-{
-   $product=self::find()->where(['id'=>$id])->one();
-    if ($product === null) return null;
-    return new static($product);
-}
-public static function findProductByName($name)
-{
-    $product=self::find()->where(['name'=>$name])->all();
-    if ($product === null) return null;
-    return new static($product);
-}
-
 
     /**
      * {@inheritdoc}
@@ -74,6 +62,7 @@ public static function findProductByName($name)
             'id' => 'ID',
             'name' => 'Name',
             'brand' => 'Brand',
+            'category_id' => 'Category ID',
             'price' => 'Price',
             'availability' => 'Availability',
             'is_new' => 'Is New',
@@ -84,6 +73,29 @@ public static function findProductByName($name)
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+
+    public  static  function findProductById($id)
+    {
+        $product=self::find()->where(['id'=>$id])->one();
+        if ($product === null) return null;
+        return new static($product);
+    }
+    public static function findProductByName($name)
+    {
+        $product=self::find()->where(['name'=>$name])->all();
+        if ($product === null) return null;
+        return new static($product);
+    }
+
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCategory()
+    {
+        return $this->hasOne(Category::className(), ['id' => 'category_id']);
     }
 
     /**
