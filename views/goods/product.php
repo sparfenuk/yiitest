@@ -42,19 +42,32 @@ $this->params['breadcrumbs'][] = $this->title;
 $name=ProductPhoto::findByProductId($product->id);
      var_dump($name);
 echo '<div class="product-details">
-<img style="width: 500px" src="'. Yii::$app->params['basePath'] . '/images/'. HTML::encode($name->image_name).'">
+
+<img style="width: 500px" src="'. Yii::$app->params['basePath'] . '/images/'. HTML::encode($name).'">
+
 <div class="product-name">
 '. HTML::encode($product->name).'
 </div>
 
-<div class="product-price">
+<h3 class="product-price">
 '. HTML::encode($product->price).'
-</div>
+</h3>
+
 <div class="product-details">
 '. HTML::encode($product->description).'
-</div>
-
-
 </div>';
+
+if(is_array($product->colors)) {
+    foreach (explod(';', $product->colors) as $color) {
+
+    }
+}
+else if($product->colors!==null)
+{
+
+
+}
+echo  '<div style="width: 10px; height: 10px; background-color: blue" ></div>';
+echo '</div>';
 
  ?>

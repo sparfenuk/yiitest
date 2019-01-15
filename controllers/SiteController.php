@@ -169,7 +169,9 @@ class SiteController extends AppController
              $this->goHome();
          }
     }
-
+    public function actionProductPage(){
+        return $this->render('product-page');
+    }
     public function actionSignUp()
     {
 

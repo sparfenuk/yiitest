@@ -38,7 +38,7 @@ class GoodsController extends \yii\web\Controller
             $categories=new Category();
             $product = new Product();
             $uploader = new UploadFile();
-            $photo = new ProductPhoto();
+
 
 
             if ($id !== null) {
@@ -51,13 +51,14 @@ class GoodsController extends \yii\web\Controller
             else if ($product->load(Yii::$app->request->post())) {
                  $product->category_id=(int)$_POST['Category']['name'];
 
+                if(is_array($product->colors)) {
+                    $colors = '';
+                    foreach ($product->colors as $color) {
+                        $colors = $colors . $color . ';';
 
-                $colors = '';
-                foreach ($product->colors as $color) {
-                    $colors = $colors . $color . ';';
-
+                    }
+                    $product->colors = $colors;
                 }
-                $product->colors=$colors;
 
 
               if( $product->validate())
@@ -67,7 +68,10 @@ class GoodsController extends \yii\web\Controller
               }
               else
                   {
-                      return var_dump($product->errors);
+                    //  Yii::$app->session->setFlash('success', $product->errors['name'][0]);
+                      return $this->render('create', ['product' => $product, 'uploader' => $uploader,'categories'=>$categories]);
+
+                      //return var_dump($product->errors);
                   }
 
 
@@ -77,14 +81,14 @@ class GoodsController extends \yii\web\Controller
 
 
 
-                $product->colors = $colors;
+
                 $uploader->imageFiles = UploadedFile::getInstances($uploader, 'imageFiles');
 
                 if ($uploader->uploadImages()) {
 
-                   //return var_dump($uploader->imageFiles);
           foreach (  $uploader->imageFiles as $imageFile)
           {
+              $photo = new ProductPhoto();
               $photo->image_name=$imageFile->name;
               $photo->product_color='black';
               $photo->product_id=$product->id;
@@ -95,8 +99,10 @@ class GoodsController extends \yii\web\Controller
               }
               else
               {
-                  return var_dump($photo->errors);
+
+                  return $this->render('create', ['product' => $product, 'uploader' => $uploader,'categories'=>$categories]);
               }
+
           }
 
         }

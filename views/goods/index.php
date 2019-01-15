@@ -31,7 +31,8 @@ echo '<div class="row">';
         $url = Url::toRoute(['goods/product', 'id' => $goods->id]);
 
        $name=ProductPhoto::findByProductId($goods->id);
-        echo '<div class="product-thumb"><img style="width: 300px;" src="' . Yii::$app->params['basePath'] . '/images/'. HTML::encode($name->image_name).'" > </div>';
+echo  $name;
+        echo '<div class="product-thumb"><img style="width: 300px;" src="' . Yii::$app->params['basePath'] . '/images/'. HTML::encode($name).'" > </div>';
 
         echo '<div class="product-body">'
 
