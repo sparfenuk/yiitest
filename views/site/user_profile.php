@@ -10,8 +10,6 @@
     $this->registerJsFile("https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js");
     $this->registerJsFile("https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js");
     $this->registerJs('$(document).ready(function() {
-
-    
     var readURL = function(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();

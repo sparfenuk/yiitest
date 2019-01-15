@@ -17,52 +17,45 @@ $this->title = 'Sign Up';
     <div class="alert alert-error">
         <?= Yii::$app->session->getFlash('error'); ?>
     </div>
-    <?php if (Yii::$app->session->hasFlash('success')): ?>
-
-        <div class="alert alert-success">
-            <?= Yii::$app->session->getFlash('success'); ?>
-        </div>
-
-
-    <?php else: ?>
-
-
-        <div class="row">
-            <div class="col-lg-5">
-
-                <?php $form = ActiveForm::begin([
-                        'id' => 'signup-form',
-                        'options' => ['class' => 'form-horizontal']
-                ]   ); ?>
-
-                <?= $form->field($model, 'username')->textInput(['autofocus' => true])->input('text') ?>
-
-                <?= $form->field($model, 'email')->input('email') ?>
-
-                <?= $form->field($model, 'password')->passwordInput() ?>
-
-                <?= $form->field($model, 'password_confirm')->passwordInput() ?>
-
-                <?= $form->field($model, 'mobile_number')->input('number') ?>
-
-                <?= $form->field($model, 'location')->input('text') ?>
-
-                <?= $form->field($model,'photo_name')
 
 
 
-                <!--                    --><? //= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
-                //                        'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
-                //                    ]) ?>
+    <div class="row">
+        <div class="col-lg-5">
 
-                <div class="form-group">
-                    <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
-                </div>
+            <?php $form = ActiveForm::begin([
+                'id' => 'signUp-form',
+                'options' => ['class' => 'form-horizontal']
+            ]   ); ?>
 
-                <?php ActiveForm::end(); ?>
+            <?= $form->field($model, 'username')->textInput(['autofocus' => true])->input('text') ?>
 
+            <?= $form->field($model, 'email')->input('email') ?>
+
+            <?= $form->field($model, 'password')->passwordInput() ?>
+
+            <?= $form->field($model, 'password_confirm')->passwordInput() ?>
+
+            <?= $form->field($model, 'mobile_number')->input('number') ?>
+
+            <?= $form->field($model, 'location')->input('text') ?>
+
+            <?= $form->field($model,'image')->label('Your avatar')->fileInput(['accept' => '.jpg,.png']) ?>
+
+
+
+            <?//= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
+            //                        'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
+            //                    ]) ?>
+
+            <div class="form-group">
+                <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
             </div>
-        </div>
 
-    <?php endif; ?>
+            <?php ActiveForm::end(); ?>
+
+        </div>
+    </div>
+
+
 </div>

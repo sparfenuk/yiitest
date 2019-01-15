@@ -3,7 +3,10 @@
 namespace app\controllers;
 
 use app\models\SignupForm;
+use app\models\UploadAvatarFile;
+use app\models\User;
 use Yii;
+use yii\db\Exception;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
@@ -12,7 +15,9 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 use yii\data\ActiveDataProvider;
 use app\models\Goods;
-class SiteController extends Controller
+use yii\web\UploadedFile;
+
+class SiteController extends AppController
 {
     /**
      * {@inheritdoc}
@@ -109,7 +114,7 @@ class SiteController extends Controller
      *
      * @return Response
      */
-    public function actionLogout()
+    public function actionLogouts() // logout чомусь не працює довелось перейменувати так
     {
         Yii::$app->user->logout();
 
@@ -145,7 +150,26 @@ class SiteController extends Controller
         return $this->render('about');
     }
 
+    public function actionEmailConfirm($authKey){
+         try{
 
+             $user = User::findByAuthKey($authKey);
+             $user->status = '1';
+             $user->updated_at = date('Y-m-d H:i:s');
+             //$user->setIsNewRecord(0);
+             $user->save(false);
+
+
+
+             Yii::$app->session->setFlash('success', 'email confirmed successfully');
+             $this->goHome();
+         }
+         catch (\Exception $e){
+             self::debug($e);
+             Yii::$app->session->setFlash('error', 'email not confirmed, something wrong');
+             $this->goHome();
+         }
+    }
 
     public function actionSignUp()
     {
@@ -156,13 +180,51 @@ class SiteController extends Controller
         }
 
         $model = new SignupForm();
-        if ($model->load($post = Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post())) {
             Yii::$app->session->setFlash('success',
                 'ty for registration check your email for instructions');
+
+            $imageModel = new UploadAvatarFile();
+            $imageModel->imageFile = UploadedFile::getInstance($model,'image');
+
+            $model->photo_name = $imageModel->upload();
+            $model->image = $_FILES ['name'];
+            $model->auth_key = self::generateRandomString(30);
+
+            $model->password = md5($model->password . Yii::$app->params['SALT']);
+            $model->password_confirm = $model->password;
+            $model->image = $model->photo_name;
+
+
+//            echo '<pre>';
+//            print_r($model);
+//            echo '</pre>';
+//
+//            echo '<pre>';
+//            print_r(Yii::$app->request->post());
+//            echo '</pre>';
+
+            try {
+                $model->save(false);
+            }
+            catch (\yii\db\IntegrityException $e){
+                Yii::$app->session->setFlash('error', 'user with same username or email already exists try another one');
+
+            }
+            Yii::$app->mailer->compose()
+                ->setFrom(Yii::$app->params['mailEmail'])
+                ->setTo($model->email)
+                ->setSubject('Registration on E-Shop')
+                ->setTextBody('Welcome to E-Shop.
+                 To confirm your email press this <a href="http://yiitest/site/email-confirm?authKey='.$model->auth_key.'">LINK</a>')
+                ->send();
+
+
             return $this->goBack();
         } else if (!empty($post))
             Yii::$app->session->setFlash('error',
                 'Username already exists');
+
         return $this->render('signUp',array('model'=>$model));
 
     }

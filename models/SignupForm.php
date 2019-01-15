@@ -24,11 +24,10 @@ use Yii;
  */
 class SignupForm extends \yii\db\ActiveRecord
 {
-    public $username;
-    public $password;
+
     public $password_confirm;
-    public $email;
-    public $mobile_number;
+
+
     /**
      * @var uploadedAvatar
      */
@@ -49,7 +48,7 @@ class SignupForm extends \yii\db\ActiveRecord
         return [
             [['id', 'username', 'password', 'email'], 'required'],
             [['id', 'is_admin', 'mobile_number', 'status', 'bought_items_count'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['created_at', 'updated_at','auth_key'], 'safe'],
             [['username'], 'string', 'max' => 32],
             [['password', 'photo_name', 'location', 'email'], 'string', 'max' => 255],
             [['username'], 'unique'],
@@ -57,7 +56,7 @@ class SignupForm extends \yii\db\ActiveRecord
             [['photo_name'], 'unique'],
             [['mobile_number'], 'unique'],
             [['id'], 'unique'],
-            [['image'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],]
+            [['image'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
         ];
     }
 
@@ -76,6 +75,7 @@ class SignupForm extends \yii\db\ActiveRecord
             'location' => 'Location',
             'email' => 'Email',
             'status' => 'Status',
+            'auth_key' => 'Auth Key',
             'bought_items_count' => 'Bought Items Count',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',

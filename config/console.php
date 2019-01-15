@@ -12,7 +12,6 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
-        'mailer' => 'yii\swiftmailer\Mailer',
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
@@ -23,6 +22,9 @@ $config = [
                     'levels' => ['error', 'warning'],
                 ],
             ],
+        ],
+        'user' =>[
+            'class' => 'app\models\User',
         ],
         'db' => $db,
     ],
