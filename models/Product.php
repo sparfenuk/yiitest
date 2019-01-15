@@ -41,7 +41,7 @@ class Product extends \yii\db\ActiveRecord
     {
         return [
             [['id', 'name', 'price', 'description'], 'required'],
-            [['id', 'availability', 'is_new', 'discount', 'reviews_count', 'photos_id'], 'integer'],
+            [['id', 'availability', 'is_new', 'discount', 'reviews_count'], 'integer'],
             [['price'], 'number'],
             [['created_at', 'updated_at'], 'safe'],
             [['name'], 'string', 'max' => 32],
@@ -81,7 +81,6 @@ public static function findProductByName($name)
             'description' => 'Description',
             'reviews_count' => 'Reviews Count',
             'colors' => 'Colors',
-            'photos_id' => 'Photos ID',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];

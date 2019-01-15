@@ -34,8 +34,8 @@ class m181229_132246_user extends Migration
                 'brand' => $this->string(100),
                 'category_id' => $this->integer()->notNull(),
                 'price' => $this->money()->notNull(),
-                'availability' => $this->integer(7), //кількість доступного товару
-                'is_new' => $this->tinyInteger(1)->defaultValue('1'),
+                'availability' => $this->integer(7)->defaultValue(1), //кількість доступного товару
+                'is_new' => $this->tinyInteger(1)->defaultValue(1),
                 'discount' => $this->integer(4)->defaultValue(0),
                 'description' => $this->string(1000)->notNull(),
                 'reviews_count' => $this->integer(7)->defaultValue(0),
