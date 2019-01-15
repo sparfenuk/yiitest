@@ -9,10 +9,14 @@
 namespace app\controllers;
 
 use app\models\Product;
+use app\models\ProductPhoto;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
+use app\models\UploadFile;
+use yii\web\UploadedFile;
+
 
 class ProductController extends \yii\web\Controller
 {
@@ -31,36 +35,29 @@ class ProductController extends \yii\web\Controller
         ];
     }
 
-public  function  actionCreate()
-{
-    $product=new Product();
-//    if($product->load(Yii::$app->request->post())&&$product->save())
-//    {
-//       return $this->redirect(['view','id'=>$product->id]);
-//    }
-   return $this->render('create',['product'=>$product]);
-}
 
 
-    public function  actionProduct($id=null)
+
+
+    public function  actionView($id=null)
     {
-////
-////            /** @var TYPE_NAME $dataProvider */
-////            $dataProvider = new ActiveDataProvider([
-////                'query' => Product::find(),
-////            ]);
 //
-//        if($id!==null) {
-//            $product=Product::findProductById($id);
-//
-//        }
-//        if($product!==null) {
-//            return $this->render('product', [
-//                'product' => $product
+//            /** @var TYPE_NAME $dataProvider */
+//            $dataProvider = new ActiveDataProvider([
+//                'query' => Product::find(),
 //            ]);
-//        }
-//
-return 'LOL';
+
+        if($id!==null) {
+            $product=Product::findProductById($id);
+
+        }
+        if($product!==null) {
+            return $this->render('product', [
+                'product' => $product
+            ]);
+        }
+
+
     }
 
     public function actionIndex()

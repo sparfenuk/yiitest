@@ -8,6 +8,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\models\Category;
 /* @var $this yii\web\View */
 /* @var $model app\models\Product */
 
@@ -15,9 +16,6 @@ $this->title = 'Create Posts';
 $this->params['breadcrumbs'][] = ['label' => 'Posts', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
-echo '<pre>';
-print_r($product);
-echo '</pre>';
 ?>
 <div class="posts-create">
 <!---->
@@ -36,20 +34,27 @@ echo '</pre>';
 
      <?= $form->field($product, 'name')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($product, 'brand')->textInput(['maxlength' => true]) ?>
+
      <?= $form->field($product, 'description')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($product, 'price')->textInput(['type' => 'number']) ?>
-<!---->
-<!--    --><?//= $form->field($model, 'uploadFile[]')->fileInput(['multiple'=>'multiple']);?>
-<!--    --><?//= $form->field($model, 'colors')->checkboxList([
-//        'black' => 'black',
-//        'blue' => 'blue',
-//        'rose'=>'rose',
-//        'gold'=>'gold',
-//        'pink'=>'pink'
-//    ]);
-//
-//    ?>
+
+    <?= $form->field($categories, 'name')->dropdownList(
+        Category::find()->select(['name', 'id'])->indexBy('id')->column() )?>
+
+
+    <?= $form->field($uploader, 'imageFiles[]')->fileInput(['multiple' => true, 'accept' => 'image/*']) ?>
+
+    <?= $form->field($product, 'colors')->checkboxList([
+        'black' => 'black',
+        'blue' => 'blue',
+        'rose'=>'rose',
+        'gold'=>'gold',
+        'pink'=>'pink'
+    ]);
+
+    ?>
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
