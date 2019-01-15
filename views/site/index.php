@@ -365,9 +365,9 @@ $this->title = 'E-Shop';
 						<li class="dropdown default-dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Pages <i class="fa fa-caret-down"></i></a>
 							<ul class="custom-menu">
 								<li><a href="index.php">Home</a></li>
-								<li><a href="products.php">Products</a></li>
-								<li><a href="product-page.php">Product Details</a></li>
-								<li><a href="checkout.html">Checkout</a></li>
+								<li><a href="../product/products.php">Products</a></li>
+								<li><a href="../product/product-page.php">Product Details</a></li>
+								<li><a href="../product/checkout.php">Checkout</a></li>
 							</ul>
 						</li>
 					</ul>

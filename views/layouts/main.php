@@ -82,9 +82,13 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                 <div class="header-logo">
                     <!--                    --><?//= Url::toRoute(['site/index', 'src' =>'@web/img/logo.png'])?>
 
-                    <a class="logo" href="http://yiitest/">
-                        <?php echo Html::img('@web/img/logo.png',['alt' => '']); ?>
-                    </a>
+<!--                    <a class="logo" href="">-->
+
+                    <?php
+//                    $q=;
+                    echo Html::a(Html::img('@web/img/logo.png',['alt' => '']),'/',[]) ?>
+<!--                        --><?php //echo Html::img('@web/img/logo.png',['alt' => '']); ?>
+<!--                    </a>-->
                 </div>
                 <!-- /Logo -->
 
@@ -275,7 +279,7 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                         <li><a href="#">About Us</a></li>
                         <li><a href="#">Shiping & Return</a></li>
                         <li><a href="#">Shiping Guide</a></li>
-                        <li><a href="#">FAQ</a></li>
+                        <li><?= Html::a('FAQ', ['/site/faq'])?></li>
                     </ul>
                 </div>
             </div>

@@ -120,7 +120,12 @@ class SiteController extends AppController
         return $this->goHome();
     }
 
-
+    public function actionProductPage(){
+        return $this->render('product-page');
+    }
+    public function actionFaq(){
+        return $this->render('FAQ');
+    }
     /**
      * Displays contact page.
      *
@@ -236,23 +241,12 @@ class SiteController extends AppController
         $model = User::findIdentity(Yii::$app->user->identity->getId());
         if(isset($_POST['User']['username'])) {
             try {
-
-//                Yii::$app->user->;
-//                self::debug($model);
-
-                //$model->photo_name = self::saveImage($model);
-
-
-
-
-
                 if ($model->validate()) {
+//                    self::debug($_FILES);
 
-                    if($_FILES['image']['error'] == '' ) { //todo:: real check if image loaded
-
+                    if($_FILES['User']['error']['image'] === 0) {
                         if($model->photo_name != 'noimage.png')
                             unlink(Yii::$app->basePath . '/web/images/user_images/'.$model->photo_name);
-
                         $model->photo_name = self::saveImage($model);
                     }
                     if (!empty($model->password))
