@@ -24,6 +24,14 @@ use yii\web\IdentityInterface;
  */
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
+    public $password2;
+
+
+    /**
+     * @var uploadedAvatar
+     */
+    public $image;
+
     /**
      * {@inheritdoc}
      */
@@ -38,15 +46,15 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['username', 'password', 'email'], 'required'],
+            [['username', 'email'], 'required'],
             [['id',  'mobile_number', 'status', 'bought_items_count'], 'integer'],
             [['created_at', 'updated_at','auth_key'], 'safe'],
             [['username'], 'string', 'max' => 32],
             [['password', 'photo_name', 'location', 'email'], 'string', 'max' => 255],
             [['username'], 'unique'],
             [['email'], 'unique'],
-            [['mobile_number'], 'unique'],
             [['id'], 'unique'],
+            [['image'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
         ];
     }
 
@@ -103,7 +111,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
 
 
-        return new static($user);
+        return ($user);
 
     }
     public static function findByAuthKey($authKey){

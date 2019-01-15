@@ -114,8 +114,8 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                         </div>
                         <?php echo Yii::$app->user->isGuest?
                             Html::a('Login', ['/site/login'], ['class'=>'text-uppercase']).'/'.Html::a('Join', ['/site/sign-up'], ['class'=>'text-uppercase']):
-                            '<a href="#" class="text-uppercase">Loged as </a> : <a href="#" class="text-uppercase">'.Yii::$app->user->identity->username.'</a>';?>
-
+                            Html::a('Loged as',['site/edit-profile'],['class'=>'text-uppercase']).':'.Html::a(Yii::$app->user->identity->username, ['site/edit-profile'], ['class'=>'text-uppercase'])
+                        ?>
                         <ul class="custom-menu">
                             <?php echo !Yii::$app->user->isGuest?
                                 '<li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
@@ -201,7 +201,7 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                 </button>
             </div>
         <?php elseif (Yii::$app->session->hasFlash('error')): ?>
-            <div class="alert alert-error" role="alert">
+            <div class="alert alert-danger" role="alert">
                 <?= Yii::$app->session->getFlash('error'); ?>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>

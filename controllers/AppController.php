@@ -2,16 +2,10 @@
 
 namespace app\controllers;
 
-use app\models\SignupForm;
-use Yii;
-use yii\filters\AccessControl;
+
 use yii\web\Controller;
-use yii\web\Response;
-use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
-use yii\data\ActiveDataProvider;
-use app\models\Goods;
+use app\models\UploadAvatarFile;
+use yii\web\UploadedFile;
 
 class AppController extends Controller{
 
@@ -28,6 +22,12 @@ class AppController extends Controller{
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
         return $randomString;
+    }
+
+    public static function saveImage($model){
+        $imageModel = new UploadAvatarFile();
+        $imageModel->imageFile = UploadedFile::getInstance($model,'image');
+        return $imageModel->upload();
     }
 
 

@@ -17,7 +17,7 @@ class m181229_132246_user extends Migration
                 'username' => $this->string(32)->notNull()->unique(),
                 'password' => $this->string()->notNull(),
                 'photo_name' => $this->string(),
-                'mobile_number' => $this->integer()->unique(),
+                'mobile_number' => $this->integer(),
                 'location' => $this->string(),
                 'email' => $this->string(255)->notNull()->unique(),
                 'status' => $this->smallInteger()->notNull()->defaultValue(0),//0 - unconfirmed email, 1 - confirmed email, 2-admin

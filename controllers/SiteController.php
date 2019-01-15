@@ -2,8 +2,7 @@
 
 namespace app\controllers;
 
-use app\models\SignupForm;
-use app\models\UploadAvatarFile;
+
 use app\models\User;
 use Yii;
 use yii\db\Exception;
@@ -179,47 +178,46 @@ class SiteController extends AppController
             return $this->goHome();
         }
 
-        $model = new SignupForm();
+        $model = new User();
         if ($model->load(Yii::$app->request->post())) {
-            Yii::$app->session->setFlash('success',
-                'ty for registration check your email for instructions');
 
-            $imageModel = new UploadAvatarFile();
-            $imageModel->imageFile = UploadedFile::getInstance($model,'image');
 
-            $model->photo_name = $imageModel->upload();
-            $model->image = $_FILES ['name'];
+
+
+            $model->photo_name = self::saveImage($model);
+
             $model->auth_key = self::generateRandomString(30);
 
             $model->password = md5($model->password . Yii::$app->params['SALT']);
-            $model->password_confirm = $model->password;
+            $model->password2 = $model->password;
             $model->image = $model->photo_name;
+            try {
+                Yii::$app->mailer->compose()
+                    ->setFrom(Yii::$app->params['mailEmail'])
+                    ->setTo($model->email)
+                    ->setSubject('Registration on E-Shop')
+                    ->setTextBody('Welcome to E-Shop.
+                 To confirm your email press this <a href="http:/yiitest/site/email-confirm?authKey=' . $model->auth_key . '">LINK</a>')
+                    ->send();
+            }
+            catch (\Exception $e){
+                Yii::$app->session->setFlash('error', 'invalid email');
+                //return $this->goHome();
+            }
 
 
-//            echo '<pre>';
-//            print_r($model);
-//            echo '</pre>';
-//
-//            echo '<pre>';
-//            print_r(Yii::$app->request->post());
-//            echo '</pre>';
 
             try {
-                $model->save(false);
+                if($model->validate())
+                    $model->save(false);
+                else Yii::$app->session->setFlash('error', 'invalid input');
             }
             catch (\yii\db\IntegrityException $e){
-                Yii::$app->session->setFlash('error', 'user with same username or email already exists try another one');
-
+                Yii::$app->session->setFlash('error', 'user with same username or email or already exists try another one');
             }
-            Yii::$app->mailer->compose()
-                ->setFrom(Yii::$app->params['mailEmail'])
-                ->setTo($model->email)
-                ->setSubject('Registration on E-Shop')
-                ->setTextBody('Welcome to E-Shop.
-                 To confirm your email press this <a href="http://yiitest/site/email-confirm?authKey='.$model->auth_key.'">LINK</a>')
-                ->send();
 
-
+            Yii::$app->session->setFlash('success',
+                'ty for registration check your email for instructions');
             return $this->goBack();
         } else if (!empty($post))
             Yii::$app->session->setFlash('error',
@@ -228,5 +226,62 @@ class SiteController extends AppController
         return $this->render('signUp',array('model'=>$model));
 
     }
+
+    public function actionEditProfile()
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $model = User::findIdentity(Yii::$app->user->identity->getId());
+        if(isset($_POST['User']['username'])) {
+            try {
+
+//                Yii::$app->user->;
+//                self::debug($model);
+
+                //$model->photo_name = self::saveImage($model);
+
+
+
+
+
+                if ($model->validate()) {
+
+                    if($_FILES['image']['error'] == '' ) { //todo:: real check if image loaded
+
+                        if($model->photo_name != 'noimage.png')
+                            unlink(Yii::$app->basePath . '/web/images/user_images/'.$model->photo_name);
+
+                        $model->photo_name = self::saveImage($model);
+                    }
+                    if (!empty($model->password))
+                        $model->password = md5($model->password . Yii::$app->params['SALT']);
+                    $model->load(Yii::$app->request->post());
+                    $model->updated_at = date('Y-m-d H:i:s');
+                    Yii::$app->session->setFlash('success', 'profile successfully updated');
+//                    Yii::$app->user = User::findIdentity(Yii::$app->user->identity->getId());
+                    $model->save();
+                    $this->refresh();
+                } else {
+
+                    Yii::$app->session->setFlash('error', 'data invalid');
+                }
+
+            } catch (\Exception $e) {
+                self::debug($e);
+                Yii::$app->session->setFlash('error', 'something went wrong');
+            }
+
+        }
+        return $this->render('user_profile', [
+            'model' => $model,
+        ]);
+    }
+
+//
+//    public function actionEditProfile(){
+//        return $this->render('user_profile');
+//    }
 
 }

@@ -20,9 +20,10 @@ class UploadAvatarFile extends Model
 
     public function upload()
     {
-        if (isset($this->imageFile) && $this->validate()) {
-            $this->imageFile->saveAs('images/user_images/' . $this->imageFile->baseName.'_'.uniqid(). '.' . $this->imageFile->extension);
-            return $this->imageFile->baseName.'_'.uniqid(). '.' . $this->imageFile->extension;
+        if (isset($this->imageFile)) {
+            $uniq = uniqid();
+            $this->imageFile->saveAs('images/user_images/' . $this->imageFile->baseName.'_'.$uniq. '.' . $this->imageFile->extension);
+            return $this->imageFile->baseName.'_'.$uniq. '.' . $this->imageFile->extension;
         } else {
             return 'noimage.png';
         }

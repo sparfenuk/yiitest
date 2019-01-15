@@ -14,12 +14,6 @@ $this->title = 'Sign Up';
 ?>
 <div class="site-contact">
     <h1><?= Html::encode($this->title) ?></h1>
-    <div class="alert alert-error">
-        <?= Yii::$app->session->getFlash('error'); ?>
-    </div>
-
-
-
     <div class="row">
         <div class="col-lg-5">
 
@@ -34,7 +28,7 @@ $this->title = 'Sign Up';
 
             <?= $form->field($model, 'password')->passwordInput() ?>
 
-            <?= $form->field($model, 'password_confirm')->passwordInput() ?>
+            <?= $form->field($model, 'password2')->passwordInput() ?>
 
             <?= $form->field($model, 'mobile_number')->input('number') ?>
 

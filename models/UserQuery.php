@@ -14,6 +14,7 @@ class UserQuery extends \yii\db\ActiveQuery
         return $this->andWhere('[[status]]=1');
     }*/
 
+
     /**
      * {@inheritdoc}
      * @return User[]|array
