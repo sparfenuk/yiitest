@@ -161,6 +161,9 @@ class m181229_132246_user extends Migration
         $this->dropTable('{{%category}}');
         $this->dropTable('{{%cart}}');
 
+
+        return false;
+
     }
     /*
     // Use up()/down() to run migration code without a transaction.

@@ -22,9 +22,9 @@ class ProductPhoto extends \yii\db\ActiveRecord
 
     public static function findByProductId($productId)
     {
-        $photoName = self::find()->where(['image_name' => $productId])->one();
-        if ($photoName === null) return null;
-        return new static($photoName);
+        $photoName = self::find()->where(['product_id' => $productId])->one();
+        if ($photoName === null) return 'No_image_3x4.svg.png';
+        return $photoName->image_name;
 
     }
     /**
@@ -63,10 +63,6 @@ class ProductPhoto extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getPhotoForProduct($productId)
-    {
-
-    }
 
 
     /**
