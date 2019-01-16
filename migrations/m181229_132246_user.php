@@ -72,7 +72,8 @@ class m181229_132246_user extends Migration
 
             $this->createTable('{{%category}}',[
                 'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
-                'name' => $this->string()->unique()->notNull()
+                'name' => $this->string()->unique()->notNull(),
+                'parent_id' => $this->integer()->notNull()->defaultValue(0)// табличка зсилається сама на себе
             ],$tableOptions);
 
             $this->createTable('{{%cart}}',[
@@ -101,9 +102,9 @@ class m181229_132246_user extends Migration
                 'id',
                 'CASCADE'
             );
-            $this->createIndex('idx-product-category',
-                '{{%product}}',
-                'category_id');
+            //$this->createIndex('idx-product-category',
+              //  '{{%product}}',
+                //'category_id');
             $this->addForeignKey('fk-product-category',
                 '{{%product}}',
                 'category_id',
@@ -142,16 +143,17 @@ class m181229_132246_user extends Migration
         echo "m181229_132246_user cannot be reverted.\n";
 
 
-        $this->dropIndex('idx-cart-user','cart');
-        $this->dropForeignKey('fk-cart-user','cart');
+
         $this->dropIndex('idx-review-product','review');
         $this->dropForeignKey('fk-review-product','review');
         $this->dropIndex('idx-favourites-user','favourites');
         $this->dropForeignKey('fk-favourites-user','favourites');
         $this->dropIndex('idx-photos-product','product_photo');
         $this->dropForeignKey('fk-photos-product','product_photo');
-        $this->dropIndex('idx-product-category','category_id');
+        //$this->dropIndex('idx-product-category','category_id');
         $this->dropForeignKey('fk-product-category','category_id');
+        $this->dropIndex('idx-cart-user','cart');
+        $this->dropForeignKey('fk-cart-user','cart');
 
         $this->dropTable('{{%user}}');
         $this->dropTable('{{%product}}');

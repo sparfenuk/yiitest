@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 
+use app\models\User;
+use yii\db\Query;
 use yii\web\Controller;
 use app\models\UploadAvatarFile;
 use yii\web\UploadedFile;
@@ -28,6 +30,19 @@ class AppController extends Controller{
         $imageModel = new UploadAvatarFile();
         $imageModel->imageFile = UploadedFile::getInstance($model,'image');
         return $imageModel->upload();
+    }
+
+    public static function sendMessageForEveryOne($message){
+        $userEmails = User::find()->select(['email'])->all();
+        foreach ($userEmails as $email ){
+            \Yii::$app->mailer->compose()
+                ->setFrom(\Yii::$app->params['mailEmail'])
+                ->setTo($email['email'])
+                ->setSubject('Very important info')
+                ->setTextBody($message)
+                ->send();
+        }
+
     }
 
 

@@ -249,8 +249,10 @@ class SiteController extends AppController
                             unlink(Yii::$app->basePath . '/web/images/user_images/'.$model->photo_name);
                         $model->photo_name = self::saveImage($model);
                     }
-                    if (!empty($model->password))
+
+                    if (!empty($model->password)) {
                         $model->password = md5($model->password . Yii::$app->params['SALT']);
+                    }
                     $model->load(Yii::$app->request->post());
                     $model->updated_at = date('Y-m-d H:i:s');
                     Yii::$app->session->setFlash('success', 'profile successfully updated');
@@ -273,9 +275,27 @@ class SiteController extends AppController
         ]);
     }
 
+    public function actionCheckout(){
+
+    }
 //
 //    public function actionEditProfile(){
 //        return $this->render('user_profile');
 //    }
+
+    public function actionSpam($email){
+        Yii::$app->mailer->compose()
+            ->setFrom(Yii::$app->params['mailEmail'])
+            ->setTo($email)
+            ->setSubject('Registration on E-Shop')
+            ->setTextBody('You\'ve just did another stupid action in your life. Maybe it\'s time to stop? ')
+            ->send();
+        Yii::$app->session->setFlash('error', 'WHYYYYYYYYY??????');
+        return $this->goHome();
+    }
+
+    public function actionSendAll(){
+        self::sendMessageForEveryOne('LOL');
+    }
 
 }
