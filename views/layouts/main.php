@@ -249,7 +249,7 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                     <h3 class="footer-header">My Account</h3>
                     <ul class="list-links">
                         <li><?= Html::a('My Account', ['/site/edit-profile'])?></li>
-                        <li><?= Html::a('Checkout', ['/site/checkout'])?></li> <!--todo:: make checkout -->
+                        <li><?= Html::a('Checkout', ['/product/checkout'])?></li> <!--todo:: make checkout -->
                         <li><?= Html::a('Login', ['/site/login'])?></li>
                     </ul>
                 </div>

@@ -135,6 +135,7 @@ class GoodsController extends \yii\web\Controller
     {
        if(isset($_POST))
        {
+          
            print_r($_POST);
        }
     }
