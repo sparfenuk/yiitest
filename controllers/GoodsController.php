@@ -131,6 +131,13 @@ class GoodsController extends \yii\web\Controller
         return $this->render('product-page');
     }
 
+    public function actionAddToCard()
+    {
+       if(isset($_POST))
+       {
+           print_r($_POST);
+       }
+    }
 
     public function  actionProduct($id=null)
     {
@@ -139,6 +146,7 @@ class GoodsController extends \yii\web\Controller
 //            $dataProvider = new ActiveDataProvider([
 //                'query' => Product::find(),
 //            ]);
+
 
         if($id!==null) {
            $product=Product::findProductById($id);
