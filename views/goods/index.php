@@ -13,7 +13,7 @@ use yii\data\ActiveDataProvider;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use yii\helpers\Url;
-
+use yii\widgets\LinkPager;
 
 
 $this->title = 'Goods';
@@ -24,28 +24,40 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
      //var_dump($dataProvider);
-echo '<div class="row">';
-    foreach ($dataProvider->models as $goods) {
-       echo '<div class="col-md-3 col-sm-6 col-xs-6">'.'<div class="product product-single">';
+echo  '<div class = "row">';
 
-        $url = Url::toRoute(['goods/product', 'id' => $goods->id]);
+    foreach  ($dataProvider->models as $goods) {
+        $url = Url::toRoute( [ 'goods/product', 'id' => $goods->id] );
+        $name = ProductPhoto::findByProductId( $goods->id );
 
-       $name=ProductPhoto::findByProductId($goods->id);
-echo  $name;
-        echo '<div class="product-thumb"><img style="width: 300px;" src="' . Yii::$app->params['basePath'] . '/images/'. HTML::encode($name).'" > </div>';
+        echo  '<div class = "col-md-3 col-sm-6 col-xs-6">';
+        echo  '<div class = "product product-single">';
 
-        echo '<div class="product-body">'
 
+
+
+        echo  '<div class = "product-thumbbbb">
+           <a href='.HTML::encode($url).'>
+             <img style = "width: 200px;" src="' . Yii::$app->params['basePath'] . '/images/'. HTML::encode($name).'" > 
+            </a>
+             </div>';
+
+        echo  '<div class = "product-body">'
             .'<div class="name">'
-              .'<a href='.$url.'>' .HTML::encode($goods->name) .'</a>'
+              .'<a  href='.HTML::encode($url).'>' .HTML::encode($goods->name) .'</a>'
             .'</div>'
               .'<div class="product-price">' . HTML::encode($goods->price)
               .'</div>'
             .'</div>';
+          if ($goods->availability <= 0)
+          {
+              echo 'Out of stock';
 
+          }
 
         echo '</div>'.'</div>';
     }
+    echo LinkPager::widget(['pagination' =>  $dataProvider->pagination]);
 echo '</div>';
 
  ?>

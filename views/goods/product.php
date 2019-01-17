@@ -36,16 +36,26 @@ $name=ProductPhoto::findByProductId($product->id);
     // var_dump($name);
 
 echo '<div class="product-details">
-<img style="width: 500px" src="'. Yii::$app->params['basePath'] . '/images/'. HTML::encode($name).'">
-<div class="product-name">
+
+<div class="product-name" style="font-size: 20pt ;">
 '. HTML::encode($product->name).'
 </div>
+<br>
+<br>
+<img style="width: 500px" src="'. Yii::$app->params['basePath'] . '/images/'. HTML::encode($name).'">
+
 <h3 class="product-price">
 '. HTML::encode($product->price).'
 </h3>
 
 <div class="product-details">
+
 '. HTML::encode($product->description).'
+
+<br>
+<br>
+<br>
+<br>
 </div>';
 
 
@@ -54,28 +64,30 @@ if(is_array($product->colors)) {
 //    foreach (explod(';', $product->colors) as $color) {
 
    $arr= $product->colors;
-   var_dump( $arr );
 
 
-   $form = ActiveForm::begin(['action' => ['goods/add-to-card'],'options' => ['method' => 'post']]);
+    if ($product->availability >= 0) {
+
+        $form = ActiveForm::begin(['action' => ['goods/add-to-card'], 'options' => ['method' => 'post']]);
 
 
-
-    echo $form->field($product, 'colors')->radioList($arr)->label('Color');
-       // $_POST['product']['id']=$product->id;
-
-        //$form->attachBehaviors()
-
-       echo Html::hiddenInput('id', $product->id);
-
-       //echo $form->field($product,'id')->hiddenInput(['product_id'=>$product->id]);
-
-       echo '<div class="form-group">'.
-        Html::submitButton('Save', ['class' => 'btn btn-success'])
-           .'</div>';
-    ActiveForm::end();
+        echo $form->field($product, 'colors')->radioList($arr)->label('Color');
 
 
+        echo Html::hiddenInput('id', $product->id);
+
+
+        echo '<div class="form-group">' .
+            Html::submitButton('Save', ['class' => 'btn btn-success'])
+            . '</div>';
+        ActiveForm::end();
+
+    }
+    else
+    {
+        echo 'Out of stock';
+
+    }
 }
 
 

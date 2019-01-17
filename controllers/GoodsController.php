@@ -7,6 +7,7 @@ use app\models\Goods;
 use app\models\Product;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\db\Query;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -119,14 +120,6 @@ class GoodsController extends \yii\web\Controller
 
 
 
-
-    public function actionSearch()
-    {
-      if(isset($_POST))
-      {
-
-      }
-    }
     public function actionProductPage(){
         return $this->render('product-page');
     }
@@ -142,11 +135,7 @@ class GoodsController extends \yii\web\Controller
 
     public function  actionProduct($id=null)
     {
-//
-//            /** @var TYPE_NAME $dataProvider */
-//            $dataProvider = new ActiveDataProvider([
-//                'query' => Product::find(),
-//            ]);
+
 
 
         if($id!==null) {
@@ -164,12 +153,41 @@ class GoodsController extends \yii\web\Controller
 
     }
 
-    public function actionIndex()
+
+    public   function   actionIndex( $search_param = null, $order_by = null )
     {
-        /** @var TYPE_NAME $dataProvider */
-        $dataProvider = new ActiveDataProvider([
-            'query' => Product::find(),
-        ]);
+
+        //todo:: order_by
+
+
+        if($search_param !== null)
+        {
+            $query = Product::find();
+            $query->andFilterWhere(['like', 'name', $search_param])->all();
+            $dataProvider = new ActiveDataProvider([
+               'query'=> $query,
+                'pagination' => [
+                    'pageSize' => 20
+                ]
+            ]);
+
+
+
+
+        }
+
+        else {
+              /** @var TYPE_NAME $dataProvider */
+
+
+
+              $dataProvider = new ActiveDataProvider([
+                'query' => Product::find(),
+                  'pagination' => [
+                      'pageSize' => 20
+                         ]
+               ]);
+        }
         return $this->render('index', [
             'dataProvider' => $dataProvider,
         ]);
