@@ -70,6 +70,22 @@ class ProductController extends \yii\web\Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+    public function actionCheckout(){
+<<<<<<< HEAD
+
+        return $this->render('checkout'); /*,[
+            'products' => $products, ''*/
+    }
+    public function actionSearch(){
+        return $this->render('products');
+
+=======
+        return $this->render('checkout');
+    }
+    public function actionSearch(){
+        return $this->render('products');
+>>>>>>> d17b97257068055a632002068604f74b81af188c
+    }
 
 
 }
