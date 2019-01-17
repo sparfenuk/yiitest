@@ -72,9 +72,25 @@ class m181229_132246_user extends Migration
 
             $this->createTable('{{%category}}',[
                 'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
-                'name' => $this->string()->unique()->notNull()
+                'name' => $this->string()->unique()->notNull(),
+                'parent_id' => $this->integer()->notNull()->defaultValue(0)// табличка зсилається сама на себе
             ],$tableOptions);
 
+            $this->createTable('{{%cart}}',[
+              'user_id' => $this->integer()->notNull(),
+                'product_id' => $this->integer()->notNull()
+            ],$tableOptions);
+
+            $this->createIndex('idx-cart-user',
+                '{{%cart}}',
+                'user_id');
+            $this->addForeignKey('fk-cart-user',
+                '{{%cart}}',
+                'user_id',
+                '{{%user}}',
+                'id',
+                'CASCADE'
+            );
 
             $this->createIndex('idx-review-product',
                 '{{%review}}',
@@ -86,9 +102,9 @@ class m181229_132246_user extends Migration
                 'id',
                 'CASCADE'
             );
-            $this->createIndex('idx-product-category',
-                '{{%product}}',
-                'category_id');
+            //$this->createIndex('idx-product-category',
+              //  '{{%product}}',
+                //'category_id');
             $this->addForeignKey('fk-product-category',
                 '{{%product}}',
                 'category_id',
@@ -125,12 +141,8 @@ class m181229_132246_user extends Migration
     public function safeDown()
     {
         echo "m181229_132246_user cannot be reverted.\n";
-        $this->dropTable('{{%user}}');
-        $this->dropTable('{{%product}}');
-        $this->dropTable('{{%product_photo}}');
-        $this->dropTable('{{%review}}');
-        $this->dropTable('{{%favourites}}');
-        $this->dropTable('{{%category}}');
+
+
 
         $this->dropIndex('idx-review-product','review');
         $this->dropForeignKey('fk-review-product','review');
@@ -138,9 +150,22 @@ class m181229_132246_user extends Migration
         $this->dropForeignKey('fk-favourites-user','favourites');
         $this->dropIndex('idx-photos-product','product_photo');
         $this->dropForeignKey('fk-photos-product','product_photo');
-        $this->dropIndex('idx-product-category','category_id');
+        //$this->dropIndex('idx-product-category','category_id');
         $this->dropForeignKey('fk-product-category','category_id');
+        $this->dropIndex('idx-cart-user','cart');
+        $this->dropForeignKey('fk-cart-user','cart');
+
+        $this->dropTable('{{%user}}');
+        $this->dropTable('{{%product}}');
+        $this->dropTable('{{%product_photo}}');
+        $this->dropTable('{{%review}}');
+        $this->dropTable('{{%favourites}}');
+        $this->dropTable('{{%category}}');
+        $this->dropTable('{{%cart}}');
+
+
         return false;
+
     }
     /*
     // Use up()/down() to run migration code without a transaction.

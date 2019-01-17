@@ -26,30 +26,18 @@ $config = [
             'viewPath' => '@runtime/mail'
 
         ],
-//        'assetManager' => [
-//            'bundles' => [
-//                'yii\web\JqueryAsset' => [
-//                    'js'=>[]
-//                ],
-//                'yii\bootstrap\BootstrapPluginAsset' => [
-//                    'js'=>[]
-//                ],
-//                'yii\bootstrap\BootstrapAsset' => [
-//                    'css' => [],
-//                ],
-//
-//            ],
-//        ],
         'devicedetect' => [
             'class' => 'alexandernst\devicedetect\DeviceDetect'
         ],
         'request' => [
-            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '9a7L4qPkOl34nwFI1SoGfeSooU6yRRIy',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+//        'good' => [
+//            'class' => 'app\models\Goods'
+//        ],
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,

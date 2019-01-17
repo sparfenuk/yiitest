@@ -80,11 +80,7 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
             <div class="pull-left">
                 <!-- Logo -->
                 <div class="header-logo">
-                    <!--                    --><?//= Url::toRoute(['site/index', 'src' =>'@web/img/logo.png'])?>
-
-                    <a class="logo" href="http://yiitest/">
-                        <?php echo Html::img('@web/img/logo.png',['alt' => '']); ?>
-                    </a>
+                    <?= Html::a(Html::img('@web/img/logo.png',['alt' => '']),'/',[]) ?>
                 </div>
                 <!-- /Logo -->
 
@@ -118,12 +114,11 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                         ?>
                         <ul class="custom-menu">
                             <?php echo !Yii::$app->user->isGuest?
-                                '<li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
-                            <li><a href="#"><i class="fa fa-heart-o"></i> My Wishlist</a></li>
-                            <li><a href="#"><i class="fa fa-check"></i> Checkout</a></li>
+                                '<li><a href="site/edit-profile"><i class="fa fa-user-o"></i> My Account</a></li>
+                            <li><a href="site/checkout"><i class="fa fa-check"></i> Checkout</a></li>
                             <li><a href="site/logouts"><i class="fa fa-lock"></i> Log Out</a></li>':
-                                '<li><a href="#"><i class="fa fa-unlock-alt"></i> Login</a></li>
-                            <li><a href="#"><i class="fa fa-user-plus"></i> Join</a></li>';?>
+                                '<li><a href="site/login"><i class="fa fa-unlock-alt"></i> Login</a></li>
+                            <li><a href="site/sign-up"><i class="fa fa-user-plus"></i> Join</a></li>';?>
                         </ul>
                     </li>
                     <!-- /Account -->
@@ -164,8 +159,8 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                                     </div>
                                 </div>
                                 <div class="shopping-cart-btns">
-                                    <button class="main-btn">View Cart</button>
-                                    <button class="primary-btn">Checkout <i class="fa fa-arrow-circle-right"></i></button>
+                                    <button class="main-btn" onclick="window.location.href='site/cart';">View Cart</button>
+                                    <button class="primary-btn" onclick="window.location.href='site/checkout';" >Checkout <i class="fa fa-arrow-circle-right"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -229,21 +224,19 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                 <div class="footer">
                     <!-- footer logo -->
                     <div class="footer-logo">
-                        <a class="logo" href="#">
-                            <?php echo Html::img('@web/img/logo.png',['alt' => '']);?>
-                        </a>
+                        <?= Html::a(Html::img('@web/img/logo.png',['class' => 'logo']),'/',[]) ?>
                     </div>
                     <!-- /footer logo -->
 
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna</p>
+                    <p>Very usefull links if you want to waste 90% of your free-time </p>
 
                     <!-- footer social -->
                     <ul class="footer-social">
-                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                        <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                        <li><a href="https://www.facebook.com"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="https://www.twitter.com"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="https://www.instagram.com"><i class="fa fa-instagram"></i></a></li>
+                        <li><a href="https://plus.google.com"><i class="fa fa-google-plus"></i></a></li>
+                        <li><a href="https://www.pinterest.com/"><i class="fa fa-pinterest"></i></a></li>
                     </ul>
                     <!-- /footer social -->
                 </div>
@@ -255,11 +248,9 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                 <div class="footer">
                     <h3 class="footer-header">My Account</h3>
                     <ul class="list-links">
-                        <li><a href="#">My Account</a></li>
-                        <li><a href="#">My Wishlist</a></li>
-                        <li><a href="#">Compare</a></li>
-                        <li><a href="#">Checkout</a></li>
-                        <li><a href="#">Login</a></li>
+                        <li><?= Html::a('My Account', ['/site/edit-profile'])?></li>
+                        <li><?= Html::a('Checkout', ['/site/checkout'])?></li> <!--todo:: make checkout -->
+                        <li><?= Html::a('Login', ['/site/login'])?></li>
                     </ul>
                 </div>
             </div>
@@ -272,10 +263,9 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                 <div class="footer">
                     <h3 class="footer-header">Customer Service</h3>
                     <ul class="list-links">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Shiping & Return</a></li>
-                        <li><a href="#">Shiping Guide</a></li>
-                        <li><a href="#">FAQ</a></li>
+                        <li><?= Html::a('About', ['/site/about'])?></li>
+                        <li><?= Html::a('Contacts', ['/site/contact'])?></li>
+                        <li><?= Html::a('FAQ', ['/site/faq'])?></li>
                     </ul>
                 </div>
             </div>
@@ -285,10 +275,10 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
             <div class="col-md-3 col-sm-6 col-xs-6">
                 <div class="footer">
                     <h3 class="footer-header">Stay Connected</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor.</p>
-                    <form>
+                    <p>Input your email into this label to get more useless spam on it.</p>
+                    <form action="site/spam">
                         <div class="form-group">
-                            <input class="input" placeholder="Enter Email Address">
+                            <input class="input" placeholder="Enter Email Address" name="email">
                         </div>
                         <button class="primary-btn">Join Newslatter</button>
                     </form>

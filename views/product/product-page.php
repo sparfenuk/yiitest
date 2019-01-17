@@ -350,10 +350,10 @@
 						<li><a href="#">Sales</a></li>
 						<li class="dropdown default-dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Pages <i class="fa fa-caret-down"></i></a>
 							<ul class="custom-menu">
-								<li><a href="index.php">Home</a></li>
+								<li><a href="../site/index.php">Home</a></li>
 								<li><a href="products.php">Products</a></li>
 								<li><a href="product-page.php">Product Details</a></li>
-								<li><a href="checkout.html">Checkout</a></li>
+								<li><a href="checkout.php">Checkout</a></li>
 							</ul>
 						</li>
 					</ul>

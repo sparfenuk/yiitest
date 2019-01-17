@@ -120,7 +120,12 @@ class SiteController extends AppController
         return $this->goHome();
     }
 
-
+    public function actionProductPage(){
+        return $this->render('product-page');
+    }
+    public function actionFaq(){
+        return $this->render('FAQ');
+    }
     /**
      * Displays contact page.
      *
@@ -169,9 +174,7 @@ class SiteController extends AppController
              $this->goHome();
          }
     }
-    public function actionProductPage(){
-        return $this->render('product-page');
-    }
+//
     public function actionSignUp()
     {
 
@@ -238,27 +241,18 @@ class SiteController extends AppController
         $model = User::findIdentity(Yii::$app->user->identity->getId());
         if(isset($_POST['User']['username'])) {
             try {
-
-//                Yii::$app->user->;
-//                self::debug($model);
-
-                //$model->photo_name = self::saveImage($model);
-
-
-
-
-
                 if ($model->validate()) {
+//                    self::debug($_FILES);
 
-                    if($_FILES['image']['error'] == '' ) { //todo:: real check if image loaded
-
+                    if($_FILES['User']['error']['image'] === 0) {
                         if($model->photo_name != 'noimage.png')
                             unlink(Yii::$app->basePath . '/web/images/user_images/'.$model->photo_name);
-
                         $model->photo_name = self::saveImage($model);
                     }
-                    if (!empty($model->password))
+
+                    if (!empty($model->password)) {
                         $model->password = md5($model->password . Yii::$app->params['SALT']);
+                    }
                     $model->load(Yii::$app->request->post());
                     $model->updated_at = date('Y-m-d H:i:s');
                     Yii::$app->session->setFlash('success', 'profile successfully updated');
@@ -281,9 +275,27 @@ class SiteController extends AppController
         ]);
     }
 
+    public function actionCheckout(){
+
+    }
 //
 //    public function actionEditProfile(){
 //        return $this->render('user_profile');
 //    }
+
+    public function actionSpam($email){
+        Yii::$app->mailer->compose()
+            ->setFrom(Yii::$app->params['mailEmail'])
+            ->setTo($email)
+            ->setSubject('Registration on E-Shop')
+            ->setTextBody('You\'ve just did another stupid action in your life. Maybe it\'s time to stop? ')
+            ->send();
+        Yii::$app->session->setFlash('error', 'WHYYYYYYYYY??????');
+        return $this->goHome();
+    }
+
+    public function actionSendAll(){
+        self::sendMessageForEveryOne('LOL');
+    }
 
 }
