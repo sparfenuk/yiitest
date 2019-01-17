@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 
+use app\models\Cart;
 use app\models\User;
 use Yii;
 use yii\db\Exception;
@@ -26,7 +27,6 @@ class SiteController extends AppController
     /*public function actionSay($message = "hello"){
         return $this->render('say',['message' => $message]);
     }*/
-
 
 
     public function behaviors()
@@ -80,6 +80,8 @@ class SiteController extends AppController
         $dataProvider = new ActiveDataProvider([
             'query' => Goods::find(),
         ]);
+        $cart = new Cart();
+        // self::debug($cart->setProducts());
         return $this->render('index', [
             'dataProvider' => $dataProvider,
         ]);
@@ -120,12 +122,16 @@ class SiteController extends AppController
         return $this->goHome();
     }
 
-    public function actionProductPage(){
+    public function actionProductPage()
+    {
         return $this->render('product-page');
     }
-    public function actionFaq(){
+
+    public function actionFaq()
+    {
         return $this->render('FAQ');
     }
+
     /**
      * Displays contact page.
      *
@@ -154,27 +160,31 @@ class SiteController extends AppController
         return $this->render('about');
     }
 
-    public function actionEmailConfirm($authKey){
-         try{
+    public function actionEmailConfirm($authKey)
+    {
+        try {
 
-             $user = User::findByAuthKey($authKey);
-             $user->status = '1';
-             $user->updated_at = date('Y-m-d H:i:s');
-             //$user->setIsNewRecord(0);
-             $user->save(false);
+            $user = User::findByAuthKey($authKey);
+            $user->status = '1';
+            $user->updated_at = date('Y-m-d H:i:s');
+            //$user->setIsNewRecord(0);
+            $user->save(false);
 
 
-
-             Yii::$app->session->setFlash('success', 'email confirmed successfully');
-             $this->goHome();
-         }
-         catch (\Exception $e){
-             self::debug($e);
-             Yii::$app->session->setFlash('error', 'email not confirmed, something wrong');
-             $this->goHome();
-         }
+            Yii::$app->session->setFlash('success', 'email confirmed successfully');
+            $this->goHome();
+        } catch (\Exception $e) {
+            self::debug($e);
+            Yii::$app->session->setFlash('error', 'email not confirmed, something wrong');
+            $this->goHome();
+        }
     }
-//
+
+    private function getProductsForCart($user_id)
+    {
+
+    }
+
     public function actionSignUp()
     {
 
@@ -187,37 +197,35 @@ class SiteController extends AppController
         if ($model->load(Yii::$app->request->post())) {
 
 
-
-
             $model->photo_name = self::saveImage($model);
 
             $model->auth_key = self::generateRandomString(30);
-
-            $model->password = md5($model->password . Yii::$app->params['SALT']);
-            $model->password2 = $model->password;
+           if (!empty($model->password) && $model->password == $model->password2) {
+                $model->password = md5($model->password . Yii::$app->params['SALT']);
+            } else{
+                Yii::$app->session->setFlash('error', 'passwords not identical');
+                $this->refresh();
+            }
             $model->image = $model->photo_name;
             try {
                 Yii::$app->mailer->compose()
                     ->setFrom(Yii::$app->params['mailEmail'])
                     ->setTo($model->email)
                     ->setSubject('Registration on E-Shop')
-                    ->setTextBody('Welcome to E-Shop.
+                    ->setHtmlBody('Welcome to E-Shop.
                  To confirm your email press this <a href="http:/yiitest/site/email-confirm?authKey=' . $model->auth_key . '">LINK</a>')
                     ->send();
-            }
-            catch (\Exception $e){
+            } catch (\Exception $e) {
                 Yii::$app->session->setFlash('error', 'invalid email');
                 //return $this->goHome();
             }
 
 
-
             try {
-                if($model->validate())
+                if ($model->validate())
                     $model->save(false);
                 else Yii::$app->session->setFlash('error', 'invalid input');
-            }
-            catch (\yii\db\IntegrityException $e){
+            } catch (\yii\db\IntegrityException $e) {
                 Yii::$app->session->setFlash('error', 'user with same username or email or already exists try another one');
             }
 
@@ -228,7 +236,7 @@ class SiteController extends AppController
             Yii::$app->session->setFlash('error',
                 'Username already exists');
 
-        return $this->render('signUp',array('model'=>$model));
+        return $this->render('signUp', array('model' => $model));
 
     }
 
@@ -239,21 +247,32 @@ class SiteController extends AppController
         }
 
         $model = User::findIdentity(Yii::$app->user->identity->getId());
-        if(isset($_POST['User']['username'])) {
+        if ($model->load(Yii::$app->request->post())) {
             try {
                 if ($model->validate()) {
 //                    self::debug($_FILES);
-
-                    if($_FILES['User']['error']['image'] === 0) {
-                        if($model->photo_name != 'noimage.png')
-                            unlink(Yii::$app->basePath . '/web/images/user_images/'.$model->photo_name);
+                    $model->password2 = $_POST['User']['password2']; // kostil'
+                    if ($_FILES['User']['error']['image'] === 0) {
+                        if ($model->photo_name != 'noimage.png')
+                            unlink(Yii::$app->basePath . '/web/images/user_images/' . $model->photo_name);
                         $model->photo_name = self::saveImage($model);
                     }
 
-                    if (!empty($model->password)) {
+                    if (empty($model->password2)) {
+
+                        $model->password = User::findByUsername(Yii::$app->user->identity->username)->password;
+                    } else if (!empty($model->password) && $model->password == $model->password2) {
                         $model->password = md5($model->password . Yii::$app->params['SALT']);
+                    } else if (!empty($model->password)) {
+//                        echo $model->password2;
+//                        self::debug($model);
+                        Yii::$app->session->setFlash('error', 'passwords not identical');
+                        $this->refresh();
+                    } else {
+                        Yii::$app->session->setFlash('error', 'something went wrong');
+                        $this->refresh();
                     }
-                    $model->load(Yii::$app->request->post());
+
                     $model->updated_at = date('Y-m-d H:i:s');
                     Yii::$app->session->setFlash('success', 'profile successfully updated');
 //                    Yii::$app->user = User::findIdentity(Yii::$app->user->identity->getId());
@@ -275,7 +294,8 @@ class SiteController extends AppController
         ]);
     }
 
-    public function actionCheckout(){
+    public function actionCheckout()
+    {
 
     }
 //
@@ -283,19 +303,31 @@ class SiteController extends AppController
 //        return $this->render('user_profile');
 //    }
 
-    public function actionSpam($email){
+    public function actionSpam($email)
+    {
         Yii::$app->mailer->compose()
             ->setFrom(Yii::$app->params['mailEmail'])
             ->setTo($email)
             ->setSubject('Registration on E-Shop')
-            ->setTextBody('You\'ve just did another stupid action in your life. Maybe it\'s time to stop? ')
+            ->setHtmlBody('You\'ve just did another stupid action in your life. Maybe it\'s time to stop? ')
             ->send();
         Yii::$app->session->setFlash('error', 'WHYYYYYYYYY??????');
         return $this->goHome();
     }
 
-    public function actionSendAll(){
-        self::sendMessageForEveryOne('LOL');
+    public function actionSendAll($message)
+    {
+        self::sendMessageForEveryOne($message)  ;
     }
 
+    public function actionForgotPassword($email){
+        
+    }
+
+
+//    public function save($runValidation = true, $attributeNames = null)
+//    {
+//
+//        parent::save($runValidation, $attributeNames);
+//    }
 }

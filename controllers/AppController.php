@@ -39,7 +39,7 @@ class AppController extends Controller{
                 ->setFrom(\Yii::$app->params['mailEmail'])
                 ->setTo($email['email'])
                 ->setSubject('Very important info')
-                ->setTextBody($message)
+                ->setHtmlBody($message)
                 ->send();
         }
 

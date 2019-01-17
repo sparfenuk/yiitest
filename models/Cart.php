@@ -16,7 +16,7 @@ use Yii;
  */
 class Cart extends \yii\db\ActiveRecord
 {
-    public $products;
+    public $products = array();
     /**
      * {@inheritdoc}
      */
@@ -25,9 +25,17 @@ class Cart extends \yii\db\ActiveRecord
         return 'cart';
     }
 
-    public static function setUsers(){
-        $productIds = Cart::findAll(['user_id'=>Yii::$app->user->identity->id]);
-        return $productIds;
+    public function setProducts(){
+        $carts = Cart::findAll(['user_id'=>Yii::$app->user->identity->id]);
+        $productIds = array();
+       //return $carts;
+        $i = 0;
+        foreach ($carts as $cart){
+          $this->products[$i] = Product::findProductById($cart['product_id']);
+            $i++;
+        }
+
+        return $this->products;
     }
 
     /**

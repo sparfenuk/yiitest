@@ -134,7 +134,7 @@ use yii\bootstrap\ActiveForm;
                       <div class="form-group">
                           
                           <div class="col-xs-6">
-                              <?= $form->field($model, 'password')
+                              <?= $form->field($model, 'password2')
                                   ->input('password',['class' => 'form-control', 'id' => 'password2','value' => '']) ?>
 <!--                            <label for="password2"><h4>Verify</h4></label>-->
 <!--                              <input type="password" class="form-control" name="password2" id="password2" placeholder="password2" title="enter your password2.">-->
