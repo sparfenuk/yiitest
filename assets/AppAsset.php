@@ -42,19 +42,3 @@ class AppAsset extends AssetBundle
     public $depends = [
     ];
 }
-//$this->registerJsFile('@web/js/jquery.min.js');
-//$this->registerJsFile('@web/js/bootstrap.min.js');
-//$this->registerJsFile('@web/js/slick.min.js');
-//$this->registerJsFile('@web/js/nouislider.min.js');
-//$this->registerJsFile('@web/js/jquery.zoom.min.js');
-//$this->registerJsFile('@web/js/main.js');
-//
-//$this->registerJsFile('https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js');
-//$this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
-//
-//$this->registerCssFile('@web/css/bootstrap.min.css');
-//$this->registerCssFile('@web/css/slick.css');
-//$this->registerCssFile('@web/css/slick-theme.css');
-//$this->registerCssFile('@web/css/nouislider.min.css');
-//$this->registerCssFile('@web/css/font-awesome.min.css');
-//$this->registerCssFile('@web/css/style.css');
