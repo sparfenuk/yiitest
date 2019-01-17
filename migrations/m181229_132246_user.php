@@ -78,7 +78,8 @@ class m181229_132246_user extends Migration
 
             $this->createTable('{{%cart}}',[
               'user_id' => $this->integer()->notNull(),
-                'product_id' => $this->integer()->notNull()
+                'product_id' => $this->integer()->notNull(),
+                'color' => $this->string()
             ],$tableOptions);
 
             $this->createIndex('idx-cart-user',
