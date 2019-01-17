@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $form->field($product, 'price')->textInput(['type' => 'number']) ?>
 
     <?= $form->field($categories, 'name')->dropdownList(
-        Category::find()->select(['name', 'id'])->indexBy('id')->column() )?>
+        Category::find()->select(['name', 'id'])->indexBy('id')->column() )->label("Category")?>
 
 
     <?= $form->field($uploader, 'imageFiles[]')->fileInput(['multiple' => true, 'accept' => 'image/*']) ?>

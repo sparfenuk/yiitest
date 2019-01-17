@@ -22,7 +22,7 @@ use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use yii\helpers\Url;
 use app\models\Product;
-
+use yii\widgets\ActiveForm;
 
 $this->title = 'Goods';
 $this->params['breadcrumbs'][] = $this->title;
@@ -32,13 +32,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 //
 
-//     var_dump();
-     if(Yii::$app->user->identity->status==2)
-     {
-         echo '<p>awdawdaw22222222dawda</p>';
-         //HTML::button("Update");
-
-     }
 $name=ProductPhoto::findByProductId($product->id);
      var_dump($name);
 echo '<div class="product-details">
@@ -57,17 +50,33 @@ echo '<div class="product-details">
 '. HTML::encode($product->description).'
 </div>';
 
-if(is_array($product->colors)) {
-    foreach (explod(';', $product->colors) as $color) {
 
-    }
+
+if(is_array($product->colors)) {
+//    foreach (explod(';', $product->colors) as $color) {
+
+   $arr= $product->colors;
+   var_dump( $arr );
+
+
+   $form = ActiveForm::begin();
+
+//     $form->field($product, 'color')->radioList($arr)->label(false);
+
+
+    echo $form->field($product, 'colors')->radioList($arr)->label('Work Part Time');
+
+
+    ActiveForm::end();
+
+
 }
 else if($product->colors!==null)
 {
 
 
 }
-echo  '<div style="width: 10px; height: 10px; background-color: blue" ></div>';
+
 echo '</div>';
 
  ?>

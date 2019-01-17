@@ -143,6 +143,8 @@ class GoodsController extends \yii\web\Controller
 
         }
         if($product!==null) {
+            if(isset($product->colors))
+                $product->colors= explode(';',$product->colors);
             return $this->render('product', [
                 'product' => $product
             ]);
