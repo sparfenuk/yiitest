@@ -137,6 +137,9 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                         <div class="custom-menu">
                             <div id="shopping-cart">
                                 <div class="shopping-cart-list">
+
+
+
                                     <div class="product product-widget">
                                         <div class="product-thumb">
                                             <?php echo Html::img('@web/img/thumb-product01.jpg',['alt' => '']); ?>
@@ -147,20 +150,21 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                                         </div>
                                         <button class="cancel-btn"><i class="fa fa-trash"></i></button>
                                     </div>
-                                    <div class="product product-widget">
-                                        <div class="product-thumb">
-                                            <?php echo Html::img('@web/img/thumb-product01.jpg',['alt' => '']); ?>
-                                        </div>
-                                        <div class="product-body">
-                                            <h3 class="product-price">$32.50 <span class="qty">x3</span></h3>
-                                            <h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
-                                        </div>
-                                        <button class="cancel-btn"><i class="fa fa-trash"></i></button>
-                                    </div>
+
+<!--                                    <div class="product product-widget">-->
+<!--                                        <div class="product-thumb">-->
+<!--                                            --><?php //echo Html::img('@web/img/thumb-product01.jpg',['alt' => '']); ?>
+<!--                                        </div>-->
+<!--                                        <div class="product-body">-->
+<!--                                            <h3 class="product-price">$32.50 <span class="qty">x3</span></h3>-->
+<!--                                            <h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>-->
+<!--                                        </div>-->
+<!--                                        <button class="cancel-btn"><i class="fa fa-trash"></i></button>-->
+<!--                                    </div>-->
                                 </div>
                                 <div class="shopping-cart-btns">
-                                    <button class="main-btn" onclick="window.location.href='site/cart';">View Cart</button>
-                                    <button class="primary-btn" onclick="window.location.href='site/checkout';" >Checkout <i class="fa fa-arrow-circle-right"></i></button>
+<!--                                    <button class="main-btn" onclick="window.location.href='product/site';">View Cart</button>-->
+                                    <button class="primary-btn" onclick="window.location.href='product/checkout';" >Checkout <i class="fa fa-arrow-circle-right"></i></button>
                                 </div>
                             </div>
                         </div>
