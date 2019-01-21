@@ -19,8 +19,25 @@ use yii\widgets\LinkPager;
 $this->title = 'Goods';
 $this->params['breadcrumbs'][] = $this->title;
 
-
-
+    echo '
+                  
+              
+                   <div class="col-md-12">
+					<div class="section-title">
+						<h2 class="title">here should be name of category</h2>
+						<div class="pull-right">
+						   <h3 class="title"> Order by: </h3>
+						   
+                         <ul style="float: right; margin-top: 12px;" >
+								<li>'.$sort->link('name').'</li>
+								<li>'.$sort->link('price').'</li>
+							
+					    </ul>
+					 
+					  </div>
+					</div>
+				</div>
+               ';
 
 
      //var_dump($dataProvider);

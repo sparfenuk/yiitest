@@ -14,6 +14,7 @@ use yii\filters\VerbFilter;
 use app\models\UploadFile;
 use app\models\ProductPhoto;
 use yii\web\UploadedFile;
+use yii\data\Sort;
 
 class GoodsController extends \yii\web\Controller
 {
@@ -154,11 +155,26 @@ class GoodsController extends \yii\web\Controller
     }
 
 
-    public   function   actionIndex( $search_param = null, $order_by = null )
+    public   function   actionIndex( $search_param = null, $order = null )
     {
 
         //todo:: order_by
-
+        $sort = new Sort([
+            'attributes' => [
+                'price'=>[
+                    'asc' => ['price' => SORT_ASC],
+                    'desc' => ['price' => SORT_DESC],
+                    'default' => SORT_DESC,
+                    'label' => 'Price',
+                ],
+                'name' => [
+                    'asc' => ['name' => SORT_ASC],
+                    'desc' => ['name' => SORT_DESC],
+                    'default' => SORT_DESC,
+                    'label' => 'Name',
+                ],
+            ],
+        ]);
 
         if($search_param !== null)
         {
@@ -189,7 +205,7 @@ class GoodsController extends \yii\web\Controller
                ]);
         }
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
+            'dataProvider' => $dataProvider,'sort'=>$sort
         ]);
     }
 
