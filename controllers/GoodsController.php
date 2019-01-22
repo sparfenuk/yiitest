@@ -32,6 +32,9 @@ class GoodsController extends \yii\web\Controller
             ],
         ];
     }
+//    public  function  actionUpdate($id=null)
+//    {
+//    }
 
     public  function  actionCreate($id=null)
     {

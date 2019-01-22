@@ -14,7 +14,7 @@ use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
-use app\models\UploadFile;
+use app\models\UploadProductFile;
 use yii\web\UploadedFile;
 
 
@@ -52,7 +52,7 @@ class ProductController extends \yii\web\Controller
 
         }
         if($product!==null) {
-            return $this->render('product', [
+            return $this->render('product-page', [
                 'product' => $product
             ]);
         }
@@ -71,7 +71,7 @@ class ProductController extends \yii\web\Controller
         ]);
     }
     public function actionCheckout(){
-<<<<<<< HEAD
+
 
         return $this->render('checkout'); /*,[
             'products' => $products, ''*/
@@ -79,13 +79,8 @@ class ProductController extends \yii\web\Controller
     public function actionSearch(){
         return $this->render('products');
 
-=======
-        return $this->render('checkout');
     }
-    public function actionSearch(){
-        return $this->render('products');
->>>>>>> d17b97257068055a632002068604f74b81af188c
-    }
+
 
 
 }
