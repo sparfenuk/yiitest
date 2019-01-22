@@ -11,11 +11,11 @@ use yii\db\Query;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use app\models\UploadFile;
+use app\models\UploadProductFile;
 use app\models\ProductPhoto;
 use yii\web\UploadedFile;
 
-class GoodsController extends \yii\web\Controller
+class GoodsController extends AppController
 {
     /**
      * {@inheritdoc}
@@ -34,11 +34,11 @@ class GoodsController extends \yii\web\Controller
 
     public  function  actionCreate($id=null)
     {
-        if(Yii::$app->user->identity->status==2) {
+        if(Yii::$app->user->identity->status >= 2) {
 
             $categories=new Category();
             $product = new Product();
-            $uploader = new UploadFile();
+            $uploader = new UploadProductFile();
 
 
 
@@ -64,6 +64,7 @@ class GoodsController extends \yii\web\Controller
 
               if( $product->validate())
               {
+
                   $product->save(false);
 
               }
@@ -84,19 +85,19 @@ class GoodsController extends \yii\web\Controller
 
 
                 $uploader->imageFiles = UploadedFile::getInstances($uploader, 'imageFiles');
-
+//                self::debug($uploader);
                 if ($uploader->uploadImages()) {
 
-          foreach (  $uploader->imageFiles as $imageFile)
+          foreach ( $uploader->imageFiles as $imageFile)
           {
+
               $photo = new ProductPhoto();
-              $photo->image_name=$imageFile->name;
-              $photo->product_color='black';
+              $photo->image_name=$imageFile->baseName.'.'.$imageFile->extension;
+//              $photo->product_color='black';
               $photo->product_id=$product->id;
               if( $photo->validate())
               {
                   $photo->save(false);
-
               }
               else
               {

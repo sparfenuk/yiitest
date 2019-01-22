@@ -3,9 +3,12 @@
 namespace app\controllers;
 
 
+
 use app\models\Cart;
 use app\models\User;
+use PHPUnit\Framework\Error\Error;
 use Yii;
+use yii\base\ErrorException;
 use yii\db\Exception;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -24,9 +27,7 @@ class SiteController extends AppController
      */
 
 
-    /*public function actionSay($message = "hello"){
-        return $this->render('say',['message' => $message]);
-    }*/
+
 
 
     public function behaviors()
@@ -51,7 +52,6 @@ class SiteController extends AppController
             ],
         ];
     }
-    //'dfsdfsdfs'
 
     /**
      * {@inheritdoc}
@@ -80,8 +80,9 @@ class SiteController extends AppController
         $dataProvider = new ActiveDataProvider([
             'query' => Goods::find(),
         ]);
-        $cart = new Cart();
-        // self::debug($cart->setProducts());
+
+        self::setCart();
+
         return $this->render('index', [
             'dataProvider' => $dataProvider,
         ]);
@@ -180,11 +181,6 @@ class SiteController extends AppController
         }
     }
 
-    private function getProductsForCart($user_id)
-    {
-
-    }
-
     public function actionSignUp()
     {
 
@@ -196,13 +192,13 @@ class SiteController extends AppController
         $model = new User();
         if ($model->load(Yii::$app->request->post())) {
 
-
+            $model->password2 = $_POST['User']['password2'];
             $model->photo_name = self::saveImage($model);
 
             $model->auth_key = self::generateRandomString(30);
-           if (!empty($model->password) && $model->password == $model->password2) {
+            if (!empty($model->password) && $model->password == $model->password2) {
                 $model->password = md5($model->password . Yii::$app->params['SALT']);
-            } else{
+            } else {
                 Yii::$app->session->setFlash('error', 'passwords not identical');
                 $this->refresh();
             }
@@ -284,7 +280,7 @@ class SiteController extends AppController
                 }
 
             } catch (\Exception $e) {
-                self::debug($e);
+//                self::debug($e);
                 Yii::$app->session->setFlash('error', 'something went wrong');
             }
 
@@ -298,10 +294,6 @@ class SiteController extends AppController
     {
 
     }
-//
-//    public function actionEditProfile(){
-//        return $this->render('user_profile');
-//    }
 
     public function actionSpam($email)
     {
@@ -317,17 +309,90 @@ class SiteController extends AppController
 
     public function actionSendAll($message)
     {
-        self::sendMessageForEveryOne($message)  ;
+        self::sendMessageForEveryOne($message);
     }
 
-    public function actionForgotPassword($email){
-        
+    public function actionForgotPassword()
+    {
+
+        $model = new User();
+        if (!empty($_POST['User']['email'])) {
+            try {
+                $model = User::findOne(['email' => $_POST['User']['email']]);
+//                self::debug($model);
+                if (!empty($model)) {
+                    Yii::$app->mailer->compose()
+                        ->setFrom(Yii::$app->params['mailEmail'])
+                        ->setTo($_POST['User']['email'])
+                        ->setSubject('Changing password on E-Shop')
+                        ->setHtmlBody('to change password go this <a href="http:/yiitest/site/change-password?authKey=' . $model->auth_key . '">Link</a>')
+                        ->send();
+                    Yii::$app->session->setFlash('success', 'check your email');
+                    $this->goHome();
+                } else {
+                    Yii::$app->session->setFlash('error', 'User with this email does not exists');
+                    $this->goBack();
+                }
+            } catch (\Exception $e) {
+
+//                self::debug($e);
+                Yii::$app->session->setFlash('error', 'something went wrong');
+            }
+        }
+        return $this->render('forgotPassword', [
+            'model' => $model,
+        ]);
+
+
     }
 
+    public function actionChangePassword($authKey)
+    {
+        $model = User::findByAuthKey($authKey);
 
-//    public function save($runValidation = true, $attributeNames = null)
-//    {
-//
-//        parent::save($runValidation, $attributeNames);
-//    }
+        if (isset($model)) {
+
+            if (!empty($_POST['User']['password2']) && $_POST['User']['password'] == $_POST['User']['password2']) {
+                $model->auth_key = self::generateRandomString(30);
+                $model->password = md5($model->password . Yii::$app->params['SALT']);
+                Yii::$app->session->setFlash('success', 'password successfully updated');
+                $model->save();
+                $this->goHome();
+            }
+
+//            self::debug($_POST['User']['password2']);
+            return $this->render('changePassword', [
+                'model' => $model,
+            ]);
+        } else {
+            Yii::$app->session->setFlash('error', 'User with this email does not exists');
+            $this->goBack();
+        }
+
+
+    }
+
+    public function actionAddToCart($productId,$color = '',$quantity=1){ //https://yiitest/site/add-to-cart?productId={}&color={}&quantity={}
+        $cart = new Cart();
+        $cart->user_id = Yii::$app->user->identity->id;
+        $cart->color = $color;
+        $cart->quantity = $quantity;
+        $cart->product_id = $productId;
+        $cart->save();
+    }
+    public function actionDeleteFromCart($id){
+        $cart = Cart::find()
+            ->where([
+                'id' => $id
+            ])->one();
+
+        if($cart)
+            $cart->delete();
+
+        self::setCart();
+        $this->goBack();
+
+    }
 }
+
+

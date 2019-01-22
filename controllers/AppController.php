@@ -8,6 +8,7 @@ use yii\db\Query;
 use yii\web\Controller;
 use app\models\UploadAvatarFile;
 use yii\web\UploadedFile;
+use app\models\Cart;
 
 class AppController extends Controller{
 
@@ -43,6 +44,17 @@ class AppController extends Controller{
                 ->send();
         }
 
+    }
+
+    public function setCart()
+    {
+        $cart = new Cart();
+        $cart->setProducts();
+
+        $_SESSION['cartProducts'] = $cart->products;
+        $_SESSION['cartCount'] = $cart->i;
+        $_SESSION['cartSum'] = $cart->sum;
+//        self::debug($cart->products);
     }
 
 

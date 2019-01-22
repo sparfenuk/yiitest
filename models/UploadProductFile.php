@@ -10,7 +10,7 @@ namespace app\models;
 use yii\base\Model;
 use yii\web\UploadedFile;
 
-class UploadFile extends Model
+class UploadProductFile extends Model
 {
 
     /**
@@ -21,15 +21,16 @@ class UploadFile extends Model
     public function rules()
     {
         return [
-               [['imageFiles'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, jpeg', 'maxFiles' => 4],
+               [['imageFiles'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, jpeg', 'maxFiles' => 10],
         ];
     }
 
     public function uploadImages()
     {
         if ($this->validate()) {
+
             foreach ($this->imageFiles as $file) {
-                $file->saveAs( 'images/'.$file->baseName . '.' . $file->extension);
+                $file->saveAs( 'images/product_images/'.$file->baseName . '.' . $file->extension);
             }
             return true;
         } else {

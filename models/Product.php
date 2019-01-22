@@ -20,13 +20,18 @@ use Yii;
  * @property string $colors
  * @property string $created_at
  * @property string $updated_at
- *
+ * @property int $cartId
  * @property Category $category
  * @property ProductPhoto[] $productPhotos
  * @property Review[] $reviews
+ * @property string $cartColor
+ * @property integer $cartQuantity
  */
 class Product extends \yii\db\ActiveRecord
 {
+    public $cartId;
+    public $cartColor = '';
+    public $cartQuantity;
     /**
      * {@inheritdoc}
      */

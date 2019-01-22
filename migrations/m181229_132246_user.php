@@ -66,7 +66,6 @@ class m181229_132246_user extends Migration
                 'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
                 'image_name' => $this->string(200)->notNull(),
                 'product_id' => $this->integer()->notNull(),
-                'product_color' => $this->string(60)
             ],$tableOptions);
 
 
@@ -77,6 +76,7 @@ class m181229_132246_user extends Migration
             ],$tableOptions);
 
             $this->createTable('{{%cart}}',[
+                'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
                 'user_id' => $this->integer()->notNull(),
                 'product_id' => $this->integer()->notNull(),
                 'color' => $this->string(),

@@ -17,6 +17,8 @@ use Yii;
 class Cart extends \yii\db\ActiveRecord
 {
     public $products = array();
+    public $i = 0; //for array counting (count() not works)
+    public $sum = 0;
     /**
      * {@inheritdoc}
      */
@@ -27,12 +29,21 @@ class Cart extends \yii\db\ActiveRecord
 
     public function setProducts(){
         $carts = Cart::findAll(['user_id'=>Yii::$app->user->identity->id]);
-        $productIds = array();
+
+//        $productIds = array();
        //return $carts;
-        $i = 0;
+
         foreach ($carts as $cart){
-          $this->products[$i] = Product::findProductById($cart['product_id']);
-            $i++;
+//            array_push($this->products,Product::findProductById($cart['product_id']));
+          $this->products[$this->i] = Product::findProductById($cart['product_id']);
+
+          if($this->products[$this->i]) {
+              $this->products[$this->i]->cartId = $cart['id'];
+              $this->products[$this->i]->cartColor = $cart['color'];
+              $this->products[$this->i]->cartQuantity = $cart['quantity'];
+              $this->sum += $this->products[$this->i]['price'];
+              $this->i++;
+          }
         }
 
         return $this->products;
@@ -71,4 +82,10 @@ class Cart extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id'])->inverseOf('carts');
     }
+
+    public static function primaryKey()
+    {
+        return ['user_id'];
+    }
+
 }

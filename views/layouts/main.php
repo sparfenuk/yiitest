@@ -3,7 +3,8 @@
 /* @var $this \yii\web\View */
 /* @var $this \yii\
 /* @var $content string */
-
+/* @var $product app\models\Product */
+/* @var $count integer*/
 use app\widgets\Alert;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -73,7 +74,6 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
     <!--        </div>-->
     <!--    </div>-->
     <!--    <!-- /top Header -->
-
     <!-- header -->
     <div id="header">
         <div class="container">
@@ -114,11 +114,11 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                         ?>
                         <ul class="custom-menu">
                             <?php echo !Yii::$app->user->isGuest?
-                                '<li><a href="site/edit-profile"><i class="fa fa-user-o"></i> My Account</a></li>
-                            <li><a href="site/checkout"><i class="fa fa-check"></i> Checkout</a></li>
-                            <li><a href="site/logouts"><i class="fa fa-lock"></i> Log Out</a></li>':
-                                '<li><a href="site/login"><i class="fa fa-unlock-alt"></i> Login</a></li>
-                            <li><a href="site/sign-up"><i class="fa fa-user-plus"></i> Join</a></li>';?>
+                                '<li><a href="/site/edit-profile"><i class="fa fa-user-o"></i> My Account</a></li>
+                            <li><a href="/site/checkout"><i class="fa fa-check"></i> Checkout</a></li>
+                            <li><a href="/site/logouts"><i class="fa fa-lock"></i> Log Out</a></li>':
+                                '<li><a href="/site/login"><i class="fa fa-unlock-alt"></i> Login</a></li>
+                            <li><a href="/site/sign-up"><i class="fa fa-user-plus"></i> Join</a></li>';?>
                         </ul>
                     </li>
                     <!-- /Account -->
@@ -128,29 +128,32 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                         <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                             <div class="header-btns-icon">
                                 <i class="fa fa-shopping-cart"></i>
-                                <span class="qty">13</span>
+                                <span class="qty"><?= $_SESSION['cartCount'] ?></span>
                             </div>
                             <strong class="text-uppercase">My Cart:</strong>
                             <br>
-                            <span>35.20$</span>
+                            <span><?= $_SESSION['cartSum'] ?>$</span>
                         </a>
                         <div class="custom-menu">
                             <div id="shopping-cart">
                                 <div class="shopping-cart-list">
 
 
-
+                                    <?php
+                                    if($_SESSION['cartCount'] != 0)
+                                        foreach ($_SESSION['cartProducts'] as $product){
+                                    ?>
                                     <div class="product product-widget">
                                         <div class="product-thumb">
-                                            <?php echo Html::img('@web/img/thumb-product01.jpg',['alt' => '']); ?>
+                                            <?= Html::img('@web/img/thumb-product01.jpg',['alt' => '']); ?><!-- todo:: make normal relationship in product -  product_photo and return first photo-->
                                         </div>
                                         <div class="product-body">
-                                            <h3 class="product-price">$32.50 <span class="qty">x3</span></h3>
-                                            <h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
+                                            <h3 class="product-price"><?= round($product->price) ?>$ <span class="qty">x<?= $product->cartQuantity ?></span>  <?= $product->cartColor ?></h3>
+                                            <h2 class="product-name"><a href="/goods/product?id=<?= $product->id ?>"><?= $product->name ?></a></h2>
                                         </div>
-                                        <button class="cancel-btn"><i class="fa fa-trash"></i></button>
+                                        <button class="cancel-btn"><?= Html::a('<i class="fa fa-trash">',['site/delete-from-cart?id='.$product->cartId])?></i></button>
                                     </div>
-
+                                    <?php } ?>
 <!--                                    <div class="product product-widget">-->
 <!--                                        <div class="product-thumb">-->
 <!--                                            --><?php //echo Html::img('@web/img/thumb-product01.jpg',['alt' => '']); ?>
@@ -159,12 +162,13 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
 <!--                                            <h3 class="product-price">$32.50 <span class="qty">x3</span></h3>-->
 <!--                                            <h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>-->
 <!--                                        </div>-->
-<!--                                        <button class="cancel-btn"><i class="fa fa-trash"></i></button>-->
+<!--
+<!--<!--                                        <button class="cancel-btn"><i class="fa fa-trash"></i></button>-->
 <!--                                    </div>-->
                                 </div>
                                 <div class="shopping-cart-btns">
 <!--                                    <button class="main-btn" onclick="window.location.href='product/site';">View Cart</button>-->
-                                    <button class="primary-btn" onclick="window.location.href='product/checkout';" >Checkout <i class="fa fa-arrow-circle-right"></i></button>
+                                    <button class="primary-btn"><?= Html::a('Checkout',['product/checkout']) ?> <i class="fa fa-arrow-circle-right"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -185,12 +189,377 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
 </header>
 <!--/header-->
 
+<!-- NAVIGATION -->
+<div id="navigation">
+    <!-- container -->
+    <div class="container">
+        <div id="responsive-nav">
+            <!-- category nav -->
+            <div class="category-nav show-on-click">
+                <span class="category-header">Categories <i class="fa fa-list"></i></span>
+                <ul class="category-list">
+                    <li class="dropdown side-dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Women’s Clothing <i class="fa fa-angle-right"></i></a>
+                        <div class="custom-menu">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <ul class="list-links">
+                                        <li>
+                                            <h3 class="list-links-title">Categories</h3></li>
+                                        <li><a href="#">Women’s Clothing</a></li>
+                                        <li><a href="#">Men’s Clothing</a></li>
+                                        <li><a href="#">Phones & Accessories</a></li>
+                                        <li><a href="#">Jewelry & Watches</a></li>
+                                        <li><a href="#">Bags & Shoes</a></li>
+                                    </ul>
+                                    <hr class="hidden-md hidden-lg">
+                                </div>
+                                <div class="col-md-4">
+                                    <ul class="list-links">
+                                        <li>
+                                            <h3 class="list-links-title">Categories</h3></li>
+                                        <li><a href="#">Women’s Clothing</a></li>
+                                        <li><a href="#">Men’s Clothing</a></li>
+                                        <li><a href="#">Phones & Accessories</a></li>
+                                        <li><a href="#">Jewelry & Watches</a></li>
+                                        <li><a href="#">Bags & Shoes</a></li>
+                                    </ul>
+                                    <hr class="hidden-md hidden-lg">
+                                </div>
+                                <div class="col-md-4">
+                                    <ul class="list-links">
+                                        <li>
+                                            <h3 class="list-links-title">Categories</h3></li>
+                                        <li><a href="#">Women’s Clothing</a></li>
+                                        <li><a href="#">Men’s Clothing</a></li>
+                                        <li><a href="#">Phones & Accessories</a></li>
+                                        <li><a href="#">Jewelry & Watches</a></li>
+                                        <li><a href="#">Bags & Shoes</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="row hidden-sm hidden-xs">
+                                <div class="col-md-12">
+                                    <hr>
+                                    <a class="banner banner-1" href="#">
+                                        <img src="../../siteMainPageTemplate/e-shop/img/banner05.jpg" alt="">
+                                        <div class="banner-caption text-center">
+                                            <h2 class="white-color">NEW COLLECTION</h2>
+                                            <h3 class="white-color font-weak">HOT DEAL</h3>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li><a href="#">Men’s Clothing</a></li>
+                    <li class="dropdown side-dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Phones & Accessories <i class="fa fa-angle-right"></i></a>
+                        <div class="custom-menu">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <ul class="list-links">
+<!--                                        <li>-->
+<!--                                            <h3 class="list-links-title">Categories</h3></li>-->
+<!--                                        <li><a href="#">Women’s Clothing</a></li>-->
+<!--                                        <li><a href="#">Men’s Clothing</a></li>-->
+<!--                                        <li><a href="#">Phones & Accessories</a></li>-->
+<!--                                        <li><a href="#">Jewelry & Watches</a></li>-->
+<!--                                        <li><a href="#">Bags & Shoes</a></li>-->
+                                    </ul>
+                                    <hr>
+                                    <ul class="list-links">
+                                        <li>
+                                            <h3 class="list-links-title">Categories</h3></li>
+                                        <li><a href="#">Women’s Clothing</a></li>
+                                        <li><a href="#">Men’s Clothing</a></li>
+                                        <li><a href="#">Phones & Accessories</a></li>
+                                        <li><a href="#">Jewelry & Watches</a></li>
+                                        <li><a href="#">Bags & Shoes</a></li>
+                                    </ul>
+                                    <hr class="hidden-md hidden-lg">
+                                </div>
+                                <div class="col-md-4">
+                                    <ul class="list-links">
+                                        <li>
+                                            <h3 class="list-links-title">Categories</h3></li>
+                                        <li><a href="#">Women’s Clothing</a></li>
+                                        <li><a href="#">Men’s Clothing</a></li>
+                                        <li><a href="#">Phones & Accessories</a></li>
+                                        <li><a href="#">Jewelry & Watches</a></li>
+                                        <li><a href="#">Bags & Shoes</a></li>
+                                    </ul>
+                                    <hr>
+                                    <ul class="list-links">
+                                        <li>
+                                            <h3 class="list-links-title">Categories</h3></li>
+                                        <li><a href="#">Women’s Clothing</a></li>
+                                        <li><a href="#">Men’s Clothing</a></li>
+                                        <li><a href="#">Phones & Accessories</a></li>
+                                        <li><a href="#">Jewelry & Watches</a></li>
+                                        <li><a href="#">Bags & Shoes</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-4 hidden-sm hidden-xs">
+                                    <a class="banner banner-2" href="#">
+                                        <img src="../../siteMainPageTemplate/e-shop/img/banner04.jpg" alt="">
+                                        <div class="banner-caption">
+                                            <h3 class="white-color">NEW<br>COLLECTION</h3>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li><a href="#">Computer & Office</a></li>
+                    <li><a href="#">Consumer Electronics</a></li>
+                    <li class="dropdown side-dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Jewelry & Watches <i class="fa fa-angle-right"></i></a>
+                        <div class="custom-menu">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <ul class="list-links">
+                                        <li>
+                                            <h3 class="list-links-title">Categories</h3></li>
+                                        <li><a href="#">Women’s Clothing</a></li>
+                                        <li><a href="#">Men’s Clothing</a></li>
+                                        <li><a href="#">Phones & Accessories</a></li>
+                                        <li><a href="#">Jewelry & Watches</a></li>
+                                        <li><a href="#">Bags & Shoes</a></li>
+                                    </ul>
+                                    <hr>
+                                    <ul class="list-links">
+                                        <li>
+                                            <h3 class="list-links-title">Categories</h3></li>
+                                        <li><a href="#">Women’s Clothing</a></li>
+                                        <li><a href="#">Men’s Clothing</a></li>
+                                        <li><a href="#">Phones & Accessories</a></li>
+                                        <li><a href="#">Jewelry & Watches</a></li>
+                                        <li><a href="#">Bags & Shoes</a></li>
+                                    </ul>
+                                    <hr class="hidden-md hidden-lg">
+                                </div>
+                                <div class="col-md-4">
+                                    <ul class="list-links">
+                                        <li>
+                                            <h3 class="list-links-title">Categories</h3></li>
+                                        <li><a href="#">Women’s Clothing</a></li>
+                                        <li><a href="#">Men’s Clothing</a></li>
+                                        <li><a href="#">Phones & Accessories</a></li>
+                                        <li><a href="#">Jewelry & Watches</a></li>
+                                        <li><a href="#">Bags & Shoes</a></li>
+                                    </ul>
+                                    <hr>
+                                    <ul class="list-links">
+                                        <li>
+                                            <h3 class="list-links-title">Categories</h3></li>
+                                        <li><a href="#">Women’s Clothing</a></li>
+                                        <li><a href="#">Men’s Clothing</a></li>
+                                        <li><a href="#">Phones & Accessories</a></li>
+                                        <li><a href="#">Jewelry & Watches</a></li>
+                                        <li><a href="#">Bags & Shoes</a></li>
+                                    </ul>
+                                    <hr class="hidden-md hidden-lg">
+                                </div>
+                                <div class="col-md-4">
+                                    <ul class="list-links">
+                                        <li>
+                                            <h3 class="list-links-title">Categories</h3></li>
+                                        <li><a href="#">Women’s Clothing</a></li>
+                                        <li><a href="#">Men’s Clothing</a></li>
+                                        <li><a href="#">Phones & Accessories</a></li>
+                                        <li><a href="#">Jewelry & Watches</a></li>
+                                        <li><a href="#">Bags & Shoes</a></li>
+                                    </ul>
+                                    <hr>
+                                    <ul class="list-links">
+                                        <li>
+                                            <h3 class="list-links-title">Categories</h3></li>
+                                        <li><a href="#">Women’s Clothing</a></li>
+                                        <li><a href="#">Men’s Clothing</a></li>
+                                        <li><a href="#">Phones & Accessories</a></li>
+                                        <li><a href="#">Jewelry & Watches</a></li>
+                                        <li><a href="#">Bags & Shoes</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li><a href="#">Bags & Shoes</a></li>
+                    <li><a href="#">View All</a></li>
+                </ul>
+            </div>
+            <!-- /category nav -->
+
+            <!-- menu nav -->
+            <div class="menu-nav">
+                <span class="menu-header">Menu <i class="fa fa-bars"></i></span>
+                <ul class="menu-list">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Shop</a></li>
+<!--                    <li class="dropdown mega-dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Women <i class="fa fa-caret-down"></i></a>-->
+<!--                        <div class="custom-menu">-->
+<!--                            <div class="row">-->
+<!--                                <div class="col-md-4">-->
+<!--                                    <ul class="list-links">-->
+<!--                                        <li>-->
+<!--                                            <h3 class="list-links-title">Categories</h3></li>-->
+<!--                                        <li><a href="#">Women’s Clothing</a></li>-->
+<!--                                        <li><a href="#">Men’s Clothing</a></li>-->
+<!--                                        <li><a href="#">Phones & Accessories</a></li>-->
+<!--                                        <li><a href="#">Jewelry & Watches</a></li>-->
+<!--                                        <li><a href="#">Bags & Shoes</a></li>-->
+<!--                                    </ul>-->
+<!--                                    <hr class="hidden-md hidden-lg">-->
+<!--                                </div>-->
+<!--                                <div class="col-md-4">-->
+<!--                                    <ul class="list-links">-->
+<!--                                        <li>-->
+<!--                                            <h3 class="list-links-title">Categories</h3></li>-->
+<!--                                        <li><a href="#">Women’s Clothing</a></li>-->
+<!--                                        <li><a href="#">Men’s Clothing</a></li>-->
+<!--                                        <li><a href="#">Phones & Accessories</a></li>-->
+<!--                                        <li><a href="#">Jewelry & Watches</a></li>-->
+<!--                                        <li><a href="#">Bags & Shoes</a></li>-->
+<!--                                    </ul>-->
+<!--                                    <hr class="hidden-md hidden-lg">-->
+<!--                                </div>-->
+<!--                                <div class="col-md-4">-->
+<!--                                    <ul class="list-links">-->
+<!--                                        <li>-->
+<!--                                            <h3 class="list-links-title">Categories</h3></li>-->
+<!--                                        <li><a href="#">Women’s Clothing</a></li>-->
+<!--                                        <li><a href="#">Men’s Clothing</a></li>-->
+<!--                                        <li><a href="#">Phones & Accessories</a></li>-->
+<!--                                        <li><a href="#">Jewelry & Watches</a></li>-->
+<!--                                        <li><a href="#">Bags & Shoes</a></li>-->
+<!--                                    </ul>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="row hidden-sm hidden-xs">-->
+<!--                                <div class="col-md-12">-->
+<!--                                    <hr>-->
+<!--                                    <a class="banner banner-1" href="#">-->
+<!--                                        <img src="../../siteMainPageTemplate/e-shop/img/banner05.jpg" alt="">-->
+<!--                                        <div class="banner-caption text-center">-->
+<!--                                            <h2 class="white-color">NEW COLLECTION</h2>-->
+<!--                                            <h3 class="white-color font-weak">HOT DEAL</h3>-->
+<!--                                        </div>-->
+<!--                                    </a>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </li>-->
+<!--                    <li class="dropdown mega-dropdown full-width"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Men <i class="fa fa-caret-down"></i></a>-->
+<!--                        <div class="custom-menu">-->
+<!--                            <div class="row">-->
+<!--                                <div class="col-md-3">-->
+<!--                                    <div class="hidden-sm hidden-xs">-->
+<!--                                        <a class="banner banner-1" href="#">-->
+<!--                                            <img src="../../siteMainPageTemplate/e-shop/img/banner06.jpg" alt="">-->
+<!--                                            <div class="banner-caption text-center">-->
+<!--                                                <h3 class="white-color text-uppercase">Women’s</h3>-->
+<!--                                            </div>-->
+<!--                                        </a>-->
+<!--                                        <hr>-->
+<!--                                    </div>-->
+<!--                                    <ul class="list-links">-->
+<!--                                        <li>-->
+<!--                                            <h3 class="list-links-title">Categories</h3></li>-->
+<!--                                        <li><a href="#">Women’s Clothing</a></li>-->
+<!--                                        <li><a href="#">Men’s Clothing</a></li>-->
+<!--                                        <li><a href="#">Phones & Accessories</a></li>-->
+<!--                                        <li><a href="#">Jewelry & Watches</a></li>-->
+<!--                                        <li><a href="#">Bags & Shoes</a></li>-->
+<!--                                    </ul>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-3">-->
+<!--                                    <div class="hidden-sm hidden-xs">-->
+<!--                                        <a class="banner banner-1" href="#">-->
+<!--                                            <img src="../../siteMainPageTemplate/e-shop/img/banner07.jpg" alt="">-->
+<!--                                            <div class="banner-caption text-center">-->
+<!--                                                <h3 class="white-color text-uppercase">Men’s</h3>-->
+<!--                                            </div>-->
+<!--                                        </a>-->
+<!--                                    </div>-->
+<!--                                    <hr>-->
+<!--                                    <ul class="list-links">-->
+<!--                                        <li>-->
+<!--                                            <h3 class="list-links-title">Categories</h3></li>-->
+<!--                                        <li><a href="#">Women’s Clothing</a></li>-->
+<!--                                        <li><a href="#">Men’s Clothing</a></li>-->
+<!--                                        <li><a href="#">Phones & Accessories</a></li>-->
+<!--                                        <li><a href="#">Jewelry & Watches</a></li>-->
+<!--                                        <li><a href="#">Bags & Shoes</a></li>-->
+<!--                                    </ul>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-3">-->
+<!--                                    <div class="hidden-sm hidden-xs">-->
+<!--                                        <a class="banner banner-1" href="#">-->
+<!--                                            <img src="../../siteMainPageTemplate/e-shop/img/banner08.jpg" alt="">-->
+<!--                                            <div class="banner-caption text-center">-->
+<!--                                                <h3 class="white-color text-uppercase">Accessories</h3>-->
+<!--                                            </div>-->
+<!--                                        </a>-->
+<!--                                    </div>-->
+<!--                                    <hr>-->
+<!--                                    <ul class="list-links">-->
+<!--                                        <li>-->
+<!--                                            <h3 class="list-links-title">Categories</h3></li>-->
+<!--                                        <li><a href="#">Women’s Clothing</a></li>-->
+<!--                                        <li><a href="#">Men’s Clothing</a></li>-->
+<!--                                        <li><a href="#">Phones & Accessories</a></li>-->
+<!--                                        <li><a href="#">Jewelry & Watches</a></li>-->
+<!--                                        <li><a href="#">Bags & Shoes</a></li>-->
+<!--                                    </ul>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-3">-->
+<!--                                    <div class="hidden-sm hidden-xs">-->
+<!--                                        <a class="banner banner-1" href="#">-->
+<!--                                            <img src="../../siteMainPageTemplate/e-shop/img/banner09.jpg" alt="">-->
+<!--                                            <div class="banner-caption text-center">-->
+<!--                                                <h3 class="white-color text-uppercase">Bags</h3>-->
+<!--                                            </div>-->
+<!--                                        </a>-->
+<!--                                    </div>-->
+<!--                                    <hr>-->
+<!--                                    <ul class="list-links">-->
+<!--                                        <li>-->
+<!--                                            <h3 class="list-links-title">Categories</h3></li>-->
+<!--                                        <li><a href="#">Women’s Clothing</a></li>-->
+<!--                                        <li><a href="#">Men’s Clothing</a></li>-->
+<!--                                        <li><a href="#">Phones & Accessories</a></li>-->
+<!--                                        <li><a href="#">Jewelry & Watches</a></li>-->
+<!--                                        <li><a href="#">Bags & Shoes</a></li>-->
+<!--                                    </ul>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </li>-->
+                    <li><?php if (Yii::$app->user->identity->status > 1) echo Html::a('admin panel',['/admin/index']); ?></li>
+
+                    <li class="dropdown default-dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Pages <i class="fa fa-caret-down"></i></a>
+                        <ul class="custom-menu">
+                            <li><a href="../site/index.php">Home</a></li>
+                            <li><a href="products.php">Products</a></li>
+                            <li><a href="product-page.php">Product Details</a></li>
+                            <li><a href="checkout.php">Checkout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- menu nav -->
+        </div>
+    </div>
+    <!-- /container -->
+</div>
+<!-- /NAVIGATION -->
+
 <!--content-->
 <div class="wrap">
     <div class="container">
-        <!--        --><?//= Breadcrumbs::widget([
-        //            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        //        ]) ?>
+<!--                --><?//= Breadcrumbs::widget([
+//                    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+//                ]) ?>
         <?php
         if (Yii::$app->session->hasFlash('success')): ?>
             <div class="alert alert-success" role="alert">

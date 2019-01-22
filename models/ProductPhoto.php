@@ -10,7 +10,6 @@ use Yii;
  * @property int $id
  * @property string $image_name
  * @property int $product_id
- * @property string $product_color
  *
  * @property Product $product
  */
@@ -44,7 +43,6 @@ class ProductPhoto extends \yii\db\ActiveRecord
             [['image_name', 'product_id'], 'required'],
             [['id', 'product_id'], 'integer'],
             [['image_name'], 'string', 'max' => 200],
-            [['product_color'], 'string', 'max' => 60],
             [['id'], 'unique'],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
         ];
@@ -59,7 +57,6 @@ class ProductPhoto extends \yii\db\ActiveRecord
             'id' => 'ID',
             'image_name' => 'Image Name',
             'product_id' => 'Product ID',
-            'product_color' => 'Product Color',
         ];
     }
 

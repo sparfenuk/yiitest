@@ -42,7 +42,7 @@ echo '<div class="product-details">
 </div>
 <br>
 <br>
-<img style="width: 500px" src="'. Yii::$app->params['basePath'] . '/images/'. HTML::encode($name).'">
+<img style="width: 500px" src="'. Yii::$app->params['basePath'] . '/images/product_images/'. HTML::encode($name).'">
 
 <h3 class="product-price">
 '. HTML::encode($product->price).'
