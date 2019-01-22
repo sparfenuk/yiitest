@@ -13,30 +13,30 @@
 					<div class="col-md-6">
 						<div id="product-main-view">
 							<div class="product-view">
-								<img src="../../siteMainPageTemplate/e-shop/img/main-product01.jpg" alt="">
+								<img src="images/BioShock-The-Collection-Wallpapers.jpg" alt="">
 							</div>
 							<div class="product-view">
-								<img src="../../siteMainPageTemplate/e-shop/img/main-product02.jpg" alt="">
+								<img src="images/6a43be30967ec34962cdea37cdd1ac96.webp" alt="">
 							</div>
 							<div class="product-view">
-								<img src="../../siteMainPageTemplate/e-shop/img/main-product03.jpg" alt="">
+								<img src="images/6a43be30967ec34962cdea37cdd1ac96.webp" alt="">
 							</div>
 							<div class="product-view">
-								<img src="../../siteMainPageTemplate/e-shop/img/main-product04.jpg" alt="">
+								<img src="images/6a43be30967ec34962cdea37cdd1ac96.webp" alt="">
 							</div>
 						</div>
 						<div id="product-view">
 							<div class="product-view">
-								<img src="../../siteMainPageTemplate/e-shop/img/thumb-product01.jpg" alt="">
+								<img src="images/6a43be30967ec34962cdea37cdd1ac96.webp" alt="">
 							</div>
 							<div class="product-view">
-								<img src="../../siteMainPageTemplate/e-shop/img/thumb-product02.jpg" alt="">
+								<img src="images/6a43be30967ec34962cdea37cdd1ac96.webp" alt="">
 							</div>
 							<div class="product-view">
-								<img src="../../siteMainPageTemplate/e-shop/img/thumb-product03.jpg" alt="">
+								<img src="images/6a43be30967ec34962cdea37cdd1ac96.webp" alt="">
 							</div>
 							<div class="product-view">
-								<img src="../../siteMainPageTemplate/e-shop/img/thumb-product04.jpg" alt="">
+								<img src="images/6a43be30967ec34962cdea37cdd1ac96.webp" alt="">
 							</div>
 						</div>
 					</div>

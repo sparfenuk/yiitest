@@ -88,14 +88,24 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                 <div class="header-search">
                     <form action="index" method="GET">
                         <input class="input search-input" type="text" placeholder="Enter your keyword"  name="search_param">
-<!--                        <select class="input search-categories">-->
-<!--                            <option value="0">All Categories</option>-->
-<!--                            <option value="1">Category 01</option>-->
-<!--                            <option value="1">Category 02</option>-->
+<!--                        <select name="order" class="input search-categories">-->
+<!--                            <option value="0">Price ASC</option>-->
+<!--                            <option value="1">Price DESC</option>-->
+<!--                            <option value="2">Name ASC</option>-->
+<!--                            <option value="3">Name DESC</option>-->
 <!--                        </select>-->
                         <button class="search-btn"><i class="fa fa-search"></i></button>
                     </form>
+
                 </div>
+<!--                <div class="header-search">-->
+<!--                    <select name="order" class="input search-categories">-->
+<!--                        <option href="" value="0">Price ASC</option>-->
+<!--                        <option href="" value="1">Price DESC</option>-->
+<!--                        <option href="" value="2">Name ASC</option>-->
+<!--                        <option href="" value="3">Name DESC</option>-->
+<!--                    </select>-->
+<!--                </div>-->
                 <!-- /Search -->
             </div>
             <div class="pull-right">
