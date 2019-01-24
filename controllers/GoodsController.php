@@ -8,6 +8,7 @@ use app\models\Product;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\Query;
+use yii\debug\panels\EventPanel;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -32,31 +33,25 @@ class GoodsController extends AppController
             ],
         ];
     }
-//    public  function  actionUpdate($id=null)
-//    {
-//    }
 
-    public  function  actionCreate($id=null)
+
+
+
+
+
+    public  function  actionUpdate($id=null)
     {
-        if(Yii::$app->user->identity->status >= 2) {
+        $categories = new Category();
+        $uploader = new UploadProductFile();
+        if (Yii::$app->user->identity->status >= 2 && $id !== null) {
 
-            $categories=new Category();
-            $product = new Product();
-            $uploader = new UploadProductFile();
+            $product = Product::findProductById($id);
+               if ($product->load(Yii::$app->request->post())) {
+                $product->category_id = (int)$_POST['Category']['name'];
 
 
 
-            if ($id !== null) {
-                $product = Product::findProductById($id);
-                //return var_dump($product);
-
-                return $this->render('create', ['product' => $product, 'uploader' => $uploader]);
-            }
-
-            else if ($product->load(Yii::$app->request->post())) {
-                 $product->category_id=(int)$_POST['Category']['name'];
-
-                if(is_array($product->colors)) {
+                if (is_array($product->colors)) {
                     $colors = '';
                     foreach ($product->colors as $color) {
                         $colors = $colors . $color . ';';
@@ -66,62 +61,185 @@ class GoodsController extends AppController
                 }
 
 
-              if( $product->validate())
-              {
+                if ($product->validate()) {
 
-                  $product->save(false);
 
-              }
-              else
-                  {
+                    $product->save(false);
+
+                } else {
                     //  Yii::$app->session->setFlash('success', $product->errors['name'][0]);
-                      return $this->render('create', ['product' => $product, 'uploader' => $uploader,'categories'=>$categories]);
+                    return $this->render('update', ['product' => $product, 'uploader' => $uploader, 'categories' => $categories]);
 
-                      //return var_dump($product->errors);
-                  }
-
-
-
-
-
-
-
+                    //return var_dump($product->errors);
+                }
 
 
                 $uploader->imageFiles = UploadedFile::getInstances($uploader, 'imageFiles');
 //                self::debug($uploader);
                 if ($uploader->uploadImages()) {
+                          ProductPhoto::deleteAll(['product_id'=>$id]);
+                    foreach ($uploader->imageFiles as $imageFile) {
 
-          foreach ( $uploader->imageFiles as $imageFile)
-          {
+                        $photo = new ProductPhoto();
+                        $photo->image_name = $imageFile->baseName . '.' . $imageFile->extension;
+                        $photo->product_id = $product->id;
+                        if ($photo->validate()) {
 
-              $photo = new ProductPhoto();
-              $photo->image_name=$imageFile->baseName.'.'.$imageFile->extension;
-//              $photo->product_color='black';
-              $photo->product_id=$product->id;
-              if( $photo->validate())
-              {
-                  $photo->save(false);
-              }
-              else
-              {
+                            $photo->save(false);
+                        } else {
 
-                  return $this->render('create', ['product' => $product, 'uploader' => $uploader,'categories'=>$categories]);
-              }
+                            return $this->render('update', ['product' => $product, 'uploader' => $uploader, 'categories' => $categories]);
+                        }
 
-          }
+                    }
 
-        }
+                }
 
 
-
-              return $this->redirect(['product','id'=>$product->id]);
+                return $this->redirect(['product', 'id' => $product->id]);
 
             }
-            return $this->render('create', ['product' => $product, 'uploader' => $uploader,'categories'=>$categories]);
+
+                return $this->render('update', ['product' => $product, 'uploader' => $uploader, 'categories' => $categories]);
+
         }
+    }
+
+
+
+
+    public function actionCreate()
+    {
+        if (Yii::$app->user->identity->status >= 2) {
+
+            $categories = new Category();
+            $product = new Product();
+            $uploader = new UploadProductFile();
+
+
+            if ($product->load(Yii::$app->request->post())) {
+                $product->category_id = (int)$_POST['Category']['name'];
+
+
+
+            if (is_array($product->colors)) {
+                $colors = '';
+                foreach ($product->colors as $color) {
+                    $colors = $colors . $color . ';';
+
+                }
+                $product->colors = $colors;
+            }
+
+
+            if ($product->validate()) {
+
+
+                $product->save(false);
+
+            } else {
+                //  Yii::$app->session->setFlash('success', $product->errors['name'][0]);
+                return $this->render('create', ['product' => $product, 'uploader' => $uploader, 'categories' => $categories]);
+
+                //return var_dump($product->errors);
+            }
+
+
+            $uploader->imageFiles = UploadedFile::getInstances($uploader, 'imageFiles');
+//                self::debug($uploader);
+            if ($uploader->uploadImages()) {
+
+                foreach ($uploader->imageFiles as $imageFile) {
+
+                    $photo = new ProductPhoto();
+                    $photo->image_name = $imageFile->baseName . '.' . $imageFile->extension;
+                    $photo->product_id = $product->id;
+                    if ($photo->validate()) {
+
+                        $photo->save(false);
+                    } else {
+
+                        return $this->render('create', ['product' => $product, 'uploader' => $uploader, 'categories' => $categories]);
+                    }
+
+                }
+
+            }
+
+
+            return $this->redirect(['product', 'id' => $product->id]);
+
+        }
+        return $this->render('create', ['product' => $product, 'uploader' => $uploader, 'categories' => $categories]);
+    }
+
         return $this->goHome();
     }
+
+
+
+
+
+    public  function  actionCategory($id=null)
+    {
+
+
+
+//        if($search_param !== null)
+//        {
+//            $query = Product::find();
+//            $query->andFilterWhere(['like', 'name', $search_param])->all();
+//            $dataProvider = new ActiveDataProvider([
+//                'query'=> $query,
+//                'pagination' => [
+//                    'pageSize' => 20
+//                ]
+//            ]);
+//
+//
+//
+//
+//        }
+
+
+            /** @var TYPE_NAME $dataProvider */
+          if($id!==null) {
+              $sort = new Sort([
+                  'attributes' => [
+                      'price' => [
+                          'asc' => ['price' => SORT_ASC],
+                          'desc' => ['price' => SORT_DESC],
+                          'default' => SORT_DESC,
+                          'label' => 'Price',
+                      ],
+                      'name' => [
+                          'asc' => ['name' => SORT_ASC],
+                          'desc' => ['name' => SORT_DESC],
+                          'default' => SORT_DESC,
+                          'label' => 'Name',
+                      ],
+                  ],
+              ]);
+              $query = Product::find();
+              $query->andFilterWhere(['category_id' => $id])->all();
+              $dataProvider = new ActiveDataProvider([
+                  'query' => $query,
+                  'pagination' => [
+                      'pageSize' => 20
+                  ]
+              ]);
+
+              return $this->render('category', [
+                  'dataProvider' => $dataProvider, 'sort' => $sort
+              ]);
+          }
+          else{
+
+              $this->goHome();
+          }
+    }
+
+
 
 
 
@@ -159,58 +277,37 @@ class GoodsController extends AppController
     }
 
 
-    public   function   actionIndex( $search_param = null, $order = null )
+    public   function   actionIndex(  )
     {
 
-        //todo:: order_by
-        $sort = new Sort([
-            'attributes' => [
-                'price'=>[
-                    'asc' => ['price' => SORT_ASC],
-                    'desc' => ['price' => SORT_DESC],
-                    'default' => SORT_DESC,
-                    'label' => 'Price',
-                ],
-                'name' => [
-                    'asc' => ['name' => SORT_ASC],
-                    'desc' => ['name' => SORT_DESC],
-                    'default' => SORT_DESC,
-                    'label' => 'Name',
-                ],
-            ],
-        ]);
 
-        if($search_param !== null)
+
+
+        $categories = Category::find()->all();
+
+//           var_dump($categories);
+           $products=null;
+
+        foreach ($categories as $category)
         {
-            $query = Product::find();
-            $query->andFilterWhere(['like', 'name', $search_param])->all();
-            $dataProvider = new ActiveDataProvider([
-               'query'=> $query,
-                'pagination' => [
-                    'pageSize' => 20
-                ]
-            ]);
-
-
-
-
+              if(Product::find()->where(['category_id'=>$category->id])->count()>=1)
+              $products[$category->name] = Product::find()->where(['category_id'=>$category->id])->limit(5)->orderBy('updated_at')->all();
+              else
+                  $products[$category->name]=null;
         }
 
-        else {
-              /** @var TYPE_NAME $dataProvider */
-
-
-
-              $dataProvider = new ActiveDataProvider([
-                'query' => Product::find(),
-                  'pagination' => [
-                      'pageSize' => 20
-                         ]
-               ]);
-        }
+//        $query = Product::find();
+//
+//        $dataProvider = new ActiveDataProvider([
+//            'query' => $query,
+//
+//        ]);
+         if ($products!==null)
         return $this->render('index', [
-            'dataProvider' => $dataProvider,'sort'=>$sort
+            'products' => $products,
         ]);
+            else
+                $this->goHome();
     }
 
 

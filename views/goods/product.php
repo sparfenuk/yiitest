@@ -30,38 +30,37 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 
-//
-<<<<<<< HEAD
+
 
 $name=ProductPhoto::findByProductId($product->id);
     // var_dump($name);
+//
+//echo '<div class="product-details">
+//
+//<div class="product-name" style="font-size: 20pt ;">
+//'. HTML::encode($product->name).'
+//</div>
+//<br>
+//<br>
+//<img style="width: 500px" src="'. Yii::$app->params['basePath'] . '/images/product_images/'. HTML::encode($name).'">
+//
+//<h3 class="product-price">
+//'. HTML::encode($product->price).'
+//</h3>
+//
+//<div class="product-details">
+//
+//'. HTML::encode($product->description).'
+//
+//<br>
+//<br>
+//<br>
+//<br>
+//</div>';
 
-echo '<div class="product-details">
-
-<div class="product-name" style="font-size: 20pt ;">
-'. HTML::encode($product->name).'
-</div>
-<br>
-<br>
-<img style="width: 500px" src="'. Yii::$app->params['basePath'] . '/images/product_images/'. HTML::encode($name).'">
-
-<h3 class="product-price">
-'. HTML::encode($product->price).'
-</h3>
-
-<div class="product-details">
-
-'. HTML::encode($product->description).'
-
-<br>
-<br>
-<br>
-<br>
-</div>';
 
 
 
-=======
 //<img style="width: 500px" src="'. Yii::$app->params['basePath'] . '/images/'. HTML::encode($name).'">
 $photos=ProductPhoto::findByProductId($product->id);
    // var_dump($photos);
@@ -91,7 +90,7 @@ echo '
       echo '
   
                           <div class="product-view slick-slide slick-current slick-active" data-slick-index="'.$slickIndex.'" aria-hidden="false" tabindex="'.$tabIndex.'" style="width: 555px; position: relative; left: 0px; top: 0px; z-index: 999; opacity: 1;">
-								<img src="' . Yii::$app->params['basePath'] . '/images/'. HTML::encode($photo->image_name).'" alt="">
+								<img style="width:300px" src="' . Yii::$app->params['basePath'] . '/images/product_images/'. HTML::encode($photo->image_name).'" alt="">
 							</div>';
     $tabIndex=-1;
     $slickIndex++;
@@ -118,13 +117,13 @@ echo '
                                      if ($tabIndex === -1) {
 
                                         echo  '<div class = "product-view slick-slide slick-cloned slick-active" data-slick-index="' . $slickIndex . '" aria-hidden="true" tabindex="-1" style="width: 73px;">
-							                     	<img src = "../../siteMainPageTemplate/e-shop/img/thumb-product01.jpg" alt="">
+							                     	<img src = "' . Yii::$app->params['basePath'] . '/images/product_images/'. HTML::encode($photo->image_name).'" alt="">
 							                    </div>';
                                      }
                                      else
                                          {
                                          echo  '<div class = "product-view slick-slide slick-cloned" data-slick-index="' . $slickIndex . '" aria-hidden="true" tabindex="-1" style="width: 73px;">
-							                     	<img src = "../../siteMainPageTemplate/e-shop/img/thumb-product01.jpg" alt="">
+							                     	<img  src = "' . Yii::$app->params['basePath'] . '/images/product_images/'. HTML::encode($photo->image_name).'" alt="">
 							                    </div>';
                                           }
                                      $tabIndex++;
@@ -323,7 +322,7 @@ echo '
 	</div>
 
 ';
->>>>>>> 8440e75b9b77c52dbc14aaff9be88b1ce25fd72c
+
 if(is_array($product->colors)) {
 
 

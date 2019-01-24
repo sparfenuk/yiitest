@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: meyson
- * Date: 12.01.2019
- * Time: 19:55
+ * Date: 22.01.2019
+ * Time: 20:52
  */
 
 use yii\helpers\Html;
@@ -12,12 +12,12 @@ use app\models\Category;
 /* @var $this yii\web\View */
 /* @var $model app\models\Product */
 
-$this->title = 'Create Posts';
-$this->params['breadcrumbs'][] = ['label' => 'Posts', 'url' => ['index']];
+$this->title = 'Update product information';
+$this->params['breadcrumbs'][] = ['label' => 'Product', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-
+echo 'wadawdawwwwwwwww';
 ?>
-<div class="posts-create">
+<div class="posts-update">
 <!---->
 <!--    'id' => 'ID',-->
 <!--    'name' => 'Name',-->
@@ -30,6 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <!--    'reviews_count' => 'Reviews Count',-->
 <!--    'colors' => 'Colors',-->
 <!--    'photos_id' => 'Photos ID',-->
+
     <?php $form = ActiveForm::begin(); ?>
 
      <?= $form->field($product, 'name')->textInput(['maxlength' => true]) ?>
@@ -39,10 +40,6 @@ $this->params['breadcrumbs'][] = $this->title;
      <?= $form->field($product, 'description')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($product, 'price')->textInput(['type' => 'number']) ?>
-
-
-    <?= $form->field($product, 'availability')->textInput(['type' => 'number'])->label('availability') ?>
-
 
     <?= $form->field($categories, 'name')->dropdownList(
         Category::find()->select(['name', 'id'])->indexBy('id')->column() )->label("Category")?>
