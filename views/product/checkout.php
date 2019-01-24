@@ -1,3 +1,11 @@
+<?php
+/* @var $product \app\models\Product*/
+/* @var $cart \app\models\Cart*/
+/* @var $model app\models\User */
+
+
+use yii\helpers\Html;
+?>
 
 
 	<!-- BREADCRUMB -->
@@ -24,29 +32,23 @@
 							<div class="section-title">
 								<h3 class="title">Billing Details</h3>
 							</div>
+
 							<div class="form-group">
-								<input class="input" type="text" name="first-name" placeholder="First Name">
+								<input class="input" type="text" name="last-name" placeholder="LastaName" value="<?= $model->username ?>">
 							</div>
 							<div class="form-group">
-								<input class="input" type="text" name="last-name" placeholder="Last Name">
-							</div>
-							<div class="form-group">
-								<input class="input" type="email" name="email" placeholder="Email">
+								<input class="input" type="email" name="email" placeholder="Email" value="<?= $model->email ?>">
 							</div>
 							<div class="form-group">
 								<input class="input" type="text" name="address" placeholder="Address">
 							</div>
+
 							<div class="form-group">
-								<input class="input" type="text" name="city" placeholder="City">
+								<input class="input" type="text" name="country" placeholder="Country" value="<?= $model->location ?>">
 							</div>
+
 							<div class="form-group">
-								<input class="input" type="text" name="country" placeholder="Country">
-							</div>
-							<div class="form-group">
-								<input class="input" type="text" name="zip-code" placeholder="ZIP Code">
-							</div>
-							<div class="form-group">
-								<input class="input" type="tel" name="tel" placeholder="Telephone">
+								<input class="input" type="tel" name="tel" placeholder="Telephone" value="<?= $model->mobile_number ?>">
 							</div>
 							<div class="form-group">
 								<div class="input-checkbox">
@@ -128,33 +130,33 @@
 										<th></th>
 										<th class="text-center">Price</th>
 										<th class="text-center">Quantity</th>
-										<th class="text-center">Total</th>
-										<th class="text-right"></th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-                                        <?php $products;?>
-										<td class="thumb"><img src="../../siteMainPageTemplate/e-shop/img/thumb-product01.jpg" alt=""></td>
-										<td class="details">
-											<a href="#">Product Name Goes Here</a>
-											<ul>
-												<li><span>Color: Camelot</span></li>
-											</ul>
-										</td>
-										<td class="price text-center"><strong>$32.50</strong><br></td>
-										<td class="qty text-center"><input class="input" type="number" value="1"></td>
-										<td class="total text-center"><strong class="primary-color">$32.50</strong></td>
-										<td class="text-right"><button class="main-btn icon-btn"><i class="fa fa-close"></i></button></td>
-									</tr>
+                                    <th class="text-center">Total</th>
+                                    <th class="text-right"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                //cartSum
+                                <?php $AllTotal = null; ?>
+                                <?php foreach ($_SESSION['cartProducts'] as $product) {?>
+                                    <tr>
 
-								</tbody>
-								<tfoot>
-									<tr>
-										<th class="empty" colspan="3"></th>
-										<th>SUBTOTAL</th>
-										<th colspan="2" class="sub-total">$97.50</th>
-									</tr>
+                                        <td class="thumb"><img src="../../siteMainPageTemplate/e-shop/img/thumb-product01.jpg" alt=""></td>
+                                        <td class="details">
+                                            <a href="/goods/product?id=<?= $product->id ?>"><?= $product->name ?></a>
+
+                                            <ul>
+                                                <li><span> <?= $product->cartColor ?></span></li>
+                                            </ul>
+                                        </td>
+                                        <td class="price text-center"><strong><?= $product->price ?></strong><br></td>
+                                        <td class="qty text-center"><input class="input" type="number" value="<?=  $product->cartQuantity ?>"></td>
+                                        <td class="total text-center"><strong class="primary-color"><?= $product->price*$product->cartQuantity ?> $</strong></td>
+                                        <td class="text-right"><button class="main-btn icon-btn"><i class="fa fa-close"></i></button></td>
+                                    </tr>
+                                <?php } ?>
+                                </tbody>
+                                <tfoot>
+
 									<tr>
 										<th class="empty" colspan="3"></th>
 										<th>SHIPING</th>
@@ -163,7 +165,7 @@
 									<tr>
 										<th class="empty" colspan="3"></th>
 										<th>TOTAL</th>
-										<th colspan="2" class="total">$97.50</th>
+										<th colspan="2" class="total"> $</th>
 									</tr>
 								</tfoot>
 							</table>

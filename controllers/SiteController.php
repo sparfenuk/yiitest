@@ -211,7 +211,13 @@ class SiteController extends AppController
                     ->setHtmlBody('Welcome to E-Shop.
                  To confirm your email press this <a href="http:/yiitest/site/email-confirm?authKey=' . $model->auth_key . '">LINK</a>')
                     ->send();
+
+            }
+            catch (\Exception $e){
+
+
             } catch (\Exception $e) {
+
                 Yii::$app->session->setFlash('error', 'invalid email');
                 //return $this->goHome();
             }
