@@ -8,9 +8,11 @@
 
 namespace app\controllers;
 
+use app\models\Cart;
 use app\models\Product;
 use app\models\ProductPhoto;
 use Yii;
+use app\models\User;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -18,7 +20,7 @@ use app\models\UploadProductFile;
 use yii\web\UploadedFile;
 
 
-class ProductController extends \yii\web\Controller
+class ProductController extends AppController
 {
     /**
      * {@inheritdoc}
@@ -60,6 +62,9 @@ class ProductController extends \yii\web\Controller
 
     }
 
+    /**
+     * @return string
+     */
     public function actionIndex()
     {
         /** @var TYPE_NAME $dataProvider */
@@ -71,13 +76,17 @@ class ProductController extends \yii\web\Controller
         ]);
     }
     public function actionCheckout(){
+        $model = User::findIdentity(Yii::$app->user->identity->getId());
+        $products = Product::find()->all();
 
 
-        return $this->render('checkout'); /*,[
-            'products' => $products, ''*/
+        return $this->render('checkout', ['product' => $products, 'model' => $model]);
     }
     public function actionSearch(){
         return $this->render('products');
+
+
+
 
     }
 

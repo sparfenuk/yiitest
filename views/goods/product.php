@@ -32,6 +32,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 
+
+
 $name=ProductPhoto::findByProductId($product->id);
     // var_dump($name);
 //
@@ -57,6 +59,9 @@ $name=ProductPhoto::findByProductId($product->id);
 //<br>
 //<br>
 //</div>';
+
+
+
 
 
 
