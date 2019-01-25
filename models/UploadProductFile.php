@@ -21,7 +21,7 @@ class UploadProductFile extends Model
     public function rules()
     {
         return [
-               [['imageFiles'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, jpeg', 'maxFiles' => 10],
+               [['imageFiles'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, jpeg, webp', 'maxFiles' => 10],
         ];
     }
 

@@ -12,7 +12,7 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
-
+use app\models\Category;
 AppAsset::register($this);
 
 $this->registerJsFile('https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js');
@@ -208,129 +208,58 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
             <div class="category-nav show-on-click">
                 <span class="category-header">Categories <i class="fa fa-list"></i></span>
                 <ul class="category-list">
+                   <?php
+
+                   $categories = Category::find()->where('id = parent_id')->all();
+                   foreach ($categories as $category)
+                   {
+                        if (!Category::find()->where(['parent_id' => $category->id])->andWhere(['>','id',$category->id])->exists())
+                            echo '<li>'.Html::a($category->name,['/goods/category?id='.$category->id]).'</li>';
+                        else {
+                            ?>
                     <li class="dropdown side-dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Women’s Clothing <i class="fa fa-angle-right"></i></a>
+                        <?= Html::a($category->name.'<i class="fa fa-angle-right"></i>',['/goods/category?id='.$category->id],['class' => 'dropdown-toggle' , 'data-toggle' => 'dropdown' , 'aria-expanded' => 'true']) ?>
                         <div class="custom-menu">
                             <div class="row">
+
+                                        <?php
+                                            $level2all = Category::find()->where(['parent_id' => $category->id])->all();
+                                            foreach ($level2all as $level2) { ?>
                                 <div class="col-md-4">
-                                    <ul class="list-links">
-                                        <li>
-                                            <h3 class="list-links-title">Categories</h3></li>
-                                        <li><a href="#">Women’s Clothing</a></li>
-                                        <li><a href="#">Men’s Clothing</a></li>
-                                        <li><a href="#">Phones & Accessories</a></li>
-                                        <li><a href="#">Jewelry & Watches</a></li>
-                                        <li><a href="#">Bags & Shoes</a></li>
-                                    </ul>
-                                    <hr class="hidden-md hidden-lg">
-                                </div>
-                                <div class="col-md-4">
-                                    <ul class="list-links">
-                                        <li>
-                                            <h3 class="list-links-title">Categories</h3></li>
-                                        <li><a href="#">Women’s Clothing</a></li>
-                                        <li><a href="#">Men’s Clothing</a></li>
-                                        <li><a href="#">Phones & Accessories</a></li>
-                                        <li><a href="#">Jewelry & Watches</a></li>
-                                        <li><a href="#">Bags & Shoes</a></li>
-                                    </ul>
-                                    <hr class="hidden-md hidden-lg">
-                                </div>
-                                <div class="col-md-4">
-                                    <ul class="list-links">
-                                        <li>
-                                            <h3 class="list-links-title">Categories</h3></li>
-                                        <li><a href="#">Women’s Clothing</a></li>
-                                        <li><a href="#">Men’s Clothing</a></li>
-                                        <li><a href="#">Phones & Accessories</a></li>
-                                        <li><a href="#">Jewelry & Watches</a></li>
-                                        <li><a href="#">Bags & Shoes</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="row hidden-sm hidden-xs">
-                                <div class="col-md-12">
-                                    <hr>
-                                    <a class="banner banner-1" href="#">
-                                        <img src="../../siteMainPageTemplate/e-shop/img/banner05.jpg" alt="">
-                                        <div class="banner-caption text-center">
-                                            <h2 class="white-color">NEW COLLECTION</h2>
-                                            <h3 class="white-color font-weak">HOT DEAL</h3>
-                                        </div>
-                                    </a>
-                                </div>
+                                                <ul class="list-links">
+                                                <?= Html::a('<li><h3 class="list-links-title">' . $level2->name . '</h3></li>', ['/goods/category?id=' . $level2->id]) ?>
+                                                <?php
+                                                $level3all = Category::find()->where(['parent_id' => $level2->id])->all();
+                                                foreach ($level3all as $level3) {
+                                                    ?>
+                                                    <?= Html::a('<li>'.$level3->name.'</li>',['/goods/category?id=' . $level3->id]) ?>
+
+
+
+                                                <?php }
+                                                echo '</ul></div>';
+                                            }
+
+                                        ?>
+
                             </div>
                         </div>
                     </li>
-                    <li><a href="#">Men’s Clothing</a></li>
-                    <li class="dropdown side-dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Phones & Accessories <i class="fa fa-angle-right"></i></a>
-                        <div class="custom-menu">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <ul class="list-links">
-<!--                                        <li>-->
-<!--                                            <h3 class="list-links-title">Categories</h3></li>-->
-<!--                                        <li><a href="#">Women’s Clothing</a></li>-->
-<!--                                        <li><a href="#">Men’s Clothing</a></li>-->
-<!--                                        <li><a href="#">Phones & Accessories</a></li>-->
-<!--                                        <li><a href="#">Jewelry & Watches</a></li>-->
-<!--                                        <li><a href="#">Bags & Shoes</a></li>-->
-                                    </ul>
-                                    <hr>
-                                    <ul class="list-links">
-                                        <li>
-                                            <h3 class="list-links-title">Categories</h3></li>
-                                        <li><a href="#">Women’s Clothing</a></li>
-                                        <li><a href="#">Men’s Clothing</a></li>
-                                        <li><a href="#">Phones & Accessories</a></li>
-                                        <li><a href="#">Jewelry & Watches</a></li>
-                                        <li><a href="#">Bags & Shoes</a></li>
-                                    </ul>
-                                    <hr class="hidden-md hidden-lg">
-                                </div>
-                                <div class="col-md-4">
-                                    <ul class="list-links">
-                                        <li>
-                                            <h3 class="list-links-title">Categories</h3></li>
-                                        <li><a href="#">Women’s Clothing</a></li>
-                                        <li><a href="#">Men’s Clothing</a></li>
-                                        <li><a href="#">Phones & Accessories</a></li>
-                                        <li><a href="#">Jewelry & Watches</a></li>
-                                        <li><a href="#">Bags & Shoes</a></li>
-                                    </ul>
-                                    <hr>
-                                    <ul class="list-links">
-                                        <li>
-                                            <h3 class="list-links-title">Categories</h3></li>
-                                        <li><a href="#">Women’s Clothing</a></li>
-                                        <li><a href="#">Men’s Clothing</a></li>
-                                        <li><a href="#">Phones & Accessories</a></li>
-                                        <li><a href="#">Jewelry & Watches</a></li>
-                                        <li><a href="#">Bags & Shoes</a></li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-4 hidden-sm hidden-xs">
-                                    <a class="banner banner-2" href="#">
-                                        <img src="../../siteMainPageTemplate/e-shop/img/banner04.jpg" alt="">
-                                        <div class="banner-caption">
-                                            <h3 class="white-color">NEW<br>COLLECTION</h3>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li><a href="#">Computer & Office</a></li>
-                    <li><a href="#">Consumer Electronics</a></li>
+
+                       <?php }
+
+                   }
+
+                   ?>
                     <li class="dropdown side-dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Jewelry & Watches <i class="fa fa-angle-right"></i></a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Level 1<i class="fa fa-angle-right"></i></a>
                         <div class="custom-menu">
                             <div class="row">
                                 <div class="col-md-4">
                                     <ul class="list-links">
                                         <li>
-                                            <h3 class="list-links-title">Categories</h3></li>
-                                        <li><a href="#">Women’s Clothing</a></li>
+                                            <h3 class="list-links-title">Level 2</h3></li>
+                                        <li><a href="#">Level 3</a></li>
                                         <li><a href="#">Men’s Clothing</a></li>
                                         <li><a href="#">Phones & Accessories</a></li>
                                         <li><a href="#">Jewelry & Watches</a></li>
@@ -339,7 +268,7 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                                     <hr>
                                     <ul class="list-links">
                                         <li>
-                                            <h3 class="list-links-title">Categories</h3></li>
+                                            <h3 class="list-links-title">level 2.2</h3></li>
                                         <li><a href="#">Women’s Clothing</a></li>
                                         <li><a href="#">Men’s Clothing</a></li>
                                         <li><a href="#">Phones & Accessories</a></li>
@@ -394,8 +323,10 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                             </div>
                         </div>
                     </li>
-                    <li><a href="#">Bags & Shoes</a></li>
-                    <li><a href="#">View All</a></li>
+
+
+
+
                 </ul>
             </div>
             <!-- /category nav -->

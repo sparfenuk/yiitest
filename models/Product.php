@@ -111,6 +111,21 @@ class Product extends \yii\db\ActiveRecord
         return $this->hasMany(ProductPhoto::className(), ['product_id' => 'id']);
     }
 
+    public function checkIfExist($product)
+    {
+        self::find()->where(['name'=>$product->name])->one();
+         if(exists===true)
+         {
+             $product->update();
+
+         }
+         else
+         {
+             $product->save();
+
+         }
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

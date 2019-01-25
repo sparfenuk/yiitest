@@ -85,7 +85,7 @@ class Cart extends \yii\db\ActiveRecord
 
     public static function primaryKey()
     {
-        return ['user_id'];
+        return ['id'];
     }
 
 }
