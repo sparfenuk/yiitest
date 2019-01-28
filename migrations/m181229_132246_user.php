@@ -104,9 +104,9 @@ class m181229_132246_user extends Migration
                 'id',
                 'CASCADE'
             );
-            //$this->createIndex('idx-product-category',
-              //  '{{%product}}',
-                //'category_id');
+            $this->createIndex('idx-product-category',
+                '{{%product}}',
+                'category_id');
             $this->addForeignKey('fk-product-category',
                 '{{%product}}',
                 'category_id',

@@ -179,7 +179,7 @@ echo '
 								<span class="sale">-20%</span>
 							</div>
 							<h2 class="product-name">'. HTML::encode($product->name).'</h2>
-							<h3 class="product-price">$'. HTML::encode($product->price).' <del class="product-old-price">$45.00</del></h3>
+							<h3 class="product-price">$'. HTML::encode(round($product->price)).' <del class="product-old-price">$45.00</del></h3>
 							<div>
 								<div class="product-rating">
 									<i class="fa fa-star"></i>
@@ -279,7 +279,48 @@ echo '
 										<div class="col-md-6">
 											<h4 class="text-uppercase">Write Your Review</h4>
 											<p>Your email address will not be published.</p>
-											<form class="review-form">
+											
+											';
+
+
+                     $form = ActiveForm::begin(); ?>
+
+     <?= $form->field($product, 'name')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($product, 'brand')->textInput(['maxlength' => true]) ?>
+
+     <?= $form->field($product, 'description')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($product, 'price')->textInput(['type' => 'number']) ?>
+
+
+    <?= $form->field($product, 'availability')->textInput(['type' => 'number'])->label('availability') ?>
+
+
+    <?= $form->field($categories, 'name')->dropdownList(
+        Category::find()->select(['name', 'id'])->indexBy('id')->column() )->label("Category")?>
+
+
+    <?= $form->field($uploader, 'imageFiles[]')->fileInput(['multiple' => true, 'accept' => 'image/*']) ?>
+
+    <?= $form->field($product, 'colors')->checkboxList([
+        'black' => 'black',
+        'blue' => 'blue',
+        'rose'=>'rose',
+        'gold'=>'gold',
+        'pink'=>'pink'
+    ]);
+
+    ?>
+    <div class="form-group">
+        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
+
+
+
+										<form class="review-form">
 												<div class="form-group">
 													<input class="input" type="text" placeholder="Your Name">
 												</div>
