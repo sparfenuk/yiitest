@@ -71,7 +71,7 @@ class m181229_132246_user extends Migration
 
             $this->createTable('{{%category}}',[
                 'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
-                'name' => $this->string()->unique()->notNull(),
+                'name' => $this->string()->notNull(),
                 'parent_id' => $this->integer()->notNull()->defaultValue(0)// табличка зсилається сама на себе
             ],$tableOptions);
 
@@ -146,15 +146,15 @@ class m181229_132246_user extends Migration
 
 
 
-        $this->dropIndex('idx-review-product','review');
+        //$this->dropIndex('idx-review-product','review');
         $this->dropForeignKey('fk-review-product','review');
-        $this->dropIndex('idx-favourites-user','favourites');
+        //$this->dropIndex('idx-favourites-user','favourites');
         $this->dropForeignKey('fk-favourites-user','favourites');
-        $this->dropIndex('idx-photos-product','product_photo');
+        //$this->dropIndex('idx-photos-product','product_photo');
         $this->dropForeignKey('fk-photos-product','product_photo');
         //$this->dropIndex('idx-product-category','category_id');
         $this->dropForeignKey('fk-product-category','category_id');
-        $this->dropIndex('idx-cart-user','cart');
+        //$this->dropIndex('idx-cart-user','cart');
         $this->dropForeignKey('fk-cart-user','cart');
 
         $this->dropTable('{{%user}}');

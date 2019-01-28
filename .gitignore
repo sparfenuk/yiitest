@@ -22,10 +22,10 @@ composer.phar
 .DS_Store
 
 # config (password) dir
-/config
+**/config
 
 # project photos
-/images
+**/images
 
 # phpunit itself is not needed
 phpunit.phar

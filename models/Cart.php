@@ -19,6 +19,7 @@ class Cart extends \yii\db\ActiveRecord
     public $products = array();
     public $i = 0; //for array counting (count() not works)
     public $sum = 0;
+    //public $sumQun ;
     /**
      * {@inheritdoc}
      */
@@ -44,6 +45,7 @@ class Cart extends \yii\db\ActiveRecord
               $this->sum += $this->products[$this->i]['price'];
               $this->i++;
           }
+
         }
 
         return $this->products;
@@ -85,7 +87,7 @@ class Cart extends \yii\db\ActiveRecord
 
     public static function primaryKey()
     {
-        return ['user_id'];
+        return ['id'];
     }
 
 }

@@ -5,6 +5,7 @@ namespace app\controllers;
 
 
 use app\models\Cart;
+use app\models\Category;
 use app\models\User;
 use PHPUnit\Framework\Error\Error;
 use Yii;
@@ -82,6 +83,8 @@ class SiteController extends AppController
         ]);
 
         self::setCart();
+
+
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
@@ -211,7 +214,13 @@ class SiteController extends AppController
                     ->setHtmlBody('Welcome to E-Shop.
                  To confirm your email press this <a href="http:/yiitest/site/email-confirm?authKey=' . $model->auth_key . '">LINK</a>')
                     ->send();
+
+            }
+            catch (\Exception $e){
+
+
             } catch (\Exception $e) {
+
                 Yii::$app->session->setFlash('error', 'invalid email');
                 //return $this->goHome();
             }
