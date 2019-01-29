@@ -5,6 +5,7 @@ namespace app\controllers;
 
 
 use app\models\Cart;
+use app\models\Category;
 use app\models\User;
 use PHPUnit\Framework\Error\Error;
 use Yii;
@@ -82,6 +83,8 @@ class SiteController extends AppController
         ]);
 
         self::setCart();
+
+
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,

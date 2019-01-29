@@ -8,6 +8,7 @@ use app\models\Product;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\Query;
+use yii\debug\models\search\User;
 use yii\debug\panels\EventPanel;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -16,7 +17,7 @@ use app\models\UploadProductFile;
 use app\models\ProductPhoto;
 use yii\web\UploadedFile;
 use yii\data\Sort;
-
+use app\models\Review;
 class GoodsController extends AppController
 {
     /**
@@ -43,12 +44,37 @@ class GoodsController extends AppController
     {
         $categories = new Category();
         $uploader = new UploadProductFile();
+        $productFrom=new Product();
         if (Yii::$app->user->identity->status >= 2 && $id !== null) {
 
             $product = Product::findProductById($id);
-               if ($product->load(Yii::$app->request->post())) {
+           // self::debug($product);
+            //echo '<hr>';
+             if ($productFrom->load(Yii::$app->request->post())) {
+                 //self::debug($productFrom);
+//                 'id' => 'ID',
+//            'name' => 'Name',
+//            'brand' => 'Brand',
+//            'category_id' => 'Category ID',
+//            'price' => 'Price',
+//            'availability' => 'Availability',
+//            'is_new' => 'Is New',
+//            'discount' => 'Discount',
+//            'description' => 'Description',
+//            'reviews_count' => 'Reviews Count',
+//            'colors' => 'Colors',
+//            'created_at' => 'Created At',
+//            'updated_at' => 'Updated At',
+                $product->name=$productFrom->name;
+                $product->description=$productFrom->description;
+                $product->price=$productFrom->price;
+                $product->colors=$productFrom->colors;
+                $product->brand=$productFrom->brand;
+                $product->updated_at=date('Y-m-d H:i:s');
+                $product->availability=$productFrom->availability;
                 $product->category_id = (int)$_POST['Category']['name'];
-
+             //  self::debug($_POST);
+//                record
 
 
                 if (is_array($product->colors)) {
@@ -60,13 +86,16 @@ class GoodsController extends AppController
                     $product->colors = $colors;
                 }
 
-
+//                   echo 'qwerty';
                 if ($product->validate()) {
-
+                  //   $product->isNewRecord=false;
+//                    echo 'qwerty';
 
                     $product->save(false);
 
+
                 } else {
+                    self::debug($product->errors);
                     //  Yii::$app->session->setFlash('success', $product->errors['name'][0]);
                     return $this->render('update', ['product' => $product, 'uploader' => $uploader, 'categories' => $categories]);
 
@@ -247,29 +276,30 @@ class GoodsController extends AppController
         return $this->render('product-page');
     }
 
-    public function actionAddToCard()
-    {
-       if(isset($_POST))
-       {
-          
-           print_r($_POST);
-       }
-    }
+
 
     public function  actionProduct($id=null)
     {
 
 
-
         if($id!==null) {
            $product=Product::findProductById($id);
+            $query = Review::find();
+            $query->andFilterWhere(['product_id'=>$id])->all();
+            $dataProvider = new ActiveDataProvider([
+                'query' => $query,
+                'pagination' => [
+                    'pageSize' => 3
+                ]
+            ]);
 
+            $review = new Review();
         }
         if($product!==null) {
             if(isset($product->colors))
                 $product->colors= explode(';',$product->colors);
             return $this->render('product', [
-                'product' => $product
+                'product' => $product,'reviewDataProvider' => $dataProvider,'review'=>$review
             ]);
         }
 
@@ -283,7 +313,7 @@ class GoodsController extends AppController
 
 
 
-        $categories = Category::find()->all();
+        $categories = Category::find()->limit(5)->all();
 
 //           var_dump($categories);
            $products=null;
@@ -310,5 +340,35 @@ class GoodsController extends AppController
                 $this->goHome();
     }
 
+
+
+    public  function actionAddReview()
+    {
+        if(!Yii::$app->user->isGuest) {
+            $review = new Review();
+            if ($review->load(Yii::$app->request->post())) {
+
+                $review->product_id=$_POST['product_id'];
+                $review->user_id=$_POST['user_id'];
+                $review->mark=$_POST['rating'];
+                //self::debug($review);
+                if ($review->validate()) {
+                    $review->save();
+                    $this->render('product', [
+                        'product' =>  Product::findProductById($review->product_id), 'review' => new Review()
+                    ]);
+                } else {
+
+                    self::debug($review->getErrors());
+                    $this->render('product', [
+                        'product' =>  Product::findProductById($review->product_id), 'review' => $review
+                    ]);
+                }
+            }
+        }
+            return;
+
+
+    }
 
 }

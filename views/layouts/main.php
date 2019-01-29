@@ -209,17 +209,48 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                 <span class="category-header">Categories <i class="fa fa-list"></i></span>
                 <ul class="category-list">
                    <?php
-                   $categories = Category::find()->all();
+
+                   $categories = Category::find()->where('id = parent_id')->all();
                    foreach ($categories as $category)
                    {
-                       $url = Url::toRoute( [ 'goods/category', 'id' => $category->id] );
-                    echo '<li><a href="'.$url.'">'.$category->name.'</a></li>';
+                        if (!Category::find()->where(['parent_id' => $category->id])->andWhere(['>','id',$category->id])->exists())
+                            echo '<li>'.Html::a($category->name,['/goods/category?id='.$category->id]).'</li>';
+                        else {
+                            ?>
+                    <li class="dropdown side-dropdown">
+                        <?= Html::a($category->name.'<i class="fa fa-angle-right"></i>',['/goods/category?id='.$category->id],['class' => 'dropdown-toggle' , 'data-toggle' => 'dropdown' , 'aria-expanded' => 'true']) ?>
+                        <div class="custom-menu">
+                            <div class="row">
+
+                                        <?php
+                                            $level2all = Category::find()->where(['parent_id' => $category->id])->all();
+                                            foreach ($level2all as $level2) { ?>
+                                <div class="col-md-4">
+                                                <ul class="list-links">
+                                                <?= Html::a('<li><h3 class="list-links-title">' . $level2->name . '</h3></li>', ['/goods/category?id=' . $level2->id]) ?>
+                                                <?php
+                                                $level3all = Category::find()->where(['parent_id' => $level2->id])->all();
+                                                foreach ($level3all as $level3) {
+                                                    ?>
+                                                    <?= Html::a('<li>'.$level3->name.'</li>',['/goods/category?id=' . $level3->id]) ?>
+
+
+
+                                                <?php }
+                                                echo '</ul></div>';
+                                            }
+
+                                        ?>
+
+                            </div>
+                        </div>
+                    </li>
+
+                       <?php }
 
                    }
 
                    ?>
-
-
                 </ul>
             </div>
             <!-- /category nav -->

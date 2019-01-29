@@ -18,7 +18,7 @@ use yii\widgets\LinkPager;
 
 $this->title = 'Goods';
 $this->params['breadcrumbs'][] = $this->title;
- var_dump($products);
+
 
 
 
