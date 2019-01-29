@@ -23,6 +23,9 @@ use app\assets\AppAsset;
 use yii\helpers\Url;
 use app\models\Product;
 use yii\widgets\ActiveForm;
+use yii\widgets\LinkPager;
+
+
 
 $this->title = 'Goods';
 $this->params['breadcrumbs'][] = $this->title;
@@ -219,123 +222,89 @@ echo '
 									<div class="row">
 										<div class="col-md-6">
 											<div class="product-reviews">
-												<div class="single-review">
+											
+											
+											    ';
+
+//echo var_dump($reviewDataProvider->pagination);
+echo var_dump($reviewDataProvider);
+                                 foreach ($reviewDataProvider->models as $review)
+                                 {
+
+                                              $user=$review->getUser();
+                                     echo '<div class="single-review">
 													<div class="review-heading">
-														<div><a href="#"><i class="fa fa-user-o"></i> John</a></div>
-														<div><a href="#"><i class="fa fa-clock-o"></i> 27 DEC 2017 / 8:0 PM</a></div>
+														<div><a href="#"><i class="fa fa-user-o"></i>'.$user->name.'</a></div>
+														<div><a href="#"><i class="fa fa-clock-o"></i>'.$review->created_at.'</a></div>
 														<div class="review-rating pull-right">
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star-o empty"></i>
+														   ';
+
+
+                                                                for($i=0;$i<5;$i++)
+                                                                {
+                                                                    if($i<$review->mark)
+                                                                    echo '<i class="fa fa-star"></i>';
+                                                                    else
+                                                                        echo '<i class="fa fa-star-o empty"></i>';
+                                                                }
+
+
+
+                                                            echo '
+															
+														
 														</div>
 													</div>
 													<div class="review-body">
-														<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute
-															irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+														<p>'.$review->description.'</p>
 													</div>
-												</div>
+												</div>';
 
-												<div class="single-review">
-													<div class="review-heading">
-														<div><a href="#"><i class="fa fa-user-o"></i> John</a></div>
-														<div><a href="#"><i class="fa fa-clock-o"></i> 27 DEC 2017 / 8:0 PM</a></div>
-														<div class="review-rating pull-right">
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star-o empty"></i>
-														</div>
-													</div>
-													<div class="review-body">
-														<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute
-															irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-													</div>
-												</div>
+                                 }
 
-												<div class="single-review">
-													<div class="review-heading">
-														<div><a href="#"><i class="fa fa-user-o"></i> John</a></div>
-														<div><a href="#"><i class="fa fa-clock-o"></i> 27 DEC 2017 / 8:0 PM</a></div>
-														<div class="review-rating pull-right">
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star"></i>
-															<i class="fa fa-star-o empty"></i>
-														</div>
-													</div>
-													<div class="review-body">
-														<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute
-															irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-													</div>
-												</div>
 
-												<ul class="reviews-pages">
-													<li class="active">1</li>
-													<li><a href="#">2</a></li>
-													<li><a href="#">3</a></li>
-													<li><a href="#"><i class="fa fa-caret-right"></i></a></li>
-												</ul>
+								echo ' '.LinkPager::widget(['pagination' =>  $reviewDataProvider->pagination]).'
 											</div>
 										</div>
 										<div class="col-md-6">
 											<h4 class="text-uppercase">Write Your Review</h4>
-											<p>Your email address will not be published.</p>
+											
 											
 											';
 
 
-                     $form = ActiveForm::begin(); ?>
-
-     <?= $form->field($product, 'name')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($product, 'brand')->textInput(['maxlength' => true]) ?>
-
-     <?= $form->field($product, 'description')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($product, 'price')->textInput(['type' => 'number']) ?>
-
-
-    <?= $form->field($product, 'availability')->textInput(['type' => 'number'])->label('availability') ?>
-
-
-    <?= $form->field($categories, 'name')->dropdownList(
-        Category::find()->select(['name', 'id'])->indexBy('id')->column() )->label("Category")?>
-
-
-    <?= $form->field($uploader, 'imageFiles[]')->fileInput(['multiple' => true, 'accept' => 'image/*']) ?>
-
-    <?= $form->field($product, 'colors')->checkboxList([
-        'black' => 'black',
-        'blue' => 'blue',
-        'rose'=>'rose',
-        'gold'=>'gold',
-        'pink'=>'pink'
-    ]);
-
-    ?>
-    <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
 
 
 
-										<form class="review-form">
-												<div class="form-group">
-													<input class="input" type="text" placeholder="Your Name">
-												</div>
-												<div class="form-group">
-													<input class="input" type="email" placeholder="Email Address">
-												</div>
-												<div class="form-group">
-													<textarea class="input" placeholder="Your review"></textarea>
-												</div>
-												<div class="form-group">
+
+
+
+
+
+
+               $form = ActiveForm::begin([
+                        'action' => '/goods/add-review',
+                        'options' => [
+                            'class' => 'review-form'
+                        ]
+                    ]);
+
+
+
+
+   echo '<div class="form-group" >';
+//'id' => 'ID',
+//            'user_id' => 'User ID',
+//            'product_id' => 'Product ID',
+//            'mark' => 'Mark',
+//            'description' => 'Description',
+//            'created_at' => 'Created At',
+           echo Html::hiddenInput('user_id', Yii::$app->user->id);
+           echo Html::hiddenInput('product_id', $product->id);
+
+         echo $form->field($review, 'description')->textarea(['rows' => '6'])->label('Your review');
+                                   echo '	
+	                                         <div class="form-group">
 													<div class="input-rating">
 														<strong class="text-uppercase">Your Rating: </strong>
 														<div class="stars">
@@ -346,9 +315,37 @@ echo '
 															<input type="radio" id="star1" name="rating" value="1"><label for="star1"></label>
 														</div>
 													</div>
-												</div>
-												<button class="primary-btn">Submit</button>
-											</form>
+												</div>';
+    echo '</div>';
+         echo  Html::submitButton('Submit', ['class' => 'btn btn-success']);
+         ActiveForm::end(); ?>
+
+
+<!---->
+<!--										<form class="review-form" method="post">-->
+<!--												<div class="form-group">-->
+<!--													<input class="input" type="text" placeholder="Your Name">-->
+<!--												</div>-->
+<!--												<div class="form-group">-->
+<!--													<input class="input" type="email" placeholder="Email Address">-->
+<!--												</div>-->
+<!--												<div class="form-group">-->
+<!--													<textarea class="input" placeholder="Your review"></textarea>-->
+<!--												</div>-->
+<!--												<div class="form-group">-->
+<!--													<div class="input-rating">-->
+<!--														<strong class="text-uppercase">Your Rating: </strong>-->
+<!--														<div class="stars">-->
+<!--															<input type="radio" id="star5" name="rating" value="5"><label for="star5"></label>-->
+<!--															<input type="radio" id="star4" name="rating" value="4"><label for="star4"></label>-->
+<!--															<input type="radio" id="star3" name="rating" value="3"><label for="star3"></label>-->
+<!--															<input type="radio" id="star2" name="rating" value="2"><label for="star2"></label>-->
+<!--															<input type="radio" id="star1" name="rating" value="1"><label for="star1"></label>-->
+<!--														</div>-->
+<!--													</div>-->
+<!--												</div>-->
+<!--												<button class="primary-btn" >Submit</button>-->
+<!--											</form>-->
 										</div>
 									</div>
 
@@ -367,8 +364,8 @@ echo '
 		<!-- /container -->
 	</div>
 
-';
 
+<?php
 if(is_array($product->colors)) {
 
 

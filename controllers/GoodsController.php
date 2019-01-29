@@ -8,6 +8,7 @@ use app\models\Product;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\Query;
+use yii\debug\models\search\User;
 use yii\debug\panels\EventPanel;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -281,16 +282,24 @@ class GoodsController extends AppController
     {
 
 
-
         if($id!==null) {
            $product=Product::findProductById($id);
+            $query = Review::find();
+            $query->andFilterWhere(['product_id'=>$id])->all();
+            $dataProvider = new ActiveDataProvider([
+                'query' => $query,
+                'pagination' => [
+                    'pageSize' => 3
+                ]
+            ]);
 
+            $review = new Review();
         }
         if($product!==null) {
             if(isset($product->colors))
                 $product->colors= explode(';',$product->colors);
             return $this->render('product', [
-                'product' => $product
+                'product' => $product,'reviewDataProvider' => $dataProvider,'review'=>$review
             ]);
         }
 
@@ -335,19 +344,30 @@ class GoodsController extends AppController
 
     public  function actionAddReview()
     {
-         $reviews = new Review();
-        if($reviews->load( Yii::$app->request->post()))
-        {
-          if($reviews->validate())
-          {
-              $reviews->save();
-          }
-            else
-            {
-             $this->goBack();
+        if(!Yii::$app->user->isGuest) {
+            $review = new Review();
+            if ($review->load(Yii::$app->request->post())) {
+
+                $review->product_id=$_POST['product_id'];
+                $review->user_id=$_POST['user_id'];
+                $review->mark=$_POST['rating'];
+                //self::debug($review);
+                if ($review->validate()) {
+                    $review->save();
+                    $this->render('product', [
+                        'product' =>  Product::findProductById($review->product_id), 'review' => new Review()
+                    ]);
+                } else {
+
+                    self::debug($review->getErrors());
+                    $this->render('product', [
+                        'product' =>  Product::findProductById($review->product_id), 'review' => $review
+                    ]);
+                }
             }
         }
-      return;
+            return;
+
 
     }
 
