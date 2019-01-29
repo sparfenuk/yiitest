@@ -19,7 +19,7 @@ class Cart extends \yii\db\ActiveRecord
     public $products = array();
     public $i = 0; //for array counting (count() not works)
     public $sum = 0;
-    //public $sumQun ;
+
     /**
      * {@inheritdoc}
      */
@@ -43,6 +43,7 @@ class Cart extends \yii\db\ActiveRecord
               $this->products[$this->i]->cartColor = $cart['color'];
               $this->products[$this->i]->cartQuantity = $cart['quantity'];
               $this->sum += $this->products[$this->i]['price'];
+
               $this->i++;
           }
 

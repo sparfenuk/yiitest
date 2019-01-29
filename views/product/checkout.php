@@ -136,7 +136,7 @@ use yii\helpers\Html;
                                 </thead>
                                 <tbody>
                                 //cartSum
-                                <?php $AllTotal = null; ?>
+                                <?php ?>
                                 <?php foreach ($_SESSION['cartProducts'] as $product) {?>
                                     <tr>
 
@@ -150,7 +150,7 @@ use yii\helpers\Html;
                                         </td>
                                         <td class="price text-center"><strong><?= $product->price ?></strong><br></td>
                                         <td class="qty text-center"><input class="input" type="number" value="<?=  $product->cartQuantity ?>"></td>
-                                        <td class="total text-center"><strong class="primary-color"><?= $product->price*$product->cartQuantity ?> $</strong></td>
+                                        <td class="total text-center"><strong class="primary-color"><?= $AllTotal = $product->price*$product->cartQuantity ?> $</strong></td>
                                         <td class="text-right"><button class="main-btn icon-btn"><i class="fa fa-close"></i></button></td>
                                     </tr>
                                 <?php } ?>
@@ -165,7 +165,7 @@ use yii\helpers\Html;
 									<tr>
 										<th class="empty" colspan="3"></th>
 										<th>TOTAL</th>
-										<th colspan="2" class="total"> $</th>
+										<th colspan="2" class="total"><?php ?>$</th>
 									</tr>
 								</tfoot>
 							</table>

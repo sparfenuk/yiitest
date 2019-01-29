@@ -54,6 +54,7 @@ class AppController extends Controller{
         $_SESSION['cartProducts'] = $cart->products;
         $_SESSION['cartCount'] = $cart->i;
         $_SESSION['cartSum'] = $cart->sum;
+
 //        self::debug($cart->products);
     }
 
