@@ -24,7 +24,7 @@ class m181229_132246_user extends Migration
                 'auth_key' => $this->string()->notNull()->unique(), //created for confirming email and changing password via email
                 'bought_items_count' => $this->integer()->defaultValue(0),
                 'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
-                'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP')
+                'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP').' ON UPDATE CURRENT_TIMESTAMP'
             ],
                 $tableOptions);
 
@@ -41,7 +41,7 @@ class m181229_132246_user extends Migration
                 'reviews_count' => $this->integer(7)->defaultValue(0),
                 'colors' => $this->string(200), //розділювач - ";"
                 'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
-                'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP')
+                'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP').' ON UPDATE CURRENT_TIMESTAMP'
             ],
                 $tableOptions);
 
@@ -82,6 +82,29 @@ class m181229_132246_user extends Migration
                 'color' => $this->string(),
                 'quantity' => $this->integer()->defaultValue(0)
             ],$tableOptions);
+
+
+            $this->createTable('{{%chat}}',[
+                'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
+                'user_id' => $this->integer()->defaultValue(null),
+                'message' => $this->string(),
+                'updateDate' => $this->timestamp()->notNull().'DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
+            ],$tableOptions);
+
+            $this->createTable('{{%order}}',[
+                'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
+                'user_id' => $this->integer()->notNull(),
+                'product_id' => $this->integer()->notNull(),
+                'quantity' => $this->integer()->notNull()->defaultValue(1),
+                'color' => $this->string()->defaultValue(null),
+                'status' => $this->string()->defaultValue('created') //created;payed;processed;send;get;finished;disputed;
+            ],$tableOptions);
+
+//            $this->createTable('{{%address}}',[
+//                'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
+//                'user_id' => $this->integer()->notNull(),
+//
+//            ],$tableOptions);
 
             $this->createIndex('idx-cart-user',
                 '{{%cart}}',
