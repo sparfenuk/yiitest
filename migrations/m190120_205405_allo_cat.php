@@ -201,7 +201,7 @@ function firstLevel($doc)
             }
         }
 
-        echo '<hr>';
+
     }
 
     function parseProducts($link){
@@ -225,27 +225,29 @@ function firstLevel($doc)
 
         $q = $productXpath->query('//div[@class="title-additional"]/h1');
 
-        $name = $q->item(0)->nodeValue;
+        $name = preg_replace('/ {2,}/', ' ', trim($q->item(0)->nodeValue));
 
-        $brand = explode(' ',trim( $q->item(0)->nodeValue));
+        $brand = explode(' ',trim($name));
 
 
         $q = $productXpath->query('//p/span[@class="price"]/text()');
+        $price =  preg_replace('/ {2,}/', ' ', trim($q->item(0)->nodeValue));
+        $price = htmlentities($price, null, 'utf-8');
+        $price = str_replace("&nbsp;", '',$price);
 
-        $price = $q->item(0)->nodeValue;
 
         $q = $productXpath->query('//td/div[contains(@class,\'price\')]/span[contains(@class,\'price\')]/span[@class="sum"]');
+        $prev_price =  preg_replace('/ {2,}/', ' ', trim($q->item(0)->nodeValue));
+        $prev_price = htmlentities($prev_price, null, 'utf-8');
+        $prev_price = str_replace("&nbsp;", '',$prev_price);
 
-        $discount = $q->item(0)->nodeValue;
+
+        $q = $productXpath->query('//div[@class="attr-content"]');
+
+        $description = preg_replace('/ {2,}/', ' ', trim($q->item(0)->nodeValue));
 
 
-        $q = $productXpath->query('//div[@class="attr-content"]'); //or for all //div/div[@class="spec-block"]
 
-        $description = $q->item(0)->nodeValue;
-
-        $q = $productXpath->query('//h3[contains(text(),"Колір")]/span');
-
-        $color = $q->item(0)->nodeValue;
 
 
         $q = $productXpath->query('//div[@class="product-img-box"]//a/@href');
@@ -257,11 +259,11 @@ function firstLevel($doc)
 
         $this->insert('{{%product}}',[
             'name' => $name,
-            'brand' => $brand,
+            'brand' => $brand[0],
             'price' => $price,
-            'discount' => $discount,
+            'prev_price' => $prev_price,
             'description' => $description,
-            'colors' => $color,
+            'colors' => array_pop($brand),
             'availability' => \random_int(1,2000),
             'category_id' => $categoryId,
         ]);
@@ -307,7 +309,11 @@ function firstLevel($doc)
         $doc->loadHTML(mb_convert_encoding(file_get_contents('https://allo.ua/'), 'HTML-ENTITIES', 'UTF-8'));
 
         $this->firstLevel($doc);
+
         $this->secondLevel($doc,1,'//a[@class="level1 smartfonu_i_telefonu"]');
+        $this->secondLevel($doc,2,'//a[@class="level1 televizoru_i_foto"]');
+        $this->secondLevel($doc,3,'//a[@class="level1 naushniki_i_akustika"]');
+        $this->secondLevel($doc,4,'//a[@class="level1 plansheti_notebooks_pk"]');
 
     }
 
