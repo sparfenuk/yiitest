@@ -57,5 +57,9 @@ class AppController extends Controller{
 //        self::debug($cart->products);
     }
 
+    public function isAdmin(){
+        return  \Yii::$app->user->identity->status > 1 ? true:false;
+    }
+
 
 }

@@ -13,14 +13,6 @@ class m190120_205405_allo_cat extends Migration
     /**
      * {@inheritdoc}
      */
-    public static function debug($arr){
-        echo '<pre>';
-        print_r($arr);
-        echo '</pre>';
-    }
-
-
-
     function reCreateTables()
     {
         $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=INNODB';
@@ -78,9 +70,7 @@ function firstLevel($doc)
 
         foreach ($l2 as $item2){
 
-//            $stmt = Yii::$app->db->createCommand("SELECT MAX(id) AS max_id FROM category");
-//            $invNum = $stmt -> fetch(PDO::FETCH_ASSOC);
-//            $maxId = $invNum['max_id'];
+
             $max = \app\models\Category::find()->orderBy('id DESC')->one();
 
             $maxId = $max->id;
@@ -90,8 +80,8 @@ function firstLevel($doc)
                 'name' => $item2->nodeValue,
                 'parent_id' => $parent_id,
             ]);
-//            Yii::$app->db->createCommand("insert into `Category`(`id` , `name`, `parent_id`) values ($maxId ,\"{$item2->nodeValue}\",{$parent_id})");
-            
+
+
             switch ($item2->nodeValue){
                 case 'Смартфони':
                     $this->thirdLevel($doc,$maxId,'//a[@class="level2 smartfonu_i_telefonu-smartfonu"]');
@@ -177,27 +167,135 @@ function firstLevel($doc)
 
     }
 
+
+
+
     function thirdLevel($doc,$parent_id,$query){
-        
+        //
 
-        $Lvl3 = new \DOMXPath($doc);
-        $l3 = $Lvl3->query($query);
+        $Lvl3 = new DOMXPath($doc);
+        $l3Cat = $Lvl3->query($query);
+        $l3Links = $Lvl3->query('//a[@class="level2 smartfonu_i_telefonu-smartfonu"]/@href');
 
-        foreach ($l3 as $item3){
-            if($item3->nodeValue != 'Всі товари →') {
+        for($i=0; $i < $l3Cat->length; $i++){
+            if($l3Cat->item($i)->nodeValue != 'Всі товари →') {
+//                echo $l3Cat->item($i)->nodeValue . '  ' . $parent_id;
+//                echo '<br>';
+//                $db->query("insert into `Category`(`name`, `parent_id`) values (\"{$l3Cat->item($i)->nodeValue}\",{$parent_id})");
                 $this->insert('{{%category}}',[
-                    'name' => $item3->nodeValue,
+                    'name' => $l3Cat->item($i)->nodeValue,
                     'parent_id' => $parent_id,
                 ]);
-//                Yii::$app->db->createCommand("insert into `Category`(`name`, `parent_id`) values (\"{$item3->nodeValue}\",{$parent_id})");
-            }
 
+
+                $catPage = new \DOMDocument();
+                $catPage->loadHTML(mb_convert_encoding(file_get_contents('https:'.$l3Links->item($i)->nodeValue), 'HTML-ENTITIES', 'UTF-8'));
+                $catPageXpath = new \DOMXPath($catPage);
+                $productLinks = $catPageXpath->query('//div[@class="item-inner"]/a/@href');
+                $ch = \random_int(5,20);
+                for ($j = 0 ; $j < $ch ; $j++)
+                    $this->parseProducts('https:' . $productLinks->item($j)->nodeValue);
+
+
+
+            }
         }
+
+        echo '<hr>';
     }
 
+    function parseProducts($link){
+
+        //  price = //p/span[@class="price"]/text()
+        // discount = //td/div[contains(@class,'price')]/span[contains(@class,'price')]/span[@class="sum"]
+        // description = //div[@class="attr-content"]
+        // color = //h3[contains(text(),"Колір")]/span
 
 
 
+
+        $productDoc = new \DOMDocument();
+        $productDoc->loadHTML(mb_convert_encoding(file_get_contents($link), 'HTML-ENTITIES', 'UTF-8'));
+
+        $productXpath = new \DOMXPath($productDoc);
+
+
+
+
+
+        $q = $productXpath->query('//div[@class="title-additional"]/h1');
+
+        $name = $q->item(0)->nodeValue;
+
+        $brand = explode(' ',trim( $q->item(0)->nodeValue));
+
+
+        $q = $productXpath->query('//p/span[@class="price"]/text()');
+
+        $price = $q->item(0)->nodeValue;
+
+        $q = $productXpath->query('//td/div[contains(@class,\'price\')]/span[contains(@class,\'price\')]/span[@class="sum"]');
+
+        $discount = $q->item(0)->nodeValue;
+
+
+        $q = $productXpath->query('//div[@class="attr-content"]'); //or for all //div/div[@class="spec-block"]
+
+        $description = $q->item(0)->nodeValue;
+
+        $q = $productXpath->query('//h3[contains(text(),"Колір")]/span');
+
+        $color = $q->item(0)->nodeValue;
+
+
+        $q = $productXpath->query('//div[@class="product-img-box"]//a/@href');
+
+
+
+        $Id = \app\models\Category::find()->orderBy('id DESC')->one();
+        $categoryId = $Id->id;
+
+        $this->insert('{{%product}}',[
+            'name' => $name,
+            'brand' => $brand,
+            'price' => $price,
+            'discount' => $discount,
+            'description' => $description,
+            'colors' => $color,
+            'availability' => \random_int(1,2000),
+            'category_id' => $categoryId,
+        ]);
+
+        $Id = \app\models\Product::find()->orderBy('id DESC')->one();
+        $productId = $Id->id;
+
+        foreach ($q as $a){
+            $l = $a->nodeValue;
+            $l = str_replace("#","",$l);
+
+            if(strpos($l, "youtube") == false && strpos($l,".jpg") !== false)
+            {
+                $imageName =\app\controllers\AppController::generateRandomString(\random_int(10,20)).'.jpg';
+
+                $file = file_get_contents($l);
+
+               file_put_contents(Yii::$app->params['webPath']."\images\product_images\\".$imageName,$file);
+
+                $this->insert("{{%product_photo}}",[
+                    'image_name' => $imageName,
+                    'product_id' => $productId
+                ]);
+            }
+        }
+
+
+
+
+
+////div[@class="product-img-box"]//a/@href
+
+
+    }
 
 
 
@@ -210,9 +308,6 @@ function firstLevel($doc)
 
         $this->firstLevel($doc);
         $this->secondLevel($doc,1,'//a[@class="level1 smartfonu_i_telefonu"]');
-        $this->secondLevel($doc,2,'//a[@class="level1 televizoru_i_foto"]');
-        $this->secondLevel($doc,3,'//a[@class="level1 naushniki_i_akustika"]');
-        $this->secondLevel($doc,4,'//a[@class="level1 plansheti_notebooks_pk"]');
 
     }
 

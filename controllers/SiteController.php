@@ -299,8 +299,29 @@ class SiteController extends AppController
         ]);
     }
 
-    public function actionCheckout()
+    public function actionChangePassword($authKey)
     {
+        $model = User::findByAuthKey($authKey);
+
+        if (isset($model)) {
+
+            if (!empty($_POST['User']['password2']) && $_POST['User']['password'] == $_POST['User']['password2']) {
+                $model->auth_key = self::generateRandomString(30);
+                $model->password = md5($model->password . Yii::$app->params['SALT']);
+                Yii::$app->session->setFlash('success', 'password successfully updated');
+                $model->save();
+                $this->goHome();
+            }
+
+//            self::debug($_POST['User']['password2']);
+            return $this->render('changePassword', [
+                'model' => $model,
+            ]);
+        } else {
+            Yii::$app->session->setFlash('error', 'User with this email does not exists');
+            $this->goBack();
+        }
+
 
     }
 
@@ -355,31 +376,6 @@ class SiteController extends AppController
 
     }
 
-    public function actionChangePassword($authKey)
-    {
-        $model = User::findByAuthKey($authKey);
-
-        if (isset($model)) {
-
-            if (!empty($_POST['User']['password2']) && $_POST['User']['password'] == $_POST['User']['password2']) {
-                $model->auth_key = self::generateRandomString(30);
-                $model->password = md5($model->password . Yii::$app->params['SALT']);
-                Yii::$app->session->setFlash('success', 'password successfully updated');
-                $model->save();
-                $this->goHome();
-            }
-
-//            self::debug($_POST['User']['password2']);
-            return $this->render('changePassword', [
-                'model' => $model,
-            ]);
-        } else {
-            Yii::$app->session->setFlash('error', 'User with this email does not exists');
-            $this->goBack();
-        }
-
-
-    }
 
     public function actionAddToCart($productId=null,$color = '',$quantity=1){ //https://yiitest/site/add-to-cart?productId={}&color={}&quantity={}
         $cart = new Cart();

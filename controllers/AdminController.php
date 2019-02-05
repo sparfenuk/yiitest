@@ -8,6 +8,7 @@ class AdminController extends AppController
 {
     public function actionIndex()
     {
+
         return $this->render('index');
     }
 
@@ -34,5 +35,41 @@ class AdminController extends AppController
             'model' => $model,
         ]);
     }
+
+    public function actionUserBan($id){
+        if(self::isAdmin()) {
+            $user = User::findIdentity($id);
+            $user->delete();
+            $this->actionUsers();
+        }
+    }
+    public function actionUserUp($id){
+        if(self::isAdmin()) {
+            $user = User::findIdentity($id);
+            if($user->status<5) {
+                $user->status++;
+                $user->save();
+            }
+            $this->actionUsers();
+        }
+    }
+    public function actionUserDown($id){
+        if(self::isAdmin()) {
+            $user = User::findIdentity($id);
+            if($user->status>0) {
+                $user->status--;
+                $user->save();
+            }
+            $this->actionUsers();
+        }
+    }
+
+    public function actionSendChat() {
+        echo \sintret\chat\ChatRoom::sendChat($_POST);
+    }
+
+
+
+
 
 }

@@ -36,9 +36,7 @@ class m181229_132246_user extends Migration
                 'price' => $this->money()->notNull(),
                 'availability' => $this->integer(7)->defaultValue(1), //кількість доступного товару
                 'is_new' => $this->tinyInteger(1)->defaultValue(1),
-                'discount' => $this->integer(4)->defaultValue(0),
                 'description' => $this->string(1000)->notNull(),
-                'reviews_count' => $this->integer(7)->defaultValue(0),
                 'colors' => $this->string(200), //розділювач - ";"
                 'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
                 'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP').' ON UPDATE CURRENT_TIMESTAMP'
