@@ -50,7 +50,7 @@ class m181229_132246_user extends Migration
                 'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
                 'user_id' => $this->integer()->notNull(),
                 'product_id' => $this->integer()->notNull(),
-                'mark' => $this->integer()->notNull(),
+                'mark' => $this->integer()->notNull()->defaultValue(0),
                 'description' => $this->string(1000),
                 'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP')
             ],

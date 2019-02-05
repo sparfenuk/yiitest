@@ -381,13 +381,14 @@ class SiteController extends AppController
 
     }
 
-    public function actionAddToCart($productId,$color = '',$quantity=1){ //https://yiitest/site/add-to-cart?productId={}&color={}&quantity={}
+    public function actionAddToCart($productId=null,$color = '',$quantity=1){ //https://yiitest/site/add-to-cart?productId={}&color={}&quantity={}
         $cart = new Cart();
         $cart->user_id = Yii::$app->user->identity->id;
         $cart->color = $color;
         $cart->quantity = $quantity;
         $cart->product_id = $productId;
         $cart->save();
+        $this->goBack(Yii::$app->request->referrer);
     }
     public function actionDeleteFromCart($id){
         $cart = Cart::find()

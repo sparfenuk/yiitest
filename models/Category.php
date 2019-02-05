@@ -34,6 +34,12 @@ class Category extends \yii\db\ActiveRecord
         ];
     }
 
+     public static function  categoryName($id)
+     {
+         $name = self::find()->where(['id'=>$id])->one();
+         return $name->name;
+     }
+
     /**
      * {@inheritdoc}
      */
@@ -55,4 +61,13 @@ public static function getCategories()
     {
         return $this->hasMany(Product::className(), ['category_id' => 'id']);
     }
+
+    public static function getCategoryId($name)
+    {
+        $id = self::find()->where(['name'=>$name])->one();
+        return $id->id;
+
+    }
+
+
 }

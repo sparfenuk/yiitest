@@ -18,6 +18,7 @@ use app\models\ProductPhoto;
 use yii\web\UploadedFile;
 use yii\data\Sort;
 use app\models\Review;
+
 class GoodsController extends AppController
 {
     /**
@@ -36,22 +37,18 @@ class GoodsController extends AppController
     }
 
 
-
-
-
-
-    public  function  actionUpdate($id=null)
+    public function actionUpdate($id = null)
     {
         $categories = new Category();
         $uploader = new UploadProductFile();
-        $productFrom=new Product();
+        $productFrom = new Product();
         if (Yii::$app->user->identity->status >= 2 && $id !== null) {
 
             $product = Product::findProductById($id);
-           // self::debug($product);
+            // self::debug($product);
             //echo '<hr>';
-             if ($productFrom->load(Yii::$app->request->post())) {
-                 //self::debug($productFrom);
+            if ($productFrom->load(Yii::$app->request->post())) {
+                //self::debug($productFrom);
 //                 'id' => 'ID',
 //            'name' => 'Name',
 //            'brand' => 'Brand',
@@ -65,15 +62,15 @@ class GoodsController extends AppController
 //            'colors' => 'Colors',
 //            'created_at' => 'Created At',
 //            'updated_at' => 'Updated At',
-                $product->name=$productFrom->name;
-                $product->description=$productFrom->description;
-                $product->price=$productFrom->price;
-                $product->colors=$productFrom->colors;
-                $product->brand=$productFrom->brand;
-                $product->updated_at=date('Y-m-d H:i:s');
-                $product->availability=$productFrom->availability;
+                $product->name = $productFrom->name;
+                $product->description = $productFrom->description;
+                $product->price = $productFrom->price;
+                $product->colors = $productFrom->colors;
+                $product->brand = $productFrom->brand;
+                $product->updated_at = date('Y-m-d H:i:s');
+                $product->availability = $productFrom->availability;
                 $product->category_id = (int)$_POST['Category']['name'];
-             //  self::debug($_POST);
+                //  self::debug($_POST);
 //                record
 
 
@@ -88,7 +85,7 @@ class GoodsController extends AppController
 
 //                   echo 'qwerty';
                 if ($product->validate()) {
-                  //   $product->isNewRecord=false;
+                    //   $product->isNewRecord=false;
 //                    echo 'qwerty';
 
                     $product->save(false);
@@ -106,7 +103,7 @@ class GoodsController extends AppController
                 $uploader->imageFiles = UploadedFile::getInstances($uploader, 'imageFiles');
 //                self::debug($uploader);
                 if ($uploader->uploadImages()) {
-                          ProductPhoto::deleteAll(['product_id'=>$id]);
+                    ProductPhoto::deleteAll(['product_id' => $id]);
                     foreach ($uploader->imageFiles as $imageFile) {
 
                         $photo = new ProductPhoto();
@@ -128,13 +125,14 @@ class GoodsController extends AppController
                 return $this->redirect(['product', 'id' => $product->id]);
 
             }
-
-                return $this->render('update', ['product' => $product, 'uploader' => $uploader, 'categories' => $categories]);
-
+            if($product!==null)
+            return $this->render('update', ['product' => $product, 'uploader' => $uploader, 'categories' => $categories]);
+             else
+                 $this->goBack(Yii::$app->request->referrer);
         }
+        else
+        $this->goHome();
     }
-
-
 
 
     public function actionCreate()
@@ -150,68 +148,63 @@ class GoodsController extends AppController
                 $product->category_id = (int)$_POST['Category']['name'];
 
 
+                if (is_array($product->colors)) {
+                    $colors = '';
+                    foreach ($product->colors as $color) {
+                        $colors = $colors . $color . ';';
 
-            if (is_array($product->colors)) {
-                $colors = '';
-                foreach ($product->colors as $color) {
-                    $colors = $colors . $color . ';';
-
+                    }
+                    $product->colors = $colors;
                 }
-                $product->colors = $colors;
-            }
 
 
-            if ($product->validate()) {
+                if ($product->validate()) {
 
 
-                $product->save(false);
+                    $product->save(false);
 
-            } else {
-                //  Yii::$app->session->setFlash('success', $product->errors['name'][0]);
-                return $this->render('create', ['product' => $product, 'uploader' => $uploader, 'categories' => $categories]);
+                } else {
+                    //  Yii::$app->session->setFlash('success', $product->errors['name'][0]);
+                    return $this->render('create', ['product' => $product, 'uploader' => $uploader, 'categories' => $categories]);
 
-                //return var_dump($product->errors);
-            }
+                    //return var_dump($product->errors);
+                }
 
 
-            $uploader->imageFiles = UploadedFile::getInstances($uploader, 'imageFiles');
+                $uploader->imageFiles = UploadedFile::getInstances($uploader, 'imageFiles');
 //                self::debug($uploader);
-            if ($uploader->uploadImages()) {
+                if ($uploader->uploadImages()) {
 
-                foreach ($uploader->imageFiles as $imageFile) {
+                    foreach ($uploader->imageFiles as $imageFile) {
 
-                    $photo = new ProductPhoto();
-                    $photo->image_name = $imageFile->baseName . '.' . $imageFile->extension;
-                    $photo->product_id = $product->id;
-                    if ($photo->validate()) {
+                        $photo = new ProductPhoto();
+                        $photo->image_name = $imageFile->baseName . '.' . $imageFile->extension;
+                        $photo->product_id = $product->id;
+                        if ($photo->validate()) {
 
-                        $photo->save(false);
-                    } else {
+                            $photo->save(false);
+                        } else {
 
-                        return $this->render('create', ['product' => $product, 'uploader' => $uploader, 'categories' => $categories]);
+                            return $this->render('create', ['product' => $product, 'uploader' => $uploader, 'categories' => $categories]);
+                        }
+
                     }
 
                 }
 
+
+                return $this->redirect(['product', 'id' => $product->id]);
+
             }
-
-
-            return $this->redirect(['product', 'id' => $product->id]);
-
+            return $this->render('create', ['product' => $product, 'uploader' => $uploader, 'categories' => $categories]);
         }
-        return $this->render('create', ['product' => $product, 'uploader' => $uploader, 'categories' => $categories]);
-    }
 
         return $this->goHome();
     }
 
 
-
-
-
-    public  function  actionCategory($id=null)
+    public function actionCategory($id = null)
     {
-
 
 
 //        if($search_param !== null)
@@ -231,61 +224,59 @@ class GoodsController extends AppController
 //        }
 
 
-            /** @var TYPE_NAME $dataProvider */
-          if($id!==null) {
-              $sort = new Sort([
-                  'attributes' => [
-                      'price' => [
-                          'asc' => ['price' => SORT_ASC],
-                          'desc' => ['price' => SORT_DESC],
-                          'default' => SORT_DESC,
-                          'label' => 'Price',
-                      ],
-                      'name' => [
-                          'asc' => ['name' => SORT_ASC],
-                          'desc' => ['name' => SORT_DESC],
-                          'default' => SORT_DESC,
-                          'label' => 'Name',
-                      ],
-                  ],
-              ]);
-              $query = Product::find();
-              $query->andFilterWhere(['category_id' => $id])->all();
-              $dataProvider = new ActiveDataProvider([
-                  'query' => $query,
-                  'pagination' => [
-                      'pageSize' => 20
-                  ]
-              ]);
+        /** @var TYPE_NAME $dataProvider */
+        if ($id !== null) {
+            $sort = new Sort([
+                'attributes' => [
+                    'price' => [
+                        'asc' => ['price' => SORT_ASC],
+                        'desc' => ['price' => SORT_DESC],
+                        'default' => SORT_DESC,
+                        'label' => 'Price',
+                    ],
+                    'name' => [
+                        'asc' => ['name' => SORT_ASC],
+                        'desc' => ['name' => SORT_DESC],
+                        'default' => SORT_DESC,
+                        'label' => 'Name',
+                    ],
+                ],
+            ]);
+            $query = Product::find();
+            $query->andFilterWhere(['category_id' => $id])->all();
+            $dataProvider = new ActiveDataProvider([
+                'query' => $query,
+                'pagination' => [
+                    'pageSize' => 20
+                ]
+            ]);
 
-              return $this->render('category', [
-                  'dataProvider' => $dataProvider, 'sort' => $sort
-              ]);
-          }
-          else{
+            return $this->render('category', [
+                'dataProvider' => $dataProvider, 'sort' => $sort,
+                'category'=> Category::categoryName($id)
+            ]);
+        } else {
 
-              $this->goHome();
-          }
+            $this->goHome();
+        }
     }
 
 
-
-
-
-    public function actionProductPage(){
+    public function actionProductPage()
+    {
         return $this->render('product-page');
     }
 
 
-
-    public function  actionProduct($id=null)
+    public function actionProduct($id = null)
     {
 
 
-        if($id!==null) {
-           $product=Product::findProductById($id);
+        if ($id !== null) {
+            $product = Product::findProductById($id);
+
             $query = Review::find();
-            $query->andFilterWhere(['product_id'=>$id])->all();
+            $query->andFilterWhere(['product_id' => $id])->all();
             $dataProvider = new ActiveDataProvider([
                 'query' => $query,
                 'pagination' => [
@@ -295,11 +286,15 @@ class GoodsController extends AppController
 
             $review = new Review();
         }
-        if($product!==null) {
-            if(isset($product->colors))
-                $product->colors= explode(';',$product->colors);
+        if ($product !== null) {
+            if (isset($product->colors)) {
+                $arr = explode(';', $product->colors);
+                array_pop($arr);
+                $product->colors=$arr;
+               // self::debug($product->colors);
+            }
             return $this->render('product', [
-                'product' => $product,'reviewDataProvider' => $dataProvider,'review'=>$review
+                'product' => $product, 'reviewDataProvider' => $dataProvider, 'review' => $review
             ]);
         }
 
@@ -307,23 +302,20 @@ class GoodsController extends AppController
     }
 
 
-    public   function   actionIndex(  )
+    public function actionIndex()
     {
-
-
 
 
         $categories = Category::find()->limit(5)->all();
 
 //           var_dump($categories);
-           $products=null;
+        $products = null;
 
-        foreach ($categories as $category)
-        {
-              if(Product::find()->where(['category_id'=>$category->id])->count()>=1)
-              $products[$category->name] = Product::find()->where(['category_id'=>$category->id])->limit(5)->orderBy('updated_at')->all();
-              else
-                  $products[$category->name]=null;
+        foreach ($categories as $category) {
+            if (Product::find()->where(['category_id' => $category->id])->count() >= 1)
+                $products[$category->name] = Product::find()->where(['category_id' => $category->id])->limit(5)->orderBy('updated_at')->all();
+            else
+                $products[$category->name] = null;
         }
 
 //        $query = Product::find();
@@ -332,43 +324,64 @@ class GoodsController extends AppController
 //            'query' => $query,
 //
 //        ]);
-         if ($products!==null)
-        return $this->render('index', [
-            'products' => $products,
-        ]);
-            else
-                $this->goHome();
+        if ($products !== null)
+            return $this->render('index', [
+                'products' => $products,
+            ]);
+        else
+            $this->goHome();
     }
 
 
-
-    public  function actionAddReview()
+    public function actionAddReview()
     {
-        if(!Yii::$app->user->isGuest) {
+        if (!Yii::$app->user->isGuest) {
             $review = new Review();
             if ($review->load(Yii::$app->request->post())) {
 
-                $review->product_id=$_POST['product_id'];
-                $review->user_id=$_POST['user_id'];
-                $review->mark=$_POST['rating'];
+                $review->product_id = $_POST['product_id'];
+                $review->user_id = $_POST['user_id'];
+                $review->mark = $_POST['rating'];
                 //self::debug($review);
                 if ($review->validate()) {
                     $review->save();
-                    $this->render('product', [
-                        'product' =>  Product::findProductById($review->product_id), 'review' => new Review()
-                    ]);
+                    //$this->redirect('product');
+//                    $this->goBack();
+                    $this->goBack(Yii::$app->request->referrer);
+//                    echo Yii::$app->getUser()->getReturnUrl();
+//                    die();
                 } else {
 
                     self::debug($review->getErrors());
-                    $this->render('product', [
-                        'product' =>  Product::findProductById($review->product_id), 'review' => $review
-                    ]);
+
                 }
             }
         }
-            return;
+        return;
+
+
+    }
+
+    public function actionCommentGet($page,$id)
+    {
+        $query = Review::find();
+        $query->andFilterWhere(['product_id' => $id])->all();
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 3
+            ]
+        ]);
+        return $this->renderAjax('comment', [
+            'reviewDataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionSearch($searchParam)
+    {
 
 
     }
 
 }
+

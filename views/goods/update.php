@@ -15,7 +15,7 @@ use app\models\Category;
 $this->title = 'Update product information';
 $this->params['breadcrumbs'][] = ['label' => 'Product', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-echo 'wadawdawwwwwwwww';
+
 ?>
 <div class="posts-update">
 <!---->
