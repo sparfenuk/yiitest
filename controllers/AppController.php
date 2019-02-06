@@ -46,7 +46,7 @@ class AppController extends Controller{
 
     }
 
-    public function setCart()
+    public static function setCart()
     {
         $cart = new Cart();
         $cart->setProducts();

@@ -30,7 +30,7 @@ class m181229_132246_user extends Migration
 
             $this->createTable('{{%product}}',[
                 'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
-                'name' => $this->string(32)->notNull(),
+                'name' => $this->string(100)->notNull(),
                 'brand' => $this->string(100),
                 'category_id' => $this->integer()->notNull(),
                 'price' => $this->money()->notNull(),
