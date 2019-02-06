@@ -155,7 +155,8 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                                             ?>
                                             <div class="product product-widget">
                                                 <div class="product-thumb">
-                                                    <?= Html::img('@web/img/thumb-product01.jpg',['alt' => '']); ?><!-- todo:: make normal relationship in product -  product_photo and return first photo-->
+                                                    <?php $image = \app\models\ProductPhoto::find()->where(['product_id' => $product->id])->one(); ?>
+                                                    <?= Html::img('@web/images/product_images/'.$image->image_name,['alt' => '']); ?><!-- todo:: make normal relationship in product -  product_photo and return first photo-->
                                                 </div>
                                                 <div class="product-body">
                                                     <h3 class="product-price"><?= round($product->price) ?>₴ <span class="qty">x<?= $product->cartQuantity ?></span>  <?= $product->cartColor ?></h3>
