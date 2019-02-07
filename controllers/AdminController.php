@@ -2,13 +2,17 @@
 
 namespace app\controllers;
 
+use app\models\Order;
 use app\models\User;
 
 class AdminController extends AppController
 {
     public function actionIndex()
     {
-        return $this->render('index');
+        $orders = Order::find()->where(['status' => Order::PAYED])->limit(30)->orderBy('id');
+
+        return $this->render('index',
+            ['orders' => $orders]);
     }
 
     public function actionUsers()

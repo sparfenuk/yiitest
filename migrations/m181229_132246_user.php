@@ -87,7 +87,7 @@ class m181229_132246_user extends Migration
                 'product_id' => $this->integer()->notNull(),
                 'quantity' => $this->integer()->notNull()->defaultValue(1),
                 'color' => $this->string()->defaultValue(null),
-                'status' => $this->string()->defaultValue('created') //created;payed;processed;send;get;finished;disputed;
+                'status' => $this->string()->defaultValue('created') //created;payed;processed;send;arrived;finished;disputed;
             ],$tableOptions);
 
 //            $this->createTable('{{%address}}',[

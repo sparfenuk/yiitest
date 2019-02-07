@@ -175,16 +175,16 @@ foreach ($photos as $photo) {
                             //todo:: date compare
 
                             ?>
-<!---->
-<!--                                --><?php
-//
-//                                if($product->prev_price!=0 && $product->price < $product->prev_price)
-//                                {
-//                                    $p = ($product->prev_price * $product->price)/100;
-//                                    echo'<span class="sale">'.$p.'</span>';
-//                                }
-//
-//                                ?>
+
+                                <?php
+
+                                if($product->prev_price!=0 && $product->price < $product->prev_price)
+                                {
+                                    $p = round((($product->prev_price / $product->price)*100)-100);
+                                    echo'<span class="sale">-'.$p.'%</span>';
+                                }
+
+                                ?>
 
 
 
@@ -194,16 +194,16 @@ foreach ($photos as $photo) {
 
 							<h3 class="product-price">  <?= HTML::encode(round($product->price))  ?>
 
-<!--                                --><?php
-//
-//                                if($product->prev_price != 0)
-//                                {
-//                                 echo'<del class="product-old-price">'.$product->prev_price.'</del>';
-//
-//                                }
-//
-//
-//                                ?>
+                                <?php
+
+                                if($product->prev_price != 0)
+                                {
+                                 echo'<del class="product-old-price">'.round($product->prev_price).'</del>';
+
+                                }
+
+
+                                ?>
 
 
 

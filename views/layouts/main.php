@@ -111,7 +111,7 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
             <div class="pull-right">
                 <ul class="header-btns">
                     <!-- Account -->
-                    <li class="header-account dropdown default-dropdown">
+                    <li class="header-account dropdown default-dropdown" style="width: 250px overflow: hidden">
                         <div class="dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="true">
                             <div class="header-btns-icon">
                                 <i class="fa fa-user-o"></i>
@@ -261,6 +261,7 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                     <?php if (Yii::$app->user->identity->status > 1) { ?>
                     <li class="dropdown default-dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Admin panel <i class="fa fa-caret-down"></i></a>
                     <ul class="custom-menu">
+                        <li> <?= Html::a('Create',['/goods/create']) ?></li>
                         <li> <?= Html::a('Orders',['/admin/index']) ?></li>
                         <li> <?= Html::a('Users',['/admin/users']) ?></li>
 

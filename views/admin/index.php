@@ -5,6 +5,7 @@
  * Date: 20.01.2019
  * Time: 23:08
  */
+use yii\helpers\Html;
 ?>
 
 
@@ -37,38 +38,38 @@
                     </tr>
                     </thead>
                     <tbody>
-<!--                    --><?php //foreach ($users as $user){ ?>
-<!--                        <tr><!-- user widget -->-->
-<!--                            <td>-->
-<!--                                <div class="d-inline-block align-middle">-->
-<!--                                    --><?//= Html::img('@web/images/user_images/'.$user->photo_name,['alt' => 'user image', 'class' => 'img-radius img-40 align-top m-r-15','height' => 50,'width'=> 50])?>
-<!--                                    <div class="d-inline-block">-->
-<!--                                        <h6>Usnm:<br>--><?//= $user->username ?><!--</h6>-->
-<!--                                        <p class="text-muted m-b-0">Loc:<br>--><?//=  $user->location ?><!--</p>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </td>-->
-<!--                            <td>--><?//= $user->email ?><!--</td>-->
-<!--                            <td>--><?//= $user->bought_items_count ?><!--</td>-->
-<!--                            <td>--><?//= $user->created_at ?><!--</td>-->
-<!--                            <td>-->
-<!--                                <label class="badge badge-inverse-primary">--><?//= $user->status ?><!--</label>-->
-<!--                            </td>-->
-<!--                            <td>-->
-<!--                                --><?php //if(Yii::$app->user->identity->status > $user->status){
-//                                    echo Html::a('<i class="fa fa-edit">',['/admin/user-edit?id='.$user->id]).'</i>';
-//                                    echo Html::a('<i class="fa fa-ban">',['/admin/user-ban?id='.$user->id]).'</i>';
-//                                }
-//                                else echo 'not enough permissions';
-//                                ?>
-<!--                                --><?php //if(Yii::$app->user->identity->status > 2 && $user->status < 2)
-//                                    echo Html::a('<i class="fa fa-level-up">',['/admin/user-up?id='.$user->id]).'</i>' ?>
-<!--                                --><?php //if(Yii::$app->user->identity->status > 3 && $user->status < 3)
-//                                    echo Html::a('<i class="fa fa-level-down">',['/admin/user-down?id='.$user->id]).'</i>' ?>
-<!--                            </td>-->
-<!--                        </tr>-->
-<!---->
-<!--                    --><?php //} ?>
+<?php foreach ($orders as $order){ ?>
+                  <tr><!-- user widget -->
+                          <td>
+                               <div class="d-inline-block align-middle">
+                                    <?= Html::img('@web/images/product_images/'.$user->photo_name,['alt' => 'user image', 'class' => 'img-radius img-40 align-top m-r-15','height' => 50,'width'=> 50])?>
+                                    <div class="d-inline-block">
+                                       <h6>Usnm:<br><?= $user->username ?></h6>
+                                        <p class="text-muted m-b-0">Loc:<br><?=  $user->location ?></p>
+                                    </div>
+                               </div>
+                           </td>
+                           <td><?= $user->email ?></td>
+                            <td><?= $user->bought_items_count ?></td>
+                            <td><?= $user->created_at ?></td>
+                           <td>
+                               <label class="badge badge-inverse-primary"><?= $user->status ?><</label>
+                            </td>
+                           <td>
+<?php if(Yii::$app->user->identity->status > $user->status){
+                                    echo Html::a('<i class="fa fa-edit">',['/admin/user-edit?id='.$user->id]).'</i>';
+                                    echo Html::a('<i class="fa fa-ban">',['/admin/user-ban?id='.$user->id]).'</i>';
+                                }
+                                else echo 'not enough permissions';
+                                ?>
+<?php if(Yii::$app->user->identity->status > 2 && $user->status < 2)
+                                  echo Html::a('<i class="fa fa-level-up">',['/admin/user-up?id='.$user->id]).'</i>' ?>
+<?php if(Yii::$app->user->identity->status > 3 && $user->status < 3)
+                                    echo Html::a('<i class="fa fa-level-down">',['/admin/user-down?id='.$user->id]).'</i>' ?>
+                            </td>
+                        </tr>
+
+                    <?php } ?>
                     </tbody>
                 </table>
             </div>
