@@ -382,6 +382,7 @@ class SiteController extends AppController
     }
 
     public function actionAddToCart($productId=null,$color = '',$quantity=1){ //https://yiitest/site/add-to-cart?productId={}&color={}&quantity={}
+     //  self::debug($_GET);
         $cart = new Cart();
         $cart->user_id = Yii::$app->user->identity->id;
         $cart->color = $color;

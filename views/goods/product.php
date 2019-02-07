@@ -23,6 +23,7 @@ use app\assets\AppAsset;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\widgets\LinkPager;
+use yii\widgets\Pjax;
 
 use app\models\Product;
 use app\models\Review;
@@ -63,8 +64,9 @@ $name = ProductPhoto::findByProductId($product->id);
 $photos = ProductPhoto::findByProductId($product->id);
 // var_dump($photos);
 
-
+Review::getAverageReview(11); // todo: вивести для товару зірочками
 echo '
+
 <div class="section">
 		<!-- container -->
 		<div class="container">
@@ -93,6 +95,8 @@ foreach ($photos as $photo) {
 
 echo '
 							
+						
+						
 							</div></div>
 							
 							
@@ -110,11 +114,11 @@ foreach ($photos as $photo) {
     if ($tabIndex === -1) {
 
         echo '<div class = "product-view slick-slide slick-cloned slick-active" data-slick-index="' . $slickIndex . '" aria-hidden="true" tabindex="-1" style="width: 73px;">
-							                     	<img src = "' . Yii::$app->params['basePath'] . '/images/product_images/' . HTML::encode($photo->image_name) . '" alt="">
+							                     	<img src = "' . Yii::$app->params['photos_path']  . HTML::encode($photo->image_name) . '" alt="">
 							                    </div>';
     } else {
         echo '<div class = "product-view slick-slide slick-cloned" data-slick-index="' . $slickIndex . '" aria-hidden="true" tabindex="-1" style="width: 73px;">
-							                     	<img  src = "' . Yii::$app->params['basePath'] . '/images/product_images/' . HTML::encode($photo->image_name) . '" alt="">
+							                     	<img  src = "' . Yii::$app->params['photos_path'] . HTML::encode($photo->image_name) . '" alt="">
 							                    </div>';
     }
     $tabIndex++;
@@ -164,24 +168,81 @@ foreach ($photos as $photo) {
 					<div class="col-md-6">
 						<div class="product-body">
 							<div class="product-label">
+
 								<span>New</span>
-								<span class="sale">-20%</span>
+                            <?php
+
+                            //todo:: date compare
+
+                            ?>
+<!---->
+<!--                                --><?php
+//
+//                                if($product->prev_price!=0 && $product->price < $product->prev_price)
+//                                {
+//                                    $p = ($product->prev_price * $product->price)/100;
+//                                    echo'<span class="sale">'.$p.'</span>';
+//                                }
+//
+//                                ?>
+
+
+
 							</div>
 							<h2 class="product-name">   <?= HTML::encode($product->name) ?>   </h2>
-							<h3 class="product-price">  <?= HTML::encode(round($product->price))  ?>   <del class="product-old-price">$45.00</del></h3>
+
+
+							<h3 class="product-price">  <?= HTML::encode(round($product->price))  ?>
+
+<!--                                --><?php
+//
+//                                if($product->prev_price != 0)
+//                                {
+//                                 echo'<del class="product-old-price">'.$product->prev_price.'</del>';
+//
+//                                }
+//
+//
+//                                ?>
+
+
+
+                            </h3>
 							<div>
 								<div class="product-rating">
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star"></i>
-									<i class="fa fa-star-o empty"></i>
+                                    <?php
+                                    for( $i = 0; $i < 5 ;$i++)
+                                    {
+                                        if ($i<$average)
+                                        {
+                                            echo '<i class="fa fa-star"></i>';
+                                        }
+                                        else
+                                            echo '<i class="fa fa-star-o empty"></i>';
+
+                                    }
+                                    ?>
+
+
 								</div>
-								<a href="#">3 Review(s) / Add Review</a>
+								<a href="#"><?= $reviewDataProvider->getTotalCount() ?> Review / Add Review</a>
 							</div>
 							<p><strong>Availability:</strong>  <?= HTML::encode($product->availability) ?>  </p>
 							<p><strong>Brand:</strong>  <?= HTML::encode($product->brand) ?>   </p>
-							<p> <?= HTML::encode($product->description)  ?> </p>
+
+
+                            <?php
+
+                            foreach ($product->description as $key => $value)
+                            {
+
+                                echo '<p><strong>'.HTML::encode($key).': &nbsp &nbsp </strong> '.HTML::encode($value).'</p>';
+
+                            }
+
+                            ?>
+
+
 							
 
 							
@@ -190,15 +251,68 @@ foreach ($photos as $photo) {
 					<div class="col-md-12">
 						<div class="product-tab">
 							<ul class="tab-nav">
-								<li class="active"><a data-toggle="tab" href="#tab1">Description</a></li>
-								<li><a data-toggle="tab" href="#tab1">Details</a></li>
-								<li><a data-toggle="tab" href="#tab2">Reviews (<?= $reviewDataProvider->getTotalCount() ?>)</a></li>
-							</ul>
+
+								<li class="active"><a data-toggle="tab" href="#tab1">Details</a></li>
+                                <li><a data-toggle="tab" href="#tab2">Add to cart</a></li>
+                                <li><a data-toggle="tab" href="#tab3">Reviews (<?= $reviewDataProvider->getTotalCount() ?>)</a></li>
+
+                            </ul>
 							<div class="tab-content">
 								<div id="tab1" class="tab-pane fade in active">
-									<p> <?= HTML::encode($product->description) ?>  </p>
+                                    <?php
+
+                                    foreach ($product->description as $key => $value)
+                                    {
+
+                                        echo '<p><strong>'.HTML::encode($key).': &nbsp &nbsp </strong> '.HTML::encode($value).'</p>';
+
+                                    }
+
+                                    ?>
 								</div>
-								<div id="tab2" class="tab-pane fade in">
+                                <div id="tab2" class="tab-pane fade in">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                    <?php
+                                    if (is_array($product->colors)) {
+
+
+                                        $arr = $product->colors;
+                                        $arr=array_combine($arr,$arr);
+
+                                        if ($product->availability >= 0) {
+
+                                            // $form = ActiveForm::begin(['action' => ['/site/add-to-cart'], 'options' => ['method' => 'get']]);
+                                            echo  Html::beginForm(['/site/add-to-cart', 'productId' => $product->id], 'get', ['enctype' => 'multipart/form-data']);
+                                            // echo  Html::hiddenInput('productId', $product->id);
+
+                                            // echo  $form->field($product, 'color')->radioList($arr)->label('Color');
+
+                                            echo Html::radioList('color',null,$arr);
+
+                                            echo  Html::input('number','quantity',1,['max'=>$product->availability , 'min'=>1]);
+
+
+
+
+                                            echo  '<div class="help-block"></div>';
+
+                                            echo  '<div class="form-group">' .
+                                                Html::submitButton('Add to cart', ['class' => 'btn btn-success'])
+                                                .'</div>';
+
+                                            echo  Html::endForm();
+
+                                        } else {
+                                            echo 'Out of stock';
+                                        }
+                                    }
+                                    ?>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="tab3" class="tab-pane fade in">
 
 									<div class="row">
 										<div class="col-md-6">
@@ -237,20 +351,34 @@ foreach ($reviewDataProvider->models as $review) {
 												</div>';
 
 }
+
+
 ?>
 
  <div> <?= LinkPager::widget(['pagination' => $reviewDataProvider->pagination])?>
+
+
+
+
+
          </div>
 											</div>
 										</div>
+
 										<div class="col-md-6">
+                                            <?php if (Yii::$app->user->isGuest!==true)
+                                            {
+                                                ?>
 											<h4 class="text-uppercase">Write Your Review</h4>
 											
 											
 
 
 
-<?php $form = ActiveForm::begin([
+<?php
+
+
+$form = ActiveForm::begin([
     'action' => '/goods/add-review',
     'options' => [
         'class' => 'review-form',
@@ -271,18 +399,22 @@ foreach ($reviewDataProvider->models as $review) {
 													<div class="input-rating">
 														<strong class="text-uppercase">Your Rating: </strong>
 														<div class="stars">
-															<input type="radio" id="star5" name="rating" value="5"><label for="star5"></label>
-															<input type="radio" id="star4" name="rating" value="4"><label for="star4"></label>
-															<input type="radio" id="star3" name="rating" value="3"><label for="star3"></label>
-															<input type="radio" id="star2" name="rating" value="2"><label for="star2"></label>
-															<input type="radio" id="star1" name="rating" value="1"><label for="star1"></label>
+															<input type="radio" id="star5" name="mark" value="5"><label for="star5"></label>
+															<input type="radio" id="star4" name="mark" value="4"><label for="star4"></label>
+															<input type="radio" id="star3" name="mark" value="3"><label for="star3"></label>
+															<input type="radio" id="star2" name="mark" value="2"><label for="star2"></label>
+															<input type="radio" id="star1" name="mark" value="1"><label for="star1"></label>
 														</div>
 													</div>
 												</div>
                                              </div>
+
+                            <?= Html::hiddenInput('product_id',$product->id) ?>
+
 <?=    Html::submitButton('Submit', ['class' => 'btn btn-success'])   ?>
 
-<?php    ActiveForm::end()  ?>
+<?php    ActiveForm::end(); } ?>
+
 
 
     <!---->
@@ -328,38 +460,3 @@ foreach ($reviewDataProvider->models as $review) {
     </div>
 
 
-<?php
-if (is_array($product->colors)) {
-
-
-    $arr = $product->colors;
-    $arr=array_combine($arr,$arr);
-
-    if ($product->availability >= 0) {
-
-        // $form = ActiveForm::begin(['action' => ['/site/add-to-cart'], 'options' => ['method' => 'get']]);
-        echo  Html::beginForm(['/site/add-to-cart', 'productId' => $product->id], 'get', ['enctype' => 'multipart/form-data']);
-        // echo  Html::hiddenInput('productId', $product->id);
-
-        // echo  $form->field($product, 'color')->radioList($arr)->label('Color');
-
-        echo Html::radioList('color',null,$arr);
-
-        echo  Html::input('number','quantity',1,['max'=>$product->availability , 'min'=>1]);
-
-
-
-
-        echo  '<div class="help-block"></div>';
-
-        echo  '<div class="form-group">' .
-            Html::submitButton('Add to cart', ['class' => 'btn btn-success'])
-            .'</div>';
-
-        echo  Html::endForm();
-
-    } else {
-        echo 'Out of stock';
-    }
-}
-?>

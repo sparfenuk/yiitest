@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $form->field($product, 'brand')->textInput(['maxlength' => true]) ?>
 
-     <?= $form->field($product, 'description')->textInput(['maxlength' => true]) ?>
+     <?= $form->field($product, 'description')->textarea(['rows' => '6']) ?>
 
     <?= $form->field($product, 'price')->textInput(['type' => 'number']) ?>
 

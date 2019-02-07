@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Category;
 use app\models\Goods;
 use app\models\Product;
+use phpDocumentor\Reflection\Types\Array_;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\Query;
@@ -276,7 +277,7 @@ class GoodsController extends AppController
             $product = Product::findProductById($id);
 
             $query = Review::find();
-            $query->andFilterWhere(['product_id' => $id])->all();
+            $query->andFilterWhere(['product_id' => $product->id])->all();
             $dataProvider = new ActiveDataProvider([
                 'query' => $query,
                 'pagination' => [
@@ -291,10 +292,21 @@ class GoodsController extends AppController
                 $arr = explode(';', $product->colors);
                 array_pop($arr);
                 $product->colors=$arr;
+
+
                // self::debug($product->colors);
             }
+
+            $average = round(Review::getAverageReview($product->id));
+
+            $product->description = $this->Parse( explode(';', $product->description));
+
+           // $product->description = explode(':', $product->description);
+           //self::debug($product->description);
+
             return $this->render('product', [
-                'product' => $product, 'reviewDataProvider' => $dataProvider, 'review' => $review
+                'product' => $product, 'reviewDataProvider' => $dataProvider, 'review' => $review,
+                'average' => $average
             ]);
         }
 
@@ -336,20 +348,22 @@ class GoodsController extends AppController
     public function actionAddReview()
     {
         if (!Yii::$app->user->isGuest) {
-            $review = new Review();
-            if ($review->load(Yii::$app->request->post())) {
 
-                $review->product_id = $_POST['product_id'];
-                $review->user_id = $_POST['user_id'];
-                $review->mark = $_POST['rating'];
-                //self::debug($review);
-                if ($review->validate()) {
+            $review = new Review();
+
+            if ( $review->load(Yii::$app->request->post()) ) {
+
+                 $review->user_id = Yii::$app->user->id;
+                 $review->product_id = $_POST['product_id'];
+                 $review->mark = $_POST['mark'];
+
+                // self::debug($review);
+
+                 if ($review->validate()) {
                     $review->save();
-                    //$this->redirect('product');
-//                    $this->goBack();
+
                     $this->goBack(Yii::$app->request->referrer);
-//                    echo Yii::$app->getUser()->getReturnUrl();
-//                    die();
+
                 } else {
 
                     self::debug($review->getErrors());
@@ -377,8 +391,23 @@ class GoodsController extends AppController
         ]);
     }
 
-    public function actionSearch($searchParam)
+
+    public function  Parse($arr)
     {
+     $array = null;
+     foreach($arr as $item)
+     {
+         $temp = explode(':',$item);
+         if(count($temp)>=2)
+         $array[$temp[0]] = $temp[1];
+
+     }
+       return $array;
+
+    }
+    public function actionSearch($searchParam)
+     {
+       //todo: search with staff
 
 
     }
