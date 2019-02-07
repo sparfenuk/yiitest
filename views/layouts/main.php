@@ -224,7 +224,7 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                                     <div class="row">
 
                                         <?php
-                                        $level2all = Category::find()->where(['parent_id' => $category->id])->all();
+                                        $level2all = Category::find()->where(['parent_id' => $category->id])->andWhere('parent_id != id')->all();
                                         foreach ($level2all as $level2) { ?>
                                         <div class="col-md-4">
                                             <ul class="list-links">
@@ -232,12 +232,8 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                                                 <?php
                                                 $level3all = Category::find()->where(['parent_id' => $level2->id])->all();
                                                 foreach ($level3all as $level3) {
-                                                    ?>
-                                                    <?= Html::a('<li>'.$level3->name.'</li>',['/goods/category?id=' . $level3->id]) ?>
-
-
-
-                                                <?php }
+                                                    echo Html::a('<li>'.$level3->name.'</li>',['/goods/category?id=' . $level3->id]);
+                                                }
                                                 echo '</ul></div>';
                                                 }
 

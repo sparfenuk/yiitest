@@ -173,33 +173,37 @@ function firstLevel($doc)
     function thirdLevel($doc,$parent_id,$query){
         //
 
-        $Lvl3 = new DOMXPath($doc);
-        $l3Cat = $Lvl3->query($query);
-        $l3Links = $Lvl3->query('//a[@class="level2 smartfonu_i_telefonu-smartfonu"]/@href');
+        try {
+            $Lvl3 = new \DOMXPath($doc);
+            $l3Cat = $Lvl3->query($query);
+            $l3Links = $Lvl3->query($query . '/@href');
 
-        for($i=0; $i < $l3Cat->length; $i++){
-            if($l3Cat->item($i)->nodeValue != 'Всі товари →') {
+            for ($i = 0; $i < $l3Cat->length; $i++) {
+                if ($l3Cat->item($i)->nodeValue != 'Всі товари →') {
 //                echo $l3Cat->item($i)->nodeValue . '  ' . $parent_id;
 //                echo '<br>';
 //                $db->query("insert into `Category`(`name`, `parent_id`) values (\"{$l3Cat->item($i)->nodeValue}\",{$parent_id})");
-                $this->insert('{{%category}}',[
-                    'name' => $l3Cat->item($i)->nodeValue,
-                    'parent_id' => $parent_id,
-                ]);
+                    $this->insert('{{%category}}', [
+                        'name' => $l3Cat->item($i)->nodeValue,
+                        'parent_id' => $parent_id,
+                    ]);
 
 
-                $catPage = new \DOMDocument();
-                $catPage->loadHTML(mb_convert_encoding(file_get_contents('https:'.$l3Links->item($i)->nodeValue), 'HTML-ENTITIES', 'UTF-8'));
-                $catPageXpath = new \DOMXPath($catPage);
-                $productLinks = $catPageXpath->query('//div[@class="item-inner"]/a/@href');
-                $ch = \random_int(5,20);
-                for ($j = 0 ; $j < $ch ; $j++)
-                    $this->parseProducts('https:' . $productLinks->item($j)->nodeValue);
+                    $catPage = new \DOMDocument();
+                    $catPage->loadHTML(mb_convert_encoding(file_get_contents('https:' . $l3Links->item($i)->nodeValue), 'HTML-ENTITIES', 'UTF-8'));
+                    $catPageXpath = new \DOMXPath($catPage);
+                    $productLinks = $catPageXpath->query('//div[@class="item-inner"]/a/@href');
+                    $ch = \random_int(5, 20);
+
+                    for ($j = 0; $j < $ch; $j++)
+                        if ($productLinks->item($j)->nodeValue)
+                            $this->parseProducts('https:' . $productLinks->item($j)->nodeValue);
 
 
-
+                }
             }
         }
+        catch (\Exception $e){ echo "third level exception:".$e->getMessage();}
 
 
     }
@@ -212,84 +216,83 @@ function firstLevel($doc)
         // color = //h3[contains(text(),"Колір")]/span
 
 
+        try {
+
+            $productDoc = new \DOMDocument();
+            $productDoc->loadHTML(mb_convert_encoding(file_get_contents($link), 'HTML-ENTITIES', 'UTF-8'));
+
+            $productXpath = new \DOMXPath($productDoc);
 
 
-        $productDoc = new \DOMDocument();
-        $productDoc->loadHTML(mb_convert_encoding(file_get_contents($link), 'HTML-ENTITIES', 'UTF-8'));
+            $q = $productXpath->query('//div[@class="title-additional"]/h1');
 
-        $productXpath = new \DOMXPath($productDoc);
+            $name = preg_replace('/ {2,}/', ' ', trim($q->item(0)->nodeValue));
 
-
-
+            $brand = explode(' ', trim($name));
 
 
-        $q = $productXpath->query('//div[@class="title-additional"]/h1');
-
-        $name = preg_replace('/ {2,}/', ' ', trim($q->item(0)->nodeValue));
-
-        $brand = explode(' ',trim($name));
-
-
-        $q = $productXpath->query('//p/span[@class="price"]/text()');
-        $price =  preg_replace('/ {2,}/', ' ', trim($q->item(0)->nodeValue));
-        $price = htmlentities($price, null, 'utf-8');
-        $price = str_replace("&nbsp;", '',$price);
+            $q = $productXpath->query('//p/span[@class="price"]/text()');
+            $price = preg_replace('/ {2,}/', ' ', trim($q->item(0)->nodeValue));
+            $price = htmlentities($price, null, 'utf-8');
+            $price = str_replace("&nbsp;", '', $price);
 
 
-        $q = $productXpath->query('//td/div[contains(@class,\'price\')]/span[contains(@class,\'price\')]/span[@class="sum"]');
-        $prev_price =  preg_replace('/ {2,}/', ' ', trim($q->item(0)->nodeValue));
-        $prev_price = htmlentities($prev_price, null, 'utf-8');
-        $prev_price = str_replace("&nbsp;", '',$prev_price);
+            $q = $productXpath->query('//td/div[contains(@class,\'price\')]/span[contains(@class,\'price\')]/span[@class="sum"]');
+            $prev_price = preg_replace('/ {2,}/', ' ', trim($q->item(0)->nodeValue));
+            $prev_price = htmlentities($prev_price, null, 'utf-8');
+            $prev_price = str_replace("&nbsp;", '', $prev_price);
 
 
-        $q = $productXpath->query('//div[@class="attr-content"]');
+            $q = $productXpath->query('//div[@class="attr-content"]');
 
-        $description = preg_replace('/ {2,}/', ' ', trim($q->item(0)->nodeValue));
-
-
+            $description = preg_replace('/ {2,}/', ' ', trim($q->item(0)->nodeValue));
 
 
-
-        $q = $productXpath->query('//div[@class="product-img-box"]//a/@href');
-
+            $q = $productXpath->query('//div[@class="product-img-box"]//a/@href');
 
 
-        $Id = \app\models\Category::find()->orderBy('id DESC')->one();
-        $categoryId = $Id->id;
+            $Id = \app\models\Category::find()->orderBy('id DESC')->one();
+            $categoryId = $Id->id;
 
-        $this->insert('{{%product}}',[
-            'name' => $name,
-            'brand' => $brand[0],
-            'price' => $price,
-            'prev_price' => $prev_price,
-            'description' => $description,
-            'colors' => array_pop($brand),
-            'availability' => \random_int(1,2000),
-            'category_id' => $categoryId,
-        ]);
 
-        $Id = \app\models\Product::find()->orderBy('id DESC')->one();
-        $productId = $Id->id;
+            if ($price == null || $description == null)
+                return;
 
-        foreach ($q as $a){
-            $l = $a->nodeValue;
-            $l = str_replace("#","",$l);
+            $this->insert('{{%product}}', [
+                'name' => $name,
+                'brand' => $brand[0],
+                'price' => $price,
+                'prev_price' => $prev_price,
+                'description' => $description,
+                'colors' => array_pop($brand),
+                'availability' => \random_int(1, 2000),
+                'category_id' => $categoryId,
+            ]);
 
-            if(strpos($l, "youtube") == false && strpos($l,".jpg") !== false)
-            {
-                $imageName =\app\controllers\AppController::generateRandomString(\random_int(10,20)).'.jpg';
+            $Id = \app\models\Product::find()->orderBy('id DESC')->one();
+            $productId = $Id->id;
 
-                $file = file_get_contents($l);
+            foreach ($q as $a) {
+                $l = $a->nodeValue;
+                $l = str_replace("#", "", $l);
 
-               file_put_contents(Yii::$app->params['webPath']."\images\product_images\\".$imageName,$file);
+                if (strpos($l, "youtube") == false && strpos($l, ".jpg") !== false) {
+                    $imageName = \app\controllers\AppController::generateRandomString(\random_int(10, 20)) . '.jpg';
 
-                $this->insert("{{%product_photo}}",[
-                    'image_name' => $imageName,
-                    'product_id' => $productId
-                ]);
+                    $file = file_get_contents($l);
+
+                    file_put_contents(Yii::$app->params['webPath'] . "\images\product_images\\" . $imageName, $file);
+
+                    $this->insert("{{%product_photo}}", [
+                        'image_name' => $imageName,
+                        'product_id' => $productId
+                    ]);
+                }
             }
         }
-
+        catch (\Exception $e){
+            echo "product save exception: ".$e->getMessage();
+        }
 
 
 
@@ -304,6 +307,7 @@ function firstLevel($doc)
 
     public function safeUp()
     {
+        ini_set('memory_limit','2048M');
         libxml_use_internal_errors(true);
         $doc = new \DOMDocument();
         $doc->loadHTML(mb_convert_encoding(file_get_contents('https://allo.ua/'), 'HTML-ENTITIES', 'UTF-8'));

@@ -139,18 +139,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 
     }
 
-    public static function findIdentityAuthKey($token)
-    {
-
-
-        $user = self::find()
-            ->where(["auth_key" => $token])
-            ->one();
-
-
-        return  ($user);
-
-    }
 
 
     /**
