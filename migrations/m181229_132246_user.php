@@ -30,15 +30,13 @@ class m181229_132246_user extends Migration
 
             $this->createTable('{{%product}}',[
                 'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
-                'name' => $this->string(32)->notNull(),
+                'name' => $this->string(100)->notNull(),
                 'brand' => $this->string(100),
                 'category_id' => $this->integer()->notNull(),
                 'price' => $this->money()->notNull(),
+                'prev_price' => $this->money()->defaultValue(0),
                 'availability' => $this->integer(7)->defaultValue(1), //кількість доступного товару
-                'is_new' => $this->tinyInteger(1)->defaultValue(1),
-                'discount' => $this->integer(4)->defaultValue(0),
                 'description' => $this->string(1000)->notNull(),
-                'reviews_count' => $this->integer(7)->defaultValue(0),
                 'colors' => $this->string(200), //розділювач - ";"
                 'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
                 'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP').' ON UPDATE CURRENT_TIMESTAMP'
@@ -81,14 +79,6 @@ class m181229_132246_user extends Migration
                 'product_id' => $this->integer()->notNull(),
                 'color' => $this->string(),
                 'quantity' => $this->integer()->defaultValue(0)
-            ],$tableOptions);
-
-
-            $this->createTable('{{%chat}}',[
-                'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
-                'user_id' => $this->integer()->defaultValue(null),
-                'message' => $this->string(),
-                'updateDate' => $this->timestamp()->notNull().'DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
             ],$tableOptions);
 
             $this->createTable('{{%order}}',[

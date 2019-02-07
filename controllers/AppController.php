@@ -46,7 +46,7 @@ class AppController extends Controller{
 
     }
 
-    public function setCart()
+    public static function setCart()
     {
         $cart = new Cart();
         $cart->setProducts();
@@ -55,6 +55,10 @@ class AppController extends Controller{
         $_SESSION['cartCount'] = $cart->i;
         $_SESSION['cartSum'] = $cart->sum;
 //        self::debug($cart->products);
+    }
+
+    public function isAdmin(){
+        return  \Yii::$app->user->identity->status > 1 ? true:false;
     }
 
 

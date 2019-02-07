@@ -17,7 +17,7 @@ AppAsset::register($this);
 
 $this->registerJsFile('https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js');
 $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
-
+\app\controllers\AppController::setCart();
 ?>
 <?php $this->beginPage(); ?>
 
@@ -142,7 +142,7 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                             </div>
                             <strong class="text-uppercase">My Cart:</strong>
                             <br>
-                            <span><?= $_SESSION['cartSum'] ?>$</span>
+                            <span><?= $_SESSION['cartSum'] ?>₴</span>
                         </a>
                         <div class="custom-menu">
                             <div id="shopping-cart">
@@ -155,10 +155,11 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                                             ?>
                                             <div class="product product-widget">
                                                 <div class="product-thumb">
-                                                    <?= Html::img('@web/img/thumb-product01.jpg',['alt' => '']); ?><!-- todo:: make normal relationship in product -  product_photo and return first photo-->
+                                                    <?php $image = \app\models\ProductPhoto::find()->where(['product_id' => $product->id])->one(); ?>
+                                                    <?= Html::img('@web/images/product_images/'.$image->image_name,['alt' => '']); ?><!-- todo:: make normal relationship in product -  product_photo and return first photo-->
                                                 </div>
                                                 <div class="product-body">
-                                                    <h3 class="product-price"><?= round($product->price) ?>$ <span class="qty">x<?= $product->cartQuantity ?></span>  <?= $product->cartColor ?></h3>
+                                                    <h3 class="product-price"><?= round($product->price) ?>₴ <span class="qty">x<?= $product->cartQuantity ?></span>  <?= $product->cartColor ?></h3>
                                                     <h2 class="product-name"><a href="/goods/product?id=<?= $product->id ?>"><?= $product->name ?></a></h2>
                                                 </div>
                                                 <button class="cancel-btn"><?= Html::a('<i class="fa fa-trash">',['site/delete-from-cart?id='.$product->cartId])?></i></button>
@@ -223,7 +224,7 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                                     <div class="row">
 
                                         <?php
-                                        $level2all = Category::find()->where(['parent_id' => $category->id])->all();
+                                        $level2all = Category::find()->where(['parent_id' => $category->id])->andWhere('parent_id != id')->all();
                                         foreach ($level2all as $level2) { ?>
                                         <div class="col-md-4">
                                             <ul class="list-links">
@@ -231,12 +232,8 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                                                 <?php
                                                 $level3all = Category::find()->where(['parent_id' => $level2->id])->all();
                                                 foreach ($level3all as $level3) {
-                                                    ?>
-                                                    <?= Html::a('<li>'.$level3->name.'</li>',['/goods/category?id=' . $level3->id]) ?>
-
-
-
-                                                <?php }
+                                                    echo Html::a('<li>'.$level3->name.'</li>',['/goods/category?id=' . $level3->id]);
+                                                }
                                                 echo '</ul></div>';
                                                 }
 
@@ -261,9 +258,15 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                 <ul class="menu-list">
                     <li><?= Html::a('Home',['/']) ?></li>
                     <li><?= Html::a('Shop',['/goods/index']) ?></li>
+                    <?php if (Yii::$app->user->identity->status > 1) { ?>
+                    <li class="dropdown default-dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Admin panel <i class="fa fa-caret-down"></i></a>
+                    <ul class="custom-menu">
+                        <li> <?= Html::a('Orders',['/admin/index']) ?></li>
+                        <li> <?= Html::a('Users',['/admin/users']) ?></li>
 
-                    <li><?php if (Yii::$app->user->identity->status > 1) echo Html::a('admin panel',['/admin/index']); ?></li>
-
+                        </ul>
+                    </li>
+                    <?php } ?>
                     <li class="dropdown default-dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Pages <i class="fa fa-caret-down"></i></a>
                         <ul class="custom-menu">
                             <li><?= Html::a('Home',['/']) ?></li>

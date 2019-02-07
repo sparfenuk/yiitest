@@ -217,12 +217,7 @@ class SiteController extends AppController
 
             }
             catch (\Exception $e){
-
-
-            } catch (\Exception $e) {
-
                 Yii::$app->session->setFlash('error', 'invalid email');
-                //return $this->goHome();
             }
 
 
@@ -299,10 +294,7 @@ class SiteController extends AppController
         ]);
     }
 
-    public function actionCheckout()
-    {
 
-    }
 
     public function actionSpam($email)
     {
@@ -354,7 +346,6 @@ class SiteController extends AppController
 
 
     }
-
     public function actionChangePassword($authKey)
     {
         $model = User::findByAuthKey($authKey);
@@ -362,11 +353,13 @@ class SiteController extends AppController
         if (isset($model)) {
 
             if (!empty($_POST['User']['password2']) && $_POST['User']['password'] == $_POST['User']['password2']) {
+
+                $model->load(Yii::$app->request->post());
                 $model->auth_key = self::generateRandomString(30);
                 $model->password = md5($model->password . Yii::$app->params['SALT']);
                 Yii::$app->session->setFlash('success', 'password successfully updated');
                 $model->save();
-                $this->goHome();
+                return $this->goHome();
             }
 
 //            self::debug($_POST['User']['password2']);
@@ -375,7 +368,7 @@ class SiteController extends AppController
             ]);
         } else {
             Yii::$app->session->setFlash('error', 'User with this email does not exists');
-            $this->goBack();
+           return $this->goBack();
         }
 
 
