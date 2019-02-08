@@ -12,7 +12,7 @@ use yii\helpers\Html;
 <div class="col-md-12">
     <div class="card table-card">
         <div class="card-header">
-            <h5>Users edit</h5>
+            <h5>ORDERS MANAGEMENT</h5>
             <div class="card-header-right">
                 <ul class="list-unstyled card-option">
                     <li class="first-opt"><i class="feather icon-chevron-left open-card-option"></i></li>
@@ -38,11 +38,16 @@ use yii\helpers\Html;
                     </tr>
                     </thead>
                     <tbody>
-<?php foreach ($orders as $order){ ?>
+<?php foreach ($orders as $order){
+    $user = \app\models\User::find()->where(['id' => $order->user_id])->one();
+    $product = \app\models\Product::find()->where(['id'=>$order->product_id])->one();
+
+    ?>
+
                   <tr><!-- user widget -->
                           <td>
                                <div class="d-inline-block align-middle">
-                                    <?= Html::img('@web/images/product_images/'.$user->photo_name,['alt' => 'user image', 'class' => 'img-radius img-40 align-top m-r-15','height' => 50,'width'=> 50])?>
+                                    <?= Html::img('@web/images/user_images/'.$user->photo_name,['alt' => 'user image', 'class' => 'img-radius img-40 align-top m-r-15','height' => 50,'width'=> 50])?>
                                     <div class="d-inline-block">
                                        <h6>Usnm:<br><?= $user->username ?></h6>
                                         <p class="text-muted m-b-0">Loc:<br><?=  $user->location ?></p>
@@ -50,22 +55,44 @@ use yii\helpers\Html;
                                </div>
                            </td>
                            <td><?= $user->email ?></td>
-                            <td><?= $user->bought_items_count ?></td>
-                            <td><?= $user->created_at ?></td>
+                          <td>
+                              <div class="d-inline-block align-middle">
+                                  <?= Html::img('@web/images/product_images/'.\app\models\ProductPhoto::find()->where(['product_id'=>$product->id])->one()->image_name,['alt' => 'user image', 'class' => 'img-radius img-40 align-top m-r-15','height' => 50,'width'=> 50])?>
+                                  <div class="d-inline-block">
+                                      <h6>Product link:<br> <?= Html::a($product->name,['/goods/product?id='.$product->id]) ?> </h6>
+                                      <h6>Price:<br><?=  round($product->price).' ₴' ?></h6>
+                                  </div>
+                              </div>
+                          </td>
+                            <td><?= $order->created_at ?></td>
                            <td>
-                               <label class="badge badge-inverse-primary"><?= $user->status ?><</label>
+                               <label class="badge badge-inverse-primary"><?= $order->status ?></label>
                             </td>
                            <td>
-<?php if(Yii::$app->user->identity->status > $user->status){
-                                    echo Html::a('<i class="fa fa-edit">',['/admin/user-edit?id='.$user->id]).'</i>';
-                                    echo Html::a('<i class="fa fa-ban">',['/admin/user-ban?id='.$user->id]).'</i>';
-                                }
-                                else echo 'not enough permissions';
-                                ?>
-<?php if(Yii::$app->user->identity->status > 2 && $user->status < 2)
-                                  echo Html::a('<i class="fa fa-level-up">',['/admin/user-up?id='.$user->id]).'</i>' ?>
-<?php if(Yii::$app->user->identity->status > 3 && $user->status < 3)
-                                    echo Html::a('<i class="fa fa-level-down">',['/admin/user-down?id='.$user->id]).'</i>' ?>
+                               <?php switch ($order->status) {
+                                   case \app\models\Order::CREATED:
+                                       echo Html::a('<i class="fa fa-level-up"> ', ['/admin/change-order-status?orderId=' . $order->id . '&status=' . \app\models\Order::PAYED]) . '</i>';
+                                       echo Html::a(' <i class="fa fa-ban"> ', ['/admin/change-order-status?orderId=' . $order->id . '&status=DELETED']) . '</i>';
+                                       break;
+                                   case \app\models\Order::PAYED:
+                                       echo Html::a('<i class="fa fa-level-up"> ', ['/admin/change-order-status?orderId=' . $order->id . '&status=' . \app\models\Order::SEND]) . '</i>';
+                                       break;
+                                   case \app\models\Order::SEND:
+                                       echo Html::a('<i class="fa fa-level-up"> ', ['/admin/change-order-status?orderId=' . $order->id . '&status=' . \app\models\Order::ARRIVED]) . '</i>';
+                                       break;
+                                   case \app\models\Order::ARRIVED:
+                                       echo Html::a('<i class="fa fa-level-up">', ['/admin/change-order-status?orderId=' . $order->id . '&status=' . \app\models\Order::FINISHED]) . '</i>';
+                                       echo Html::a(' <i class="fa fa-level-down"> ', ['/admin/change-order-status?orderId=' . $order->id . '&status=' . \app\models\Order::SEND]) . '</i>';
+                                       break;
+                                   case \app\models\Order::FINISHED:
+                                       echo Html::a('<i class="fa fa-level-edit"> ', ['/admin/change-order-status?orderId=' . $order->id . '&status=' . \app\models\Order::DISPUTED]) . '</i>';
+                                       echo Html::a(' <i class="fa fa-ban"> ', ['/admin/change-order-status?orderId=' . $order->id . '&status=DELETED']) . '</i>';
+                                       break;
+                                   case \app\models\Order::DISPUTED:
+                                       echo Html::a('<i class="fa fa-level-up">  ', ['/admin/change-order-status?orderId=' . $order->id . '&status=' . \app\models\Order::FINISHED]) . '</i>';
+                                       break;
+                               }
+                               ?>
                             </td>
                         </tr>
 

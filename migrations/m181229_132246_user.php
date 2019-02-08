@@ -81,13 +81,15 @@ class m181229_132246_user extends Migration
                 'quantity' => $this->integer()->defaultValue(0)
             ],$tableOptions);
 
-            $this->createTable('{{%order}}',[
+            $this->createTable('{{%order}}',[ // ім'я order є зарезервованим словом MYSQL але воно працює
                 'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
                 'user_id' => $this->integer()->notNull(),
                 'product_id' => $this->integer()->notNull(),
                 'quantity' => $this->integer()->notNull()->defaultValue(1),
                 'color' => $this->string()->defaultValue(null),
-                'status' => $this->string()->defaultValue('created') //created;payed;processed;send;arrived;finished;disputed;
+                'status' => $this->string()->defaultValue('CREATED'), //created;payed;processed;send;arrived;finished;disputed;
+                'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
+                'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP').' ON UPDATE CURRENT_TIMESTAMP'
             ],$tableOptions);
 
 //            $this->createTable('{{%address}}',[

@@ -376,25 +376,44 @@ class SiteController extends AppController
 
     public function actionAddToCart($productId=null,$color = '',$quantity=1){ //https://yiitest/site/add-to-cart?productId={}&color={}&quantity={}
      //  self::debug($_GET);
-        $cart = new Cart();
-        $cart->user_id = Yii::$app->user->identity->id;
-        $cart->color = $color;
-        $cart->quantity = $quantity;
-        $cart->product_id = $productId;
-        $cart->save();
-        $this->goBack(Yii::$app->request->referrer);
+        if(!Yii::$app->user->isGuest) {
+            $cart = new Cart();
+            $cart->user_id = Yii::$app->user->identity->id;
+            $cart->color = $color;
+            $cart->quantity = $quantity;
+            $cart->product_id = $productId;
+            $cart->save();
+            $this->goBack(Yii::$app->request->referrer);
+        }
+        else{
+            self::setCartNotRegistered($productId);
+            $this->goBack(Yii::$app->request->referrer);
+        }
+
     }
     public function actionDeleteFromCart($id){
-        $cart = Cart::find()
-            ->where([
-                'id' => $id
-            ])->one();
+        if(!Yii::$app->user->isGuest) {
+            $cart = Cart::find()
+                ->where([
+                    'id' => $id
+                ])->one();
 
-        if($cart)
-            $cart->delete();
+            if ($cart)
+                $cart->delete();
 
-        self::setCart();
-        $this->goBack();
+            self::setCart();
+         return $this->goBack(Yii::$app->request->referrer);
+        }
+        else {
+
+            for ($i = 0; $_SESSION['cartProducts'][$i] !== null;$i++){
+                if($_SESSION['cartProducts'][$i]->id == $id){
+                    $_SESSION['cartSum']-=$_SESSION['cartProducts'][$i]->price;
+                    $_SESSION['cartCount']--;
+                    unset($_SESSION['cartProducts'][$i]);
+                }
+            }
+        }
 
     }
 }

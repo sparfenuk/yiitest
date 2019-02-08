@@ -16,9 +16,9 @@ use Yii;
  */
 class Order extends \yii\db\ActiveRecord
 {
-    const CREATED = 'CREATED';
-    const PAYED = 'PAYED';
-    const PROCESSED = 'PROCESSED';
+    CONST CREATED = 'CREATED';
+    CONST PAYED = 'PAYED';
+    CONST PROCESSED = 'PROCESSED';
     CONST SEND = 'SEND';
     CONST ARRIVED = 'ARRIVED';
     CONST FINISHED = 'FINISHED';

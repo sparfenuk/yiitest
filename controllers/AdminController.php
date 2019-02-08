@@ -9,10 +9,23 @@ class AdminController extends AppController
 {
     public function actionIndex()
     {
-        $orders = Order::find()->where(['status' => Order::PAYED])->limit(30)->orderBy('id');
+        $orders = Order::find()->limit(30)->all();
 
         return $this->render('index',
             ['orders' => $orders]);
+    }
+
+    public function actionChangeOrderStatus($orderId,$status){
+
+            $order = Order::find()->where(['id' => $orderId])->one();
+            if($status != "DELETED") {
+                $order->status = $status;
+                $order->save();
+            }
+            else $order->delete();
+
+            return $this->actionIndex();
+
     }
 
     public function actionUsers()

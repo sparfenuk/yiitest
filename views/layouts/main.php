@@ -17,7 +17,9 @@ AppAsset::register($this);
 
 $this->registerJsFile('https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js');
 $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
-\app\controllers\AppController::setCart();
+
+if(!Yii::$app->user->isGuest)
+    \app\controllers\AppController::setCart();
 ?>
 <?php $this->beginPage(); ?>
 
@@ -162,7 +164,8 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                                                     <h3 class="product-price"><?= round($product->price) ?>₴ <span class="qty">x<?= $product->cartQuantity ?></span>  <?= $product->cartColor ?></h3>
                                                     <h2 class="product-name"><a href="/goods/product?id=<?= $product->id ?>"><?= $product->name ?></a></h2>
                                                 </div>
-                                                <button class="cancel-btn"><?= Html::a('<i class="fa fa-trash">',['site/delete-from-cart?id='.$product->cartId])?></i></button>
+                                                <?php $id = Yii::$app->user->isGuest ? $product->id : $product->cartId; ?>
+                                                <button class="cancel-btn"><?= Html::a('<i class="fa fa-trash">',['site/delete-from-cart?id=' .$id ])?></i></button>
                                             </div>
                                         <?php } ?>
                                     <!--                                    <div class="product product-widget">-->
