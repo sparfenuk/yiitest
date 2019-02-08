@@ -14,6 +14,10 @@ use Yii;
  */
 class Category extends \yii\db\ActiveRecord
 {
+
+  private  static $array_categories=null;
+
+
     /**
      * {@inheritdoc}
      */
@@ -33,6 +37,12 @@ class Category extends \yii\db\ActiveRecord
             [['name'], 'unique'],
         ];
     }
+
+     public static function  categoryName($id)
+     {
+         $name = self::find()->where(['id'=>$id])->one();
+         return $name->name;
+     }
 
     /**
      * {@inheritdoc}
@@ -55,4 +65,30 @@ public static function getCategories()
     {
         return $this->hasMany(Product::className(), ['category_id' => 'id']);
     }
+
+    public static function getCategoryId($name)
+    {
+        $id = self::find()->where(['name'=>$name])->one();
+        return $id->id;
+
+    }
+
+
+    public static function getSubCategoriesId($categories)
+    {
+
+        foreach ($categories as $category) {
+            $sub = self::find()->where(['parent_id' => $category->id])->all();
+            if($sub->count!=0)
+            {
+                self::getSubCategoriesId($sub);
+            }
+            else
+            {
+                array_push($array_categories,$category->id);
+
+            }
+        }
+    }
+
 }

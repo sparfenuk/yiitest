@@ -18,8 +18,6 @@ use Yii;
  */
 class Review extends \yii\db\ActiveRecord
 {
-
-
     /**
      * {@inheritdoc}
      */
@@ -34,11 +32,10 @@ class Review extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'user_id', 'product_id', 'mark'], 'required'],
-            [['id', 'user_id', 'product_id', 'mark'], 'integer'],
+            [['user_id', 'product_id', 'mark'], 'required'],
+            [['user_id', 'product_id', 'mark'], 'integer'],
             [['created_at'], 'safe'],
             [['description'], 'string', 'max' => 1000],
-            [['id'], 'unique'],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
         ];
     }
@@ -58,6 +55,8 @@ class Review extends \yii\db\ActiveRecord
         ];
     }
 
+
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -66,12 +65,15 @@ class Review extends \yii\db\ActiveRecord
         return $this->hasOne(Product::className(), ['id' => 'product_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+     return User::find()->where(['id'=>$this->user_id])->one();
+       // return $this->hasOne(User::className(), ['id' => 'user_id']);
 
     }
+    public static function getAverageReview($id)
+    {
+      return self::find()->select('mark')->where(['product_id'=>$id])->average('mark');
+    }
+
 }

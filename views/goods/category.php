@@ -25,28 +25,33 @@ use yii\widgets\LinkPager;
 $this->title = 'Goods';
 $this->params['breadcrumbs'][] = $this->title;
 
-    echo '
+    ?>
                    <div class="col-md-12">
 					<div class="section-title">
-						<h2 class="title">here should be name of category</h2>
+						<h2 class="title"><?= $category ?></h2>
 						<div class="pull-right">
 						   <h3 class="title"> Order by: </h3>
+
 						    <ul style="float: right; margin-top: 12px;" >
-								<li>'.$sort->link('name').'</li>
-								<li>'.$sort->link('price').'</li>
-							
+								<li>  <?= $sort->link('name') ?>  </li>
+								<li>  <?= $sort->link('price') ?>   </li>
+
 					    </ul>
-                        
-					 
+
+
 					  </div>
 					</div>
 				</div>
-               ';
 
 
-     //var_dump($dataProvider);
-echo  '<div class = "row">';
 
+
+     <div class = "row">
+
+
+
+
+<?php
     foreach  ($dataProvider->models as $goods) {
         $url = Url::toRoute( [ 'goods/product', 'id' => $goods->id] );
         $name = ProductPhoto::find()->where(['product_id' => $goods->id])->one();;
@@ -74,6 +79,16 @@ echo  '<div class = "row">';
         {
             echo 'Out of stock';
 
+        }
+        else if(Yii::$app->user->identity->status >= 2)
+        {
+
+
+           // goods/update?id=1
+             echo '<form method="get" action="/goods/update">
+               <input type="hidden" name="id" value="'.$goods->id.'">
+                <button type="submit">Update</button>
+               </form>';
         }
 
         echo '</div>'.'</div>';

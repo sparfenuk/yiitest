@@ -14,7 +14,7 @@ use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
-
+use app\models\Category;
 
 $this->title = 'Goods';
 $this->params['breadcrumbs'][] = $this->title;
@@ -25,11 +25,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
  foreach ($products as $key=>$value) {
      if ($value!==null) {
+
+         $curl = Url::toRoute(['goods/category', 'id' => Category::getCategoryId($key)]);
+
          echo '
                    <div class="col-md-12">
 					<div class="section-title">
+					<a href="'.$curl.'">
 						<h2 class="title">' . $key . '</h2>
-						
+					</a>
 					</div>
               <div class = "row">';
 
@@ -58,6 +62,17 @@ $this->params['breadcrumbs'][] = $this->title;
                  echo 'Out of stock';
 
              }
+             else if(Yii::$app->user->identity->status >= 2)
+             {
+
+
+                 // goods/update?id=1
+                 echo '<form method="get" action="/goods/update">
+               <input type="hidden" name="id" value="'.$goods->id.'">
+                <button type="submit">Update</button>
+               </form>';
+             }
+
 
              echo '</div>' . '</div>';
          }

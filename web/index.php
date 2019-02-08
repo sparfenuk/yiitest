@@ -8,5 +8,8 @@ require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
 
 $config = require __DIR__ . '/../config/web.php';
+$_SESSION['cartProducts'] = [];
+$_SESSION['cartSum'] = 0;
+$_SESSION['cartCount'] = 0;
 
 (new yii\web\Application($config))->run();

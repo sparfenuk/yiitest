@@ -2,13 +2,30 @@
 
 namespace app\controllers;
 
+use app\models\Order;
 use app\models\User;
 
 class AdminController extends AppController
 {
     public function actionIndex()
     {
-        return $this->render('index');
+        $orders = Order::find()->limit(30)->all();
+
+        return $this->render('index',
+            ['orders' => $orders]);
+    }
+
+    public function actionChangeOrderStatus($orderId,$status){
+
+            $order = Order::find()->where(['id' => $orderId])->one();
+            if($status != "DELETED") {
+                $order->status = $status;
+                $order->save();
+            }
+            else $order->delete();
+
+            return $this->actionIndex();
+
     }
 
     public function actionUsers()
@@ -34,5 +51,41 @@ class AdminController extends AppController
             'model' => $model,
         ]);
     }
+
+    public function actionUserBan($id){
+        if(self::isAdmin()) {
+            $user = User::findIdentity($id);
+            $user->delete();
+            $this->actionUsers();
+        }
+    }
+    public function actionUserUp($id){
+        if(self::isAdmin()) {
+            $user = User::findIdentity($id);
+            if($user->status<5) {
+                $user->status++;
+                $user->save();
+            }
+            $this->actionUsers();
+        }
+    }
+    public function actionUserDown($id){
+        if(self::isAdmin()) {
+            $user = User::findIdentity($id);
+            if($user->status>0) {
+                $user->status--;
+                $user->save();
+            }
+            $this->actionUsers();
+        }
+    }
+
+    public function actionSendChat() {
+        echo \sintret\chat\ChatRoom::sendChat($_POST);
+    }
+
+
+
+
 
 }

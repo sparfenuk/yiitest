@@ -24,24 +24,22 @@ class m181229_132246_user extends Migration
                 'auth_key' => $this->string()->notNull()->unique(), //created for confirming email and changing password via email
                 'bought_items_count' => $this->integer()->defaultValue(0),
                 'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
-                'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP')
+                'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP').' ON UPDATE CURRENT_TIMESTAMP'
             ],
                 $tableOptions);
 
             $this->createTable('{{%product}}',[
                 'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
-                'name' => $this->string(32)->notNull(),
+                'name' => $this->string(100)->notNull(),
                 'brand' => $this->string(100),
                 'category_id' => $this->integer()->notNull(),
                 'price' => $this->money()->notNull(),
+                'prev_price' => $this->money()->defaultValue(0),
                 'availability' => $this->integer(7)->defaultValue(1), //кількість доступного товару
-                'is_new' => $this->tinyInteger(1)->defaultValue(1),
-                'discount' => $this->integer(4)->defaultValue(0),
                 'description' => $this->string(1000)->notNull(),
-                'reviews_count' => $this->integer(7)->defaultValue(0),
                 'colors' => $this->string(200), //розділювач - ";"
                 'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
-                'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP')
+                'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP').' ON UPDATE CURRENT_TIMESTAMP'
             ],
                 $tableOptions);
 
@@ -50,7 +48,7 @@ class m181229_132246_user extends Migration
                 'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
                 'user_id' => $this->integer()->notNull(),
                 'product_id' => $this->integer()->notNull(),
-                'mark' => $this->integer()->notNull(),
+                'mark' => $this->integer()->notNull()->defaultValue(0),
                 'description' => $this->string(1000),
                 'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP')
             ],
@@ -82,6 +80,23 @@ class m181229_132246_user extends Migration
                 'color' => $this->string(),
                 'quantity' => $this->integer()->defaultValue(0)
             ],$tableOptions);
+
+            $this->createTable('{{%order}}',[ // ім'я order є зарезервованим словом MYSQL але воно працює
+                'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
+                'user_id' => $this->integer()->notNull(),
+                'product_id' => $this->integer()->notNull(),
+                'quantity' => $this->integer()->notNull()->defaultValue(1),
+                'color' => $this->string()->defaultValue(null),
+                'status' => $this->string()->defaultValue('CREATED'), //created;payed;processed;send;arrived;finished;disputed;
+                'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
+                'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP').' ON UPDATE CURRENT_TIMESTAMP'
+            ],$tableOptions);
+
+//            $this->createTable('{{%address}}',[
+//                'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
+//                'user_id' => $this->integer()->notNull(),
+//
+//            ],$tableOptions);
 
             $this->createIndex('idx-cart-user',
                 '{{%cart}}',

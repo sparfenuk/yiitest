@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 
+use app\models\Product;
 use app\models\User;
 use yii\db\Query;
 use yii\web\Controller;
@@ -46,7 +47,7 @@ class AppController extends Controller{
 
     }
 
-    public function setCart()
+    public static function setCart()
     {
         $cart = new Cart();
         $cart->setProducts();
@@ -56,6 +57,20 @@ class AppController extends Controller{
         $_SESSION['cartSum'] = $cart->sum;
 
 //        self::debug($cart->products);
+    }
+
+    public static function setCartNotRegistered($productId){
+        array_push($_SESSION['cartProducts'] , Product::find()->where(['id'=>$productId])->one());
+        $_SESSION['cartCount']++;
+        foreach ($_SESSION['cartProducts'] as $product){
+            $_SESSION['cartSum'] += $product->price;
+        }
+
+    }
+
+
+    public function isAdmin(){
+        return  \Yii::$app->user->identity->status > 1 ? true:false;
     }
 
 

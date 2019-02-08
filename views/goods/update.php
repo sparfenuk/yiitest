@@ -15,7 +15,7 @@ use app\models\Category;
 $this->title = 'Update product information';
 $this->params['breadcrumbs'][] = ['label' => 'Product', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-echo 'wadawdawwwwwwwww';
+
 ?>
 <div class="posts-update">
 <!---->
@@ -37,7 +37,7 @@ echo 'wadawdawwwwwwwww';
 
     <?= $form->field($product, 'brand')->textInput(['maxlength' => true]) ?>
 
-     <?= $form->field($product, 'description')->textInput(['maxlength' => true]) ?>
+     <?= $form->field($product, 'description')->textarea(['rows' => '6']) ?>
 
     <?= $form->field($product, 'price')->textInput(['type' => 'number']) ?>
 

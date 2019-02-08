@@ -217,12 +217,7 @@ class SiteController extends AppController
 
             }
             catch (\Exception $e){
-
-
-            } catch (\Exception $e) {
-
                 Yii::$app->session->setFlash('error', 'invalid email');
-                //return $this->goHome();
             }
 
 
@@ -299,10 +294,7 @@ class SiteController extends AppController
         ]);
     }
 
-    public function actionCheckout()
-    {
 
-    }
 
     public function actionSpam($email)
     {
@@ -354,7 +346,6 @@ class SiteController extends AppController
 
 
     }
-
     public function actionChangePassword($authKey)
     {
         $model = User::findByAuthKey($authKey);
@@ -362,11 +353,13 @@ class SiteController extends AppController
         if (isset($model)) {
 
             if (!empty($_POST['User']['password2']) && $_POST['User']['password'] == $_POST['User']['password2']) {
+
+                $model->load(Yii::$app->request->post());
                 $model->auth_key = self::generateRandomString(30);
                 $model->password = md5($model->password . Yii::$app->params['SALT']);
                 Yii::$app->session->setFlash('success', 'password successfully updated');
                 $model->save();
-                $this->goHome();
+                return $this->goHome();
             }
 
 //            self::debug($_POST['User']['password2']);
@@ -375,31 +368,52 @@ class SiteController extends AppController
             ]);
         } else {
             Yii::$app->session->setFlash('error', 'User with this email does not exists');
-            $this->goBack();
+           return $this->goBack();
         }
 
 
     }
 
-    public function actionAddToCart($productId,$color = '',$quantity=1){ //https://yiitest/site/add-to-cart?productId={}&color={}&quantity={}
-        $cart = new Cart();
-        $cart->user_id = Yii::$app->user->identity->id;
-        $cart->color = $color;
-        $cart->quantity = $quantity;
-        $cart->product_id = $productId;
-        $cart->save();
+    public function actionAddToCart($productId=null,$color = '',$quantity=1){ //https://yiitest/site/add-to-cart?productId={}&color={}&quantity={}
+     //  self::debug($_GET);
+        if(!Yii::$app->user->isGuest) {
+            $cart = new Cart();
+            $cart->user_id = Yii::$app->user->identity->id;
+            $cart->color = $color;
+            $cart->quantity = $quantity;
+            $cart->product_id = $productId;
+            $cart->save();
+            $this->goBack(Yii::$app->request->referrer);
+        }
+        else{
+            self::setCartNotRegistered($productId);
+            $this->goBack(Yii::$app->request->referrer);
+        }
+
     }
     public function actionDeleteFromCart($id){
-        $cart = Cart::find()
-            ->where([
-                'id' => $id
-            ])->one();
+        if(!Yii::$app->user->isGuest) {
+            $cart = Cart::find()
+                ->where([
+                    'id' => $id
+                ])->one();
 
-        if($cart)
-            $cart->delete();
+            if ($cart)
+                $cart->delete();
 
-        self::setCart();
-        $this->goBack();
+            self::setCart();
+         return $this->goBack(Yii::$app->request->referrer);
+        }
+        else {
+
+            for ($i = 0; $_SESSION['cartProducts'][$i] !== null;$i++){
+                if($_SESSION['cartProducts'][$i]->id == $id){
+                    $_SESSION['cartSum']-=$_SESSION['cartProducts'][$i]->price;
+                    $_SESSION['cartCount']--;
+                    unset($_SESSION['cartProducts'][$i]);
+                }
+            }
+        }
 
     }
 }
