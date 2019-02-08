@@ -125,7 +125,7 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
                         <ul class="custom-menu">
                             <?php echo !Yii::$app->user->isGuest?
                                 '<li><a href="/site/edit-profile"><i class="fa fa-user-o"></i> My Account</a></li>
-                            <li><a href="/site/checkout"><i class="fa fa-check"></i> Checkout</a></li>
+                            <li><a href="/product/checkout"><i class="fa fa-check"></i> Checkout</a></li>
                             <li><a href="/site/logouts"><i class="fa fa-lock"></i> Log Out</a></li>':
                                 '<li><a href="/site/login"><i class="fa fa-unlock-alt"></i> Login</a></li>
                             <li><a href="/site/sign-up"><i class="fa fa-user-plus"></i> Join</a></li>';?>

@@ -5,6 +5,7 @@
 
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 ?>
 
 
@@ -135,9 +136,12 @@ use yii\helpers\Html;
                                     </tr>
                                 </thead>
                                 <tbody>
-                                //cartSum
-                                <?php ?>
-                                <?php foreach ($_SESSION['cartProducts'] as $product) {?>
+
+
+                                <?php foreach ($_SESSION['cartProducts'] as $product) {
+                                    $url = Url::toRoute( [ 'product/delete-from-cart', 'id' => $product->cartId] );
+
+                                    ?>
                                     <tr>
 
                                         <td class="thumb"><img src="../../siteMainPageTemplate/e-shop/img/thumb-product01.jpg" alt=""></td>
@@ -148,10 +152,10 @@ use yii\helpers\Html;
                                                 <li><span> <?= $product->cartColor ?></span></li>
                                             </ul>
                                         </td>
-                                        <td class="price text-center"><strong><?= $product->price ?></strong><br></td>
+                                        <td class="price text-center"><strong><?= $product->price ?> $</strong><br></td>
                                         <td class="qty text-center"><input class="input" type="number" value="<?=  $product->cartQuantity ?>"></td>
                                         <td class="total text-center"><strong class="primary-color"><?= $AllTotal = $product->price*$product->cartQuantity ?> $</strong></td>
-                                        <td class="text-right"><button class="main-btn icon-btn"><i class="fa fa-close"></i></button></td>
+                                        <td class="text-right"><button class="main-btn icon-btn"> <?= Html::a('X',['product/delete-from-cart?id='.$product->cartId])?></button></td>
                                     </tr>
                                 <?php } ?>
                                 </tbody>
@@ -165,13 +169,19 @@ use yii\helpers\Html;
 									<tr>
 										<th class="empty" colspan="3"></th>
 										<th>TOTAL</th>
-										<th colspan="2" class="total"><?php ?>$</th>
+										<th colspan="2" class="total">$</th>
 									</tr>
 								</tfoot>
 							</table>
+
 							<div class="pull-right">
-								<button class="primary-btn">Place Order</button>
+
+								<button class="primary-btn"><?= Html::a('Place Order',['product/send-email?user='.$model->username.'&email='.$model->email.'&location='.$model->location.
+                                        '&mobile_number='.$model->mobile_number.'&productName='.$product->name.'&color='.$product->cartColor.
+                                        '&quantity='.$product->cartQuantity.'&price='.$product->price.'&total='.$AllTotal])?></button>
+
 							</div>
+
 						</div>
 
 					</div>
