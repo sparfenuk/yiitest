@@ -177,11 +177,11 @@ foreach ($photos as $photo) {
                             ?>
 
                                 <?php
-
-                                if($product->prev_price!=0 && $product->price < $product->prev_price)
+                                $p=$product->getDiscount();
+                                if($p!==null)
                                 {
-                                    $p = round((($product->prev_price / $product->price)*100)-100);
-                                    echo'<span class="sale">-'.$p.'%</span>';
+
+                                    echo'<span class="sale">-'.round($p).'%</span>';
                                 }
 
                                 ?>

@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Cart;
 use app\models\Category;
 use app\models\Goods;
 use app\models\Product;
@@ -126,13 +127,12 @@ class GoodsController extends AppController
                 return $this->redirect(['product', 'id' => $product->id]);
 
             }
-            if($product!==null)
-            return $this->render('update', ['product' => $product, 'uploader' => $uploader, 'categories' => $categories]);
-             else
-                 $this->goBack(Yii::$app->request->referrer);
-        }
-        else
-        $this->goHome();
+            if ($product !== null)
+                return $this->render('update', ['product' => $product, 'uploader' => $uploader, 'categories' => $categories]);
+            else
+                $this->goBack(Yii::$app->request->referrer);
+        } else
+            $this->goHome();
     }
 
 
@@ -206,60 +206,53 @@ class GoodsController extends AppController
 
     public function actionCategory($id = null)
     {
-
-
-//        if($search_param !== null)
-//        {
-//            $query = Product::find();
-//            $query->andFilterWhere(['like', 'name', $search_param])->all();
-//            $dataProvider = new ActiveDataProvider([
-//                'query'=> $query,
-//                'pagination' => [
-//                    'pageSize' => 20
-//                ]
-//            ]);
-//
-//
-//
-//
-//        }
-
-
-        /** @var TYPE_NAME $dataProvider */
         if ($id !== null) {
-            $sort = new Sort([
-                'attributes' => [
-                    'price' => [
-                        'asc' => ['price' => SORT_ASC],
-                        'desc' => ['price' => SORT_DESC],
-                        'default' => SORT_DESC,
-                        'label' => 'Price',
-                    ],
-                    'name' => [
-                        'asc' => ['name' => SORT_ASC],
-                        'desc' => ['name' => SORT_DESC],
-                        'default' => SORT_DESC,
-                        'label' => 'Name',
-                    ],
-                ],
-            ]);
-            $query = Product::find();
-            $query->andFilterWhere(['category_id' => $id])->all();
-            $dataProvider = new ActiveDataProvider([
-                'query' => $query,
-                'pagination' => [
-                    'pageSize' => 20
-                ]
-            ]);
+            $arr = Category::getSub($id);
+            if ($arr != null) {
+                /** @var TYPE_NAME $dataProvider */
 
-            return $this->render('category', [
-                'dataProvider' => $dataProvider, 'sort' => $sort,
-                'category'=> Category::categoryName($id)
-            ]);
-        } else {
+                $sort = new Sort([
+                    'attributes' => [
+                        'price' => [
+                            'asc' => ['price' => SORT_ASC],
+                            'desc' => ['price' => SORT_DESC],
+                            'default' => SORT_DESC,
+                            'label' => 'Price',
+                        ],
+                        'name' => [
+                            'asc' => ['name' => SORT_ASC],
+                            'desc' => ['name' => SORT_DESC],
+                            'default' => SORT_DESC,
+                            'label' => 'Name',
+                        ],
+                    ],
+                ]);
 
-            $this->goHome();
+                $query = Product::find();
+                $query->andFilterWhere(['in', 'category_id', $arr])->all();
+                $dataProvider = new ActiveDataProvider([
+                    'query' => $query,
+                    'pagination' => [
+                        'pageSize' => 20
+                    ]
+                ]);
+
+
+                return $this->render('category', [
+                    'dataProvider' => $dataProvider, 'sort' => $sort,
+                    'category' => Category::categoryName($id)
+                ]);
+            } else {
+
+                $this->goHome();
+            }
+
         }
+
+
+
+
+
     }
 
 
@@ -407,11 +400,21 @@ class GoodsController extends AppController
        return $array;
 
     }
-    public function actionSearch($searchParam)
-     {
-       //todo: search with staff
+    public function actionSearch($search_param)
+    {
+        //todo: search with staff
+        if ($search_param !== null) {
+            $query = Product::find();
+            $query->andFilterWhere(['like', 'name', $search_param])->all();
+            $dataProvider = new ActiveDataProvider([
+                'query' => $query,
+                'pagination' => [
+                    'pageSize' => 20
+                ]
+            ]);
 
 
+        }
     }
 
 }

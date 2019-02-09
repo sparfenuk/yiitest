@@ -163,12 +163,14 @@ class Product extends \yii\db\ActiveRecord
     }
 
     public function getDiscount(){
+
         if($this->prev_price != null && $this->price < $this->prev_price)
         {
-            $p = ($this->prev_price * $this->price)/100;
+            $p = round(($this->prev_price / ($this->price/100)) - 100);
             return $p;
         }
         else return null;
     }
+
 
 }

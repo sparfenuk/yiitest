@@ -15,6 +15,9 @@ use Yii;
  */
 class Category extends \yii\db\ActiveRecord
 {
+
+
+
     /**
      * {@inheritdoc}
      */
@@ -54,4 +57,70 @@ class Category extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Product::className(), ['category_id' => 'id']);
     }
+
+    public static function getCategoryId($name)
+    {
+        $id = self::find()->where(['name'=>$name])->one();
+        return $id->id;
+
+    }
+
+
+    public static function getSub($id=null)
+    {
+        if ($id!==null)
+        {
+            $arr=array();
+
+            $categories = self::find()->where(['id'=>$id])->all();
+        Category::getSubCategoriesId($categories,$arr);
+         return $arr;
+
+        }
+
+
+    }
+    public static function getSubCategoriesId($categories,&$arr)
+    {
+        //  $arr = array();
+
+        foreach ($categories as $category) {
+
+            $sub = self::find()->where(['parent_id' => $category->id])->andWhere('parent_id != id')->all();
+
+//           var_dump( $sub);
+//           echo '<hr>';
+
+            if(!empty($sub))
+            {
+             self::getSubCategoriesId($sub,$arr);
+            }
+            else
+            {
+                //echo ($category->id).'<hr>';
+               array_push($arr,$category->id);
+//                var_dump( $arr);
+//                echo '<hr>';
+            }
+
+        }
+
+        /** @var array $arr */
+//        if ($arr!=null)
+//        return $arr;
+//        else
+//            return 'aaaa';
+    }
+
+
+    public static function  categoryName($id)
+    {
+        $name = self::find()->where(['id'=>$id])->one();
+        return $name->name;
+    }
+
+
+
+
+
 }
