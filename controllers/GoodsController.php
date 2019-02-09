@@ -321,10 +321,12 @@ class GoodsController extends AppController
         $categories = Category::find()->limit(5)->all();
 
 //           var_dump($categories);
+     /** @var TYPE_NAME $products */
         $products = null;
 
         foreach ($categories as $category) {
             if (Product::find()->where(['category_id' => $category->id])->count() >= 1)
+
                 $products[$category->name] = Product::find()->where(['category_id' => $category->id])->limit(5)->orderBy('updated_at')->all();
             else
                 $products[$category->name] = null;
