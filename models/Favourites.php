@@ -5,8 +5,9 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "{{%favourites}}".
+ * This is the model class for table "favourites".
  *
+ * @property int $id
  * @property int $user_id
  * @property int $product_id
  *
@@ -19,7 +20,7 @@ class Favourites extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%favourites}}';
+        return 'favourites';
     }
 
     /**
@@ -40,6 +41,7 @@ class Favourites extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
+            'id' => 'ID',
             'user_id' => 'User ID',
             'product_id' => 'Product ID',
         ];
@@ -50,15 +52,6 @@ class Favourites extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
-    }
-
-    /**
-     * {@inheritdoc}
-     * @return FavouritesQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new FavouritesQuery(get_called_class());
+        return $this->hasOne(User::className(), ['id' => 'user_id'])->inverseOf('favourites');
     }
 }

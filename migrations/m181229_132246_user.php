@@ -55,6 +55,7 @@ class m181229_132246_user extends Migration
                 $tableOptions);
 
             $this->createTable('{{%favourites}}',[ // якщо запис існує то продукт є улюбленим
+                'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
                 'user_id' => $this->integer()->notNull(),
                 'product_id' => $this->integer()->notNull()
             ],$tableOptions);

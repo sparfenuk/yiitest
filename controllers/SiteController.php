@@ -6,6 +6,9 @@ namespace app\controllers;
 
 use app\models\Cart;
 use app\models\Category;
+use app\models\Favourites;
+use app\models\Order;
+use app\models\Product;
 use app\models\User;
 use PHPUnit\Framework\Error\Error;
 use Yii;
@@ -83,11 +86,39 @@ class SiteController extends AppController
         ]);
 
         self::setCart();
+        //SELECT DISTINCT product_id FROM `order` order by id DESC LIMIT 5
+        $latestProducts = Order::find()->select('product_id')->distinct()->orderBy('id desc')->limit(4);
 
-
+        $pickedForYou = Yii::$app->user->isGuest ? null:
+            Order::find()->select('product_id')->distinct()->where(['user_id' => Yii::$app->user->identity->id])->orderBy('id desc')->limit(4);
+        /*найбільша різниця грн
+        SELECT p.*, p.prev_price - p.price as 'diff'
+        FROM `product` p
+        WHERE p.prev_price IS NOT NULL
+        ORDER by diff DESC
+        */
+        /* наійбільша знижка %
+          SELECT p.*, (p.prev_price/(p.price/100)-100) as 'diff'
+            FROM `product` p
+            WHERE p.prev_price IS NOT NULL
+            ORDER by diff DESC
+         */
+        $picker1 = Product::findBySql("SELECT p.*, p.prev_price - p.price as 'diff'
+        FROM `product` p
+        WHERE p.prev_price IS NOT NULL
+        ORDER by diff DESC");
+        $picker2 = Product::findBySql("SELECT p.*, (p.prev_price/(p.price/100)-100) as 'diff'
+            FROM `product` p
+            WHERE p.prev_price IS NOT NULL
+            ORDER by diff DESC");
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
+            'latestProducts' => $latestProducts,
+            'pickedForYou' => $pickedForYou,
+            'picker1' => $picker1,
+            'picker2' => $picker2,
+
         ]);
 
     }
@@ -296,8 +327,9 @@ class SiteController extends AppController
 
 
 
-    public function actionSpam($email)
+    public function actionSpam($email = null)
     {
+        if($email != null)
         Yii::$app->mailer->compose()
             ->setFrom(Yii::$app->params['mailEmail'])
             ->setTo($email)
@@ -416,6 +448,60 @@ class SiteController extends AppController
         }
 
     }
+    public function actionAddToFavourites($id){
+        if (Yii::$app->user->isGuest) {
+
+            Yii::$app->session->setFlash('error',
+                'You have to register ro add products to favourites!');
+            return $this->goHome();
+        }
+        else if(Favourites::find()->where(['product_id' => $id])->andWhere(['id' => Yii::$app->user->identity->id])->exists() ||
+                Product::find()->where(['id' => $id])->exists()
+        ){
+            Yii::$app->session->setFlash('error',
+                'You already added this product to favourites. Or product doesn\'t exists.');
+            return $this->goBack(Yii::$app->request->referrer);
+        }
+
+
+        $favourite = new Favourites();
+        $favourite->user_id = Yii::$app->user->identity->id;
+        $favourite->product_id = $id;
+
+        if($favourite->save())
+            return $this->goBack(Yii::$app->request->referrer);
+
+    }
+
+    public function actionDeleteFromFavourites($id){ //http://yiitest/site/delete-from-favourites?id=
+        $favourite = Favourites::find()->where(['id' => $id])->one();
+        try{
+            $favourite->delete();
+            return $this->actionFavourites();
+        }
+        catch (\Error $e){
+            Yii::$app->session->setFlash('error',
+                'Something went wrong, try again.');
+            return $this->goHome();
+        }
+
+    }
+    public function actionFavourites(){
+        if (Yii::$app->user->isGuest) {
+
+            Yii::$app->session->setFlash('error',
+                'You have to register ro watch favourites!');
+            return $this->goHome();
+        }
+
+        $favourites = Favourites::find()->where(['user_id' => Yii::$app->user->identity->id])->all();
+
+        return $this->render('favourites',[
+            'favourites' => $favourites,
+        ]);
+
+    }
+
 }
 
 

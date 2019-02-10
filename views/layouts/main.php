@@ -90,12 +90,19 @@ if(!Yii::$app->user->isGuest)
                 <div class="header-search">
                     <form action="index" method="GET">
                         <input class="input search-input" type="text" placeholder="Enter your keyword"  name="search_param">
-                        <!--                        <select name="order" class="input search-categories">-->
-                        <!--                            <option value="0">Price ASC</option>-->
-                        <!--                            <option value="1">Price DESC</option>-->
-                        <!--                            <option value="2">Name ASC</option>-->
-                        <!--                            <option value="3">Name DESC</option>-->
-                        <!--                        </select>-->
+                        <select name="order" class="input search-categories">
+                        <?php
+                        $mainCat = Category::find()->where('id = parent_id')->all();
+                        foreach ($mainCat as $cat)
+                            echo '<option value='.$cat->id.'">'.$cat->name.'</option>';
+                        ?>
+                        </select>
+<!--                                                <select name="order" class="input search-categories">-->
+<!--                                                    <option value="0">Price ASC</option>-->
+<!--                                                    <option value="1">Price DESC</option>-->
+<!--                                                    <option value="2">Name ASC</option>-->
+<!--                                                    <option value="3">Name DESC</option>-->
+<!--                                                </select>-->
                         <button class="search-btn"><i class="fa fa-search"></i></button>
                     </form>
 
@@ -127,6 +134,7 @@ if(!Yii::$app->user->isGuest)
                         <ul class="custom-menu">
                             <?php echo !Yii::$app->user->isGuest?
                                 '<li><a href="/site/edit-profile"><i class="fa fa-user-o"></i> My Account</a></li>
+                            <li><a href="/site/favourites"><i class="fa fa-heart"></i> Favourites</a></li>
                             <li><a href="/product/checkout"><i class="fa fa-check"></i> Checkout</a></li>
                             <li><a href="/site/logouts"><i class="fa fa-lock"></i> Log Out</a></li>':
                                 '<li><a href="/site/login"><i class="fa fa-unlock-alt"></i> Login</a></li>
@@ -182,7 +190,7 @@ if(!Yii::$app->user->isGuest)
                                 </div>
                                 <div class="shopping-cart-btns">
                                     <!--                                    <button class="main-btn" onclick="window.location.href='product/site';">View Cart</button>-->
-                                    <button class="primary-btn"><?= Html::a('Checkout',['product/checkout']) ?> <i class="fa fa-arrow-circle-right"></i></button>
+                                    <?= Html::a('<button class="primary-btn">Checkout<i class="fa fa-arrow-circle-right"></i></button>',['product/checkout']) ?>
                                 </div>
                             </div>
                         </div>
@@ -235,7 +243,7 @@ if(!Yii::$app->user->isGuest)
                                                 <?php
                                                 $level3all = Category::find()->where(['parent_id' => $level2->id])->all();
                                                 foreach ($level3all as $level3) {
-                                                    echo Html::a('<li>'.$level3->name.'</li>',['/goods/category?id=' . $level3->id]);
+                                                    echo '<li>'.Html::a($level3->name,['/goods/category?id=' . $level3->id]).'</li>';
                                                 }
                                                 echo '</ul></div>';
                                                 }
@@ -275,6 +283,7 @@ if(!Yii::$app->user->isGuest)
                         <ul class="custom-menu">
                             <li><?= Html::a('Home',['/']) ?></li>
                             <li><?= Html::a('Products',['/goods/index']) ?> </li>
+                            <li><?= Html::a('Favourites',['/site/favourites']) ?> </li>
                             <li><?= Html::a('Checkout',['/product/checkout']) ?> </li>
                         </ul>
                     </li>
