@@ -60,8 +60,12 @@ class AppController extends Controller{
     }
 
     public static function setCartNotRegistered($productId){
-        array_push($_SESSION['cartProducts'] , Product::find()->where(['id'=>$productId])->one());
+        $product = Product::find()->where(['id'=>$productId])->one();
+        $product->cartColor = null;
+        $product->cartQuantity = 1;
+        array_push($_SESSION['cartProducts'] , $product);
         $_SESSION['cartCount']++;
+        $_SESSION['cartSum'] = 0;
         foreach ($_SESSION['cartProducts'] as $product){
             $_SESSION['cartSum'] += $product->price;
         }

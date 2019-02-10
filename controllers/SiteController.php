@@ -85,7 +85,8 @@ class SiteController extends AppController
             'query' => Goods::find(),
         ]);
 
-        self::setCart();
+
+
         //SELECT DISTINCT product_id FROM `order` order by id DESC LIMIT 5
         $latestProducts = Order::find()->select('product_id')->distinct()->orderBy('id desc')->limit(4);
 
@@ -154,8 +155,13 @@ class SiteController extends AppController
      */
     public function actionLogouts() // logout чомусь не працює довелось перейменувати так
     {
+
+
         Yii::$app->user->logout();
 
+        $_SESSION['cartProducts'] = new \ArrayObject();
+        $_SESSION['cartSum'] = 0;
+        $_SESSION['cartCount'] = 0;
         return $this->goHome();
     }
 
@@ -421,7 +427,9 @@ class SiteController extends AppController
         }
         else{
             self::setCartNotRegistered($productId);
+
             $this->goBack(Yii::$app->request->referrer);
+            //self::debug($_SESSION);
         }
 
     }
@@ -434,19 +442,18 @@ class SiteController extends AppController
 
             if ($cart)
                 $cart->delete();
-
-            self::setCart();
          return $this->goBack(Yii::$app->request->referrer);
         }
         else {
+            foreach ($_SESSION['cartProducts']as $key => $value){
 
-            for ($i = 0; $_SESSION['cartProducts'][$i] !== null;$i++){
-                if($_SESSION['cartProducts'][$i]->id == $id){
-                    $_SESSION['cartSum']-=$_SESSION['cartProducts'][$i]->price;
+                if($_SESSION['cartProducts'][$key]->id == $id){
+                    $_SESSION['cartSum']-=$_SESSION['cartProducts'][$key]->price;
                     $_SESSION['cartCount']--;
-                    unset($_SESSION['cartProducts'][$i]);
+                    unset($_SESSION['cartProducts'][$key]);
                 }
             }
+            return $this->goBack(Yii::$app->request->referrer);
         }
 
     }
@@ -472,6 +479,11 @@ class SiteController extends AppController
 
         if($favourite->save())
             return $this->goBack(Yii::$app->request->referrer);
+        else {
+            Yii::$app->session->setFlash('error',
+                'Cant save data, try again please.');
+            return $this->goHome();
+        }
 
     }
 

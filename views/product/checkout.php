@@ -35,21 +35,21 @@ use yii\helpers\Url;
 							</div>
 
 							<div class="form-group">
-								<input class="input" type="text" name="last-name" placeholder="LastaName" value="<?= $model->username ?>">
+								<input class="input" type="text" name="last-name" placeholder="Username" value="<?= Yii::$app->user->identity->username ?>">
 							</div>
 							<div class="form-group">
-								<input class="input" type="email" name="email" placeholder="Email" value="<?= $model->email ?>">
+								<input class="input" type="email" name="email" placeholder="Email" value="<?= Yii::$app->user->identity->email ?>">
 							</div>
 							<div class="form-group">
 								<input class="input" type="text" name="address" placeholder="Address">
 							</div>
 
 							<div class="form-group">
-								<input class="input" type="text" name="country" placeholder="Country" value="<?= $model->location ?>">
+								<input class="input" type="text" name="country" placeholder="Country" value="<?= Yii::$app->user->identity->location ?>">
 							</div>
 
 							<div class="form-group">
-								<input class="input" type="tel" name="tel" placeholder="Telephone" value="<?= $model->mobile_number ?>">
+								<input class="input" type="tel" name="tel" placeholder="Telephone" value="<?= Yii::$app->user->identity->mobile_number ?>">
 							</div>
 							<div class="form-group">
 								<div class="input-checkbox">
@@ -138,13 +138,14 @@ use yii\helpers\Url;
                                 <tbody>
 
 
-                                <?php foreach ($_SESSION['cartProducts'] as $product) {
-                                    $url = Url::toRoute( [ 'product/delete-from-cart', 'id' => $product->cartId] );
-
+                                <?php
+                                if($_SESSION['cartProducts'])
+                                    foreach ($_SESSION['cartProducts'] as $product) {
+                                    $image = \app\models\ProductPhoto::find()->where(['product_id' => $product->id])->one();
                                     ?>
                                     <tr>
 
-                                        <td class="thumb"><img src="../../siteMainPageTemplate/e-shop/img/thumb-product01.jpg" alt=""></td>
+                                        <td class="thumb"><?= Html::img('@web/images/product_images/'.$image->image_name) ?></td>
                                         <td class="details">
                                             <a href="/goods/product?id=<?= $product->id ?>"><?= $product->name ?></a>
 
@@ -152,10 +153,11 @@ use yii\helpers\Url;
                                                 <li><span> <?= $product->cartColor ?></span></li>
                                             </ul>
                                         </td>
-                                        <td class="price text-center"><strong><?= $product->price ?> $</strong><br></td>
+                                        <td class="price text-center"><strong><?= round($product->price) ?> ₴</strong><br></td>
                                         <td class="qty text-center"><input class="input" type="number" value="<?=  $product->cartQuantity ?>"></td>
-                                        <td class="total text-center"><strong class="primary-color"><?= $AllTotal = $product->price*$product->cartQuantity ?> $</strong></td>
-                                        <td class="text-right"><button class="main-btn icon-btn"> <?= Html::a('X',['product/delete-from-cart?id='.$product->cartId])?></button></td>
+                                        <td class="total text-center"><strong class="primary-color"><?= $AllTotal = $product->price*$product->cartQuantity ?> ₴</strong></td>
+                                        <?php $id = Yii::$app->user->isGuest ? $product->id : $product->cartId; ?>
+                                        <td class="text-right"><button class="main-btn icon-btn"> <?= Html::a('X',['site/delete-from-cart?id='.$id])?></button></td>
                                     </tr>
                                 <?php } ?>
                                 </tbody>
@@ -169,17 +171,13 @@ use yii\helpers\Url;
 									<tr>
 										<th class="empty" colspan="3"></th>
 										<th>TOTAL</th>
-										<th colspan="2" class="total">$</th>
+										<th colspan="2" class="total"><?= $_SESSION['cartSum'] ?>₴</th>
 									</tr>
 								</tfoot>
 							</table>
 
 							<div class="pull-right">
-
-								<button class="primary-btn"><?= Html::a('Place Order',['product/send-email?user='.$model->username.'&email='.$model->email.'&location='.$model->location.
-                                        '&mobile_number='.$model->mobile_number.'&productName='.$product->name.'&color='.$product->cartColor.
-                                        '&quantity='.$product->cartQuantity.'&price='.$product->price.'&total='.$AllTotal])?></button>
-
+                                <?= Html::a('<button class="primary-btn">Place Order',['product/send-email']) ?></button>
 							</div>
 
 						</div>

@@ -20,6 +20,7 @@ $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
 
 if(!Yii::$app->user->isGuest)
     \app\controllers\AppController::setCart();
+
 ?>
 <?php $this->beginPage(); ?>
 
@@ -91,7 +92,9 @@ if(!Yii::$app->user->isGuest)
                     <form action="index" method="GET">
                         <input class="input search-input" type="text" placeholder="Enter your keyword"  name="search_param">
                         <select name="order" class="input search-categories">
-                        <option value="0">Everywhere</option>
+                            <option value="0">
+                                All categories
+                            </option>
                             <?php
 
                         $mainCat = Category::find()->where('id = parent_id')->all();
@@ -146,6 +149,13 @@ if(!Yii::$app->user->isGuest)
                     <!-- /Account -->
 
                     <!-- Cart -->
+                    <?php
+                    if(empty($_SESSION['cartCount'])){
+                                        $_SESSION['cartProducts'] = [];
+                                        $_SESSION['cartSum'] = 0;
+                                        $_SESSION['cartCount'] = 0;
+                                    }
+                                    ?>
                     <li class="header-cart dropdown default-dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                             <div class="header-btns-icon">
@@ -162,7 +172,6 @@ if(!Yii::$app->user->isGuest)
 
 
                                     <?php
-                                    if($_SESSION['cartCount'] != 0)
                                         foreach ($_SESSION['cartProducts'] as $product){
                                             ?>
                                             <div class="product product-widget">

@@ -9,12 +9,14 @@
 namespace app\controllers;
 
 use app\models\Cart;
+use app\models\Order;
 use app\models\Product;
 
 use app\models\ProductPhoto;
 use Yii;
 use app\models\User;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\UploadProductFile;
@@ -69,20 +71,12 @@ class ProductController extends AppController
     public function actionIndex()
     {
         /** @var TYPE_NAME $dataProvider */
-        $dataProvider = new ActiveDataProvider([
-            'query' => Product::find(),
-        ]);
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
         ]);
     }
+
     public function actionCheckout(){
-        $model = User::findIdentity(Yii::$app->user->identity->getId());
-        $products = Product::find()->all();
-
-
-
-        return $this->render('checkout', ['product' => $products, 'model' => $model]);
+        return $this->render('checkout');
     }
 
     /**
@@ -90,16 +84,27 @@ class ProductController extends AppController
      * @param $email
      * @param $location
      */
-    public function actionSendEmail($user, $email, $location,$mobile_number,$productName,$color,$quantity,$price,$total)
+    public function actionSendEmail()
     {
-        //print_r(Cart::find()->all());
-       
 
-            Yii::$app->mailer->compose()
-                ->setFrom(Yii::$app->params['mailEmail'])
-                ->setTo($email)
-                ->setSubject('Your product on E-Shop')
-                ->setHtmlBody('<table border="1" > 
+        //print_r(Cart::find()->all());
+
+            if(!Yii::$app->user->isGuest) {
+                $html = '';
+                foreach ($_SESSION['cartProducts'] as $product)
+                $html = $html.'<tr height="30">
+                                                <td> ' . $product->name . ' </td>
+                                                <td> ' . $product->cartColor . ' </td>
+                                                <td> ' . $product->cartQuantity . ' </td>
+                                                <td> ' . $product->price . ' ₴ </td>
+                                                <td> ' . $product->price * $product->cartQuantity . ' ₴ </td>
+                                            </tr>';
+
+                Yii::$app->mailer->compose()
+                    ->setFrom(Yii::$app->params['mailEmail'])
+                    ->setTo(Yii::$app->user->identity->email)
+                    ->setSubject('Your product on E-Shop')
+                    ->setHtmlBody('<table border="1" > 
                                            <col span="3" width="150"  >
                                            
                                             <tr height="30">
@@ -108,9 +113,9 @@ class ProductController extends AppController
                                                 <th> Phone Number </th>
                                             </tr>
                                             <tr height="30" >
-                                                <td> '.$user.' </td>
-                                                <td> '.$location.' </td>
-                                                <td> '.$mobile_number.' </td>
+                                                <td> ' . Yii::$app->user->identity->username . ' </td>
+                                                <td> ' . Yii::$app->user->identity->location . ' </td>
+                                                <td> ' . Yii::$app->user->identity->mobile_number . ' </td>
                                             </tr>
                                             </col>                                      
                                         </table>
@@ -126,31 +131,38 @@ class ProductController extends AppController
                                                 <th> Total </th>
                                                 
                                             </tr>
-                                            <tr height="30">
-                                                <td> '.$productName.' </td>
-                                                <td> '.$color.' </td>
-                                                <td> '.$quantity.' </td>
-                                                <td> '.$price.' $ </td>
-                                                <td> '.$total.' $ </td>
-                                            </tr>
-                                            
+                                            '.$html.'
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>'.$_SESSION['cartSum'].'₴</td>
                                             </col>
                                             </table>')
-                ->send();
+                    ->send();
 
-        Yii::$app->session->setFlash('error', 'good');
-        return $this->goHome();
-    }
-    public function actionDeleteFromCart($id){
+            }
 
-        $cart = Cart::find()
-            ->where(['id' => $id])->one();
+            foreach ($_SESSION['cartProducts'] as $key => $product) {
+                $order = new Order();
+                if(!Yii::$app->user->isGuest)
+                    Cart::find()->where(['id' => $product->cartId])->one()->delete();
+                else {
+                    $_SESSION['cartSum']-=$_SESSION['cartProducts'][$key]->price;
+                    $_SESSION['cartCount']--;
+                    unset($_SESSION['cartProducts'][$key]);
+                }
+                $order->product_id = $product->id;
+                $order->user_id = Yii::$app->user->identity->id;
+                $order->status = Order::PAYED;
+                $order->color = '';
+                $order->quantity =1;
+                $order->save();
+            }
 
-        if($cart)
-            $cart->delete();
+            Yii::$app->session->setFlash('success', 'Success, order created, check your email for details.');
 
-        self::setCart();
-        $this->goBack(Yii::$app->request->referrer);
+            return $this->goHome();
 
 
     }

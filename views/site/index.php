@@ -166,7 +166,7 @@ $this->title = 'E-Shop';
                         <ul class="product-countdown">
                             <li><span>00 H</span></li>
                             <li><span>00 M</span></li>
-                            <li><span>00 S</span></li>
+                            <li><span>15 S</span></li>
                         </ul>
                         <button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
                         <img src="./img/product01.jpg" alt="">
