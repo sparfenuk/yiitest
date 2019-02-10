@@ -14,7 +14,7 @@ use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use app\models\Category;
 AppAsset::register($this);
-
+$this->registerCssFile('https://fonts.googleapis.com/css?family=Hind:400,700');
 $this->registerJsFile('https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js');
 $this->registerJsFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js');
 
@@ -91,7 +91,9 @@ if(!Yii::$app->user->isGuest)
                     <form action="index" method="GET">
                         <input class="input search-input" type="text" placeholder="Enter your keyword"  name="search_param">
                         <select name="order" class="input search-categories">
-                        <?php
+                        <option value="0">Everywhere</option>
+                            <?php
+
                         $mainCat = Category::find()->where('id = parent_id')->all();
                         foreach ($mainCat as $cat)
                             echo '<option value='.$cat->id.'">'.$cat->name.'</option>';

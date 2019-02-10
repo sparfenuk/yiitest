@@ -106,11 +106,13 @@ class SiteController extends AppController
         $picker1 = Product::findBySql("SELECT p.*, p.prev_price - p.price as 'diff'
         FROM `product` p
         WHERE p.prev_price IS NOT NULL
-        ORDER by diff DESC");
+        ORDER by diff DESC
+        LIMIT 10");
         $picker2 = Product::findBySql("SELECT p.*, (p.prev_price/(p.price/100)-100) as 'diff'
             FROM `product` p
             WHERE p.prev_price IS NOT NULL
-            ORDER by diff DESC");
+            ORDER by diff DESC
+            LIMIT 10");
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
