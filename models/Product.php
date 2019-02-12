@@ -173,4 +173,10 @@ class Product extends \yii\db\ActiveRecord
     }
 
 
+    public function getAverageMark()
+    {
+     return  round(Review::getAverageReview($this->id));
+
+    }
+
 }

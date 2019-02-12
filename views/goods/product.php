@@ -213,7 +213,7 @@ foreach ($photos as $photo) {
                                     <?php
                                     for( $i = 0; $i < 5 ;$i++)
                                     {
-                                        if ($i<$average)
+                                        if ($i<$product->getAverageMark())
                                         {
                                             echo '<i class="fa fa-star"></i>';
                                         }
@@ -225,7 +225,7 @@ foreach ($photos as $photo) {
 
 
 								</div>
-								<a href="#"><?= $reviewDataProvider->getTotalCount() ?> Review / Add Review</a>
+								<a     href="#"> <?= $reviewDataProvider->getTotalCount() ?> Review / Add Review</a>
 							</div>
 							<p><strong>Availability:</strong>  <?= HTML::encode($product->availability) ?>  </p>
 							<p><strong>Brand:</strong>  <?= HTML::encode($product->brand) ?>   </p>
@@ -253,7 +253,7 @@ foreach ($photos as $photo) {
 							<ul class="tab-nav">
 
 								<li class="active"><a data-toggle="tab" href="#tab1">Details</a></li>
-                                <li><a data-toggle="tab" href="#tab2">Add to cart</a></li>
+                                <li><a data-toggle="tab"   href="#tab2">Add to cart</a></li>
                                 <li><a data-toggle="tab" href="#tab3">Reviews (<?= $reviewDataProvider->getTotalCount() ?>)</a></li>
 
                             </ul>
@@ -290,7 +290,7 @@ foreach ($photos as $photo) {
 
                                             echo Html::radioList('color',null,$arr);
 
-                                            echo  Html::input('number','quantity',1,['max'=>$product->availability , 'min'=>1]);
+//                                            echo  Html::input('number','quantity',1,['max'=>$product->availability , 'min'=>1]);
 
 
 

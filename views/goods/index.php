@@ -21,64 +21,108 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 
+    ?>
 
 
- foreach ($products as $key=>$value) {
-     if ($value!==null) {
 
-         $curl = Url::toRoute(['goods/category', 'id' => Category::getCategoryId($key)]);
 
-         echo '
+
+                 <div id="main" class="col-md-12"  >
+
+                     <div id="store">
+
+
+
+                             <?php
+                             foreach ($products as $key=>$value) {
+
+                                 if ($value !== null) {
+
+                                     $curl = Url::toRoute(['goods/category', 'id' => Category::getCategoryId($key)]);
+
+                                     echo '
                    <div class="col-md-12">
 					<div class="section-title">
-					<a href="'.$curl.'">
+					<a href="' . $curl . '">
 						<h2 class="title">' . $key . '</h2>
 					</a>
 					</div>
-              <div class = "row">';
+					        
+                               <div class = "row">';
 
-         foreach ($value as $goods) {
-             $url = Url::toRoute(['goods/product', 'id' => $goods->id]);
-             $name = ProductPhoto::find()->where(['product_id' => $goods->id])->one();
-             ?>
+                                     foreach ($value as $goods) {
+                                         $url = Url::toRoute(['goods/product', 'id' => $goods->id]);
+                                         $name = ProductPhoto::find()->where(['product_id' => $goods->id])->one();
 
-             <div class = "col-md-3 col-sm-6 col-xs-6">
-             <div class = "product product-single">
+                                           ?>
+                                        <div class="col-md-4 col-sm-6 col-xs-6">
+                                            <div class="product product-single">
+                                               <div class="product-thumb" >
+                                                <div class="product-label">
+                                                    <?php
+                                                    $d = $goods->getDiscount();
+                                                    if ($d!==null)
+                                                    {
+                                                        echo '<span class="sale">-'.$d.'%</span>';
+
+                                                    }
+                                                    else if($goods->isNew())
+                                                    {
+                                                        echo '	<span>New</span>';
+                                                    }
+                                                    ?>
+
+                                                </div>
+
+                                                 <button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
+                                                 <img style = "width: 100%;" src="<?=Yii::$app->params['basePath'] . '/images/product_images/' . HTML::encode($name->image_name)?>" >
+
+                                               </div>
+
+                                               <div class="product-body">
+
+                                                   <h3 class="product-price"> <?=round($goods->price)?>
+                                                       <?php
+
+                                                       if($goods->prev_price != 0)
+                                                       {
+                                                           echo'<del class="product-old-price">'.round($goods->prev_price).'</del>';
+
+                                                       }
 
 
-            <div class = "product-thumbbbb">
-                             <div class="product-label">
-                                <?php
-                               $d = $goods->getDiscount();
-                               if ($d!==null)
-                               {
-                                   echo '<span class="sale">-'.$d.'%</span>';
+                                                       ?>
 
-                               }
-                               else if($goods->isNew())
-                               {
-                                echo '	<span>New</span>';
-                               }
-                                ?>
+                                                   </h3>
 
+                                                   <div class="product-rating">
+                                                       <?php
+                                                       for( $i = 0; $i < 5 ;$i++)
+                                                       {
+                                                           if ($i<$goods->getAverageMark())
+                                                           {
+                                                               echo '<i class="fa fa-star"></i>';
+                                                           }
+                                                           else
+                                                               echo '<i class="fa fa-star-o empty"></i>';
 
-
-							</div>
-           <a href=' <?= HTML::encode($url)?>'>
-             <img style = " height: 200px;" src="<?=Yii::$app->params['basePath'] . '/images/product_images/' . HTML::encode($name->image_name)?>" >
-            </a>
-             </div>';
-
-             <div class = "product-body">
-                 <div class="name">
-                 <a  href= <? HTML::encode($url) ?> ><?= HTML::encode($goods->name) ?></a>
-                 </div>
-                 <div class="product-price"><?= HTML::encode($goods->price)?>
-                 </div>
-                 </div>
+                                                       }
+                                                       ?>
 
 
-                 <?php
+                                                   </div>
+
+                                                   <h2 class="product-name">
+                                                       <a href="<?= $url ?>"><?= $goods->name ?></a>
+                                                   </h2>
+                                                   <div class="product-btns">
+                                                       <?= Html::a('<button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>',['/site/add-to-favourites?id='.$goods->id]); ?>
+
+
+                                                       <?= Html::a('<button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i>Add to Cart</button>',['/site/add-to-cart', 'productId' => $goods->id]); ?>
+
+                                                   </div>
+                                                   <?php
 
 
              if ($goods->availability <= 0) {
@@ -95,15 +139,24 @@ $this->params['breadcrumbs'][] = $this->title;
                 <button type="submit">Update</button>
                </form>';
              }
+             ?>
+                                               </div>
+                                            </div>
+                                         </div>
+                         <?php
+                                     }
+                                     echo '</div>';
+                                 }
+                             }
 
 
-             echo '</div>' . '</div>';
-         }
+                              ?>
 
-         echo '</div></div>';
-     }
- }
- ?>
+
+
+                     </div>
+
+             </div>
 
 
 

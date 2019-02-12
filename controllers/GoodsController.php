@@ -290,7 +290,7 @@ class GoodsController extends AppController
                // self::debug($product->colors);
             }
 
-            $average = round(Review::getAverageReview($product->id));
+
 
             $product->description = $this->Parse( explode(';', $product->description));
 
@@ -299,7 +299,7 @@ class GoodsController extends AppController
 
             return $this->render('product', [
                 'product' => $product, 'reviewDataProvider' => $dataProvider, 'review' => $review,
-                'average' => $average
+
             ]);
         }
 
@@ -311,16 +311,16 @@ class GoodsController extends AppController
     {
 
 
-        $categories = Category::find()->limit(5)->all();
+        $categories = Category::find()->where(['in', 'id', [17,65,174]])->all();
 
 //           var_dump($categories);
      /** @var TYPE_NAME $products */
         $products = null;
 
         foreach ($categories as $category) {
-            if (Product::find()->where(['category_id' => $category->id])->count() >= 1)
+            if (Product::find()->where(['in','category_id', Category::getSub($category->id)])->count() >= 1)
 
-                $products[$category->name] = Product::find()->where(['category_id' => $category->id])->limit(5)->orderBy('updated_at')->all();
+                $products[$category->name] = Product::find()->where(['in','category_id',Category::getSub($category->id)])->limit(3)->orderBy('updated_at')->all();
             else
                 $products[$category->name] = null;
         }
