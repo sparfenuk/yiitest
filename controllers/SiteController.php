@@ -159,7 +159,7 @@ class SiteController extends AppController
 
         Yii::$app->user->logout();
 
-        $_SESSION['cartProducts'] = new \ArrayObject();
+        $_SESSION['cartProducts'] = [];
         $_SESSION['cartSum'] = 0;
         $_SESSION['cartCount'] = 0;
         return $this->goHome();
@@ -240,7 +240,8 @@ class SiteController extends AppController
             $model->auth_key = self::generateRandomString(30);
             if (!empty($model->password) && $model->password == $model->password2) {
                 $model->password = md5($model->password . Yii::$app->params['SALT']);
-            } else {
+            }
+            else {
                 Yii::$app->session->setFlash('error', 'passwords not identical');
                 $this->refresh();
             }
@@ -464,8 +465,8 @@ class SiteController extends AppController
                 'You have to register ro add products to favourites!');
             return $this->goHome();
         }
-        else if(Favourites::find()->where(['product_id' => $id])->andWhere(['id' => Yii::$app->user->identity->id])->exists() ||
-                Product::find()->where(['id' => $id])->exists()
+        else if(Favourites::find()->where(['product_id' => $id])->andWhere(['user_id' => Yii::$app->user->identity->id])->exists() ||
+                !Product::find()->where(['id' => $id])->exists()
         ){
             Yii::$app->session->setFlash('error',
                 'You already added this product to favourites. Or product doesn\'t exists.');

@@ -60,6 +60,19 @@ class LoginForm extends Model
     public function login()
     {
         if ($this->validate()) {
+
+            if($_SESSION['cartCount'] > 0){
+                foreach ($_SESSION['cartProducts'] as $product) {
+                    $cart = new Cart();
+                    $cart->product_id = $product->id;
+                    $cart->user_id = $this->getUser()->id;
+                    $cart->quantity = 1;
+                    $cart->color ='';
+                    $cart->save();
+                }
+            }
+
+
             return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
         }
         return false;

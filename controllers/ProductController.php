@@ -96,7 +96,7 @@ class ProductController extends AppController
                                                 <td> ' . $product->name . ' </td>
                                                 <td> ' . $product->cartColor . ' </td>
                                                 <td> ' . $product->cartQuantity . ' </td>
-                                                <td> ' . $product->price . ' ₴ </td>
+                                                <td> ' . round($product->price) . ' ₴ </td>
                                                 <td> ' . $product->price * $product->cartQuantity . ' ₴ </td>
                                             </tr>';
 
