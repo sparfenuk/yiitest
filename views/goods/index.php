@@ -15,6 +15,7 @@ use app\assets\AppAsset;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
 use app\models\Category;
+use yii\widgets\Pjax;
 
 $this->title = 'Goods';
 $this->params['breadcrumbs'][] = $this->title;

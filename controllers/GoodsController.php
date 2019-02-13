@@ -209,7 +209,7 @@ class GoodsController extends AppController
         if ($id !== null) {
             $arr = Category::getSub($id);
             if ($arr != null) {
-                /** @var TYPE_NAME $dataProvider */
+                /** @var ActiveDataProvider $dataProvider */
 
                 $sort = new Sort([
                     'attributes' => [
@@ -400,22 +400,68 @@ class GoodsController extends AppController
        return $array;
 
     }
-    public function actionSearch($search_param)
+
+
+
+
+
+
+    public function actionSearch($search_param=null,$category=null)
     {
-        //todo: search with staff
+
         if ($search_param !== null) {
-            $query = Product::find();
-            $query->andFilterWhere(['like', 'name', $search_param])->all();
-            $dataProvider = new ActiveDataProvider([
-                'query' => $query,
-                'pagination' => [
-                    'pageSize' => 20
-                ]
+
+            $sort = new Sort([
+                'attributes' => [
+                    'price' => [
+                        'asc' => ['price' => SORT_ASC],
+                        'desc' => ['price' => SORT_DESC],
+                        'default' => SORT_DESC,
+                        'label' => 'Price',
+                    ],
+                    'name' => [
+                        'asc' => ['name' => SORT_ASC],
+                        'desc' => ['name' => SORT_DESC],
+                        'default' => SORT_DESC,
+                        'label' => 'Name',
+                    ],
+                ],
             ]);
 
 
+
+
+                $query = Product::find();
+                $query->andFilterWhere(['like', 'name', $search_param])->all();
+
+                if ($category!=0)
+                {
+                    $arr = Category::getSub($category);
+                    $query->andFilterWhere(['in', 'category_id', $arr])->all();
+
+                }
+
+                $dataProvider = new ActiveDataProvider([
+                    'query' => $query,
+                    'pagination' => [
+                        'pageSize' => 20
+                    ]
+                ]);
+
+                return $this->render('search', [
+                    'dataProvider' => $dataProvider, 'sort' => $sort,
+                    'search_param' => $search_param
+                ]);
+
+
+
+
         }
+
+
     }
+
+
 
 }
 

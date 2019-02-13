@@ -89,9 +89,9 @@ if(!Yii::$app->user->isGuest)
 
                 <!-- Search -->
                 <div class="header-search">
-                    <form action="index" method="GET">
+                    <form action="goods/search" method="GET">  <?php //todo better url ?>
                         <input class="input search-input" type="text" placeholder="Enter your keyword"  name="search_param">
-                        <select name="order" class="input search-categories">
+                        <select name="category" class="input search-categories">
                             <option value="0">
                                 All categories
                             </option>
