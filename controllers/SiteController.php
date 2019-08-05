@@ -487,6 +487,92 @@ class SiteController extends AppController
         }
 
     }
+    public function actionSendCheckoutEmail()
+    {
+
+        //print_r(Cart::find()->all());
+
+        if(!Yii::$app->user->isGuest) {
+            $html = '';
+            foreach ($_SESSION['cartProducts'] as $product)
+                $html = $html.'<tr height="30">
+                                                <td> ' . $product->name . ' </td>
+                                                <td> ' . $product->cartColor . ' </td>
+                                                <td> ' . $product->cartQuantity . ' </td>
+                                                <td> ' . round($product->price) . ' ₴ </td>
+                                                <td> ' . $product->price * $product->cartQuantity . ' ₴ </td>
+                                            </tr>';
+
+            Yii::$app->mailer->compose()
+                ->setFrom(Yii::$app->params['mailEmail'])
+                ->setTo(Yii::$app->user->identity->email)
+                ->setSubject('Your product on E-Shop')
+                ->setHtmlBody('<table border="1" > 
+                                           <col span="3" width="150"  >
+                                           
+                                            <tr height="30">
+                                                <th> YourName </th>
+                                                <th> Location </th>
+                                                <th> Phone Number </th>
+                                            </tr>
+                                            <tr height="30" >
+                                                <td> ' . Yii::$app->user->identity->username . ' </td>
+                                                <td> ' . Yii::$app->user->identity->location . ' </td>
+                                                <td> ' . Yii::$app->user->identity->mobile_number . ' </td>
+                                            </tr>
+                                            </col>                                      
+                                        </table>
+                                          <br>
+                                        <table border="1" >
+                                            <col span="5" width="150"  >
+                                           
+                                            <tr height="30">
+                                                <th> NameProduct </th>
+                                                <th> Color </th>
+                                                <th> Quantity </th>
+                                                <th> Price </th>
+                                                <th> Total </th>
+                                                
+                                            </tr>
+                                            '.$html.'
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>'.$_SESSION['cartSum'].'₴</td>
+                                            </col>
+                                            </table>')
+                ->send();
+
+        }
+
+        foreach ($_SESSION['cartProducts'] as $key => $product) {
+            $order = new Order();
+            if(!Yii::$app->user->isGuest)
+                Cart::find()->where(['id' => $product->cartId])->one()->delete();
+            else {
+                $_SESSION['cartSum']-=$_SESSION['cartProducts'][$key]->price;
+                $_SESSION['cartCount']--;
+                unset($_SESSION['cartProducts'][$key]);
+            }
+            $order->product_id = $product->id;
+            $order->user_id = Yii::$app->user->identity->id;
+            $order->status = Order::PAYED;
+            $order->color = '';
+            $order->quantity =1;
+            $order->save();
+        }
+
+        Yii::$app->session->setFlash('success', 'Success, order created, check your email for details.');
+
+        return $this->goHome();
+
+
+    }
+    public function actionCheckout(){
+        return $this->render('checkout');
+    }
+
 
     public function actionDeleteFromFavourites($id){ //http://yiitest/site/delete-from-favourites?id=
         $favourite = Favourites::find()->where(['id' => $id])->one();

@@ -10,7 +10,7 @@ class m181229_132246_user extends Migration
      */
     public function safeUp()
     {
-        if($this->db->driverName === 'mysql') {
+
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=INNODB';
             $this->createTable('{{%user}}', [
                 'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
@@ -28,70 +28,7 @@ class m181229_132246_user extends Migration
             ],
                 $tableOptions);
 
-            $this->createTable('{{%product}}',[
-                'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
-                'name' => $this->string(100)->notNull(),
-                'brand' => $this->string(100),
-                'category_id' => $this->integer()->notNull(),
-                'price' => $this->money()->notNull(),
-                'prev_price' => $this->money()->defaultValue(0),
-                'availability' => $this->integer(7)->defaultValue(1), //кількість доступного товару
-                'description' => $this->string(1000)->notNull(),
-                'colors' => $this->string(200), //розділювач - ";"
-                'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
-                'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP').' ON UPDATE CURRENT_TIMESTAMP'
-            ],
-                $tableOptions);
 
-
-            $this->createTable('{{%review}}',[
-                'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
-                'user_id' => $this->integer()->notNull(),
-                'product_id' => $this->integer()->notNull(),
-                'mark' => $this->integer()->notNull()->defaultValue(0),
-                'description' => $this->string(1000),
-                'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP')
-            ],
-                $tableOptions);
-
-            $this->createTable('{{%favourites}}',[ // якщо запис існує то продукт є улюбленим
-                'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
-                'user_id' => $this->integer()->notNull(),
-                'product_id' => $this->integer()->notNull()
-            ],$tableOptions);
-
-
-            $this-> createTable('{{%product_photo}}',[
-                'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
-                'image_name' => $this->string(200)->notNull(),
-                'product_id' => $this->integer()->notNull(),
-            ],$tableOptions);
-
-
-            $this->createTable('{{%category}}',[
-                'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
-                'name' => $this->string()->notNull(),
-                'parent_id' => $this->integer()->notNull()->defaultValue(0)// табличка зсилається сама на себе
-            ],$tableOptions);
-
-            $this->createTable('{{%cart}}',[
-                'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
-                'user_id' => $this->integer()->notNull(),
-                'product_id' => $this->integer()->notNull(),
-                'color' => $this->string(),
-                'quantity' => $this->integer()->defaultValue(0)
-            ],$tableOptions);
-
-            $this->createTable('{{%order}}',[ // ім'я order є зарезервованим словом MYSQL але воно працює
-                'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
-                'user_id' => $this->integer()->notNull(),
-                'product_id' => $this->integer()->notNull(),
-                'quantity' => $this->integer()->notNull()->defaultValue(1),
-                'color' => $this->string()->defaultValue(null),
-                'status' => $this->string()->defaultValue('CREATED'), //created;payed;processed;send;arrived;finished;disputed;
-                'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
-                'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP').' ON UPDATE CURRENT_TIMESTAMP'
-            ],$tableOptions);
 
 //            $this->createTable('{{%address}}',[
 //                'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
@@ -99,90 +36,16 @@ class m181229_132246_user extends Migration
 //
 //            ],$tableOptions);
 
-            $this->createIndex('idx-cart-user',
-                '{{%cart}}',
-                'user_id');
-            $this->addForeignKey('fk-cart-user',
-                '{{%cart}}',
-                'user_id',
-                '{{%user}}',
-                'id',
-                'CASCADE'
-            );
 
-            $this->createIndex('idx-review-product',
-                '{{%review}}',
-                'product_id');
-            $this->addForeignKey('fk-review-product',
-                '{{%review}}',
-                'product_id',
-                '{{%product}}',
-                'id',
-                'CASCADE'
-            );
-            $this->createIndex('idx-product-category',
-                '{{%product}}',
-                'category_id');
-            $this->addForeignKey('fk-product-category',
-                '{{%product}}',
-                'category_id',
-                '{{%category}}',
-                'id',
-                'CASCADE'
-            );
 
-            $this->createIndex('idx-favourites-user',
-                '{{%favourites}}',
-                'user_id');
-            $this->addForeignKey('fk-favourites-user',
-                '{{%favourites}}',
-                'user_id',
-                '{{%user}}',
-                'id',
-                'CASCADE'
-            );
-            $this->createIndex('idx-photos-product',
-                '{{%product_photo}}',
-                'product_id');
-            $this->addForeignKey('fk-photos-product',
-                '{{%product_photo}}',
-                'product_id',
-                '{{%product}}',
-                'id',
-                'CASCADE'
-            );
-        }
     }
     /**
      * {@inheritdoc}
      */
     public function safeDown()
     {
-        echo "m181229_132246_user cannot be reverted.\n";
-
-
-
-        //$this->dropIndex('idx-review-product','review');
-        $this->dropForeignKey('fk-review-product','review');
-        //$this->dropIndex('idx-favourites-user','favourites');
-        $this->dropForeignKey('fk-favourites-user','favourites');
-        //$this->dropIndex('idx-photos-product','product_photo');
-        $this->dropForeignKey('fk-photos-product','product_photo');
-        //$this->dropIndex('idx-product-category','category_id');
-        $this->dropForeignKey('fk-product-category','category_id');
-        //$this->dropIndex('idx-cart-user','cart');
-        $this->dropForeignKey('fk-cart-user','cart');
-
         $this->dropTable('{{%user}}');
-        $this->dropTable('{{%product}}');
-        $this->dropTable('{{%product_photo}}');
-        $this->dropTable('{{%review}}');
-        $this->dropTable('{{%favourites}}');
-        $this->dropTable('{{%category}}');
-        $this->dropTable('{{%cart}}');
-
-
-        return false;
+        return true;
 
     }
     /*
