@@ -237,7 +237,7 @@ function firstLevel($doc)
             $price = str_replace("&nbsp;", '', $price);
 
 
-            $q = $productXpath->query('//td/div[contains(@class,\'price\')]/span[contains(@class,\'price\')]/span[@class="sum"]');
+            $q = $productXpath->query('//div[@class="buy-box-price"]/div[@class="old-price-box"]/span/span[@class="sum"]');
             if($q->item(0)) {
                 $prev_price = preg_replace('/ {2,}/', ' ', trim($q->item(0)->nodeValue));
                 $prev_price = htmlentities($prev_price, null, 'utf-8');
@@ -282,7 +282,7 @@ function firstLevel($doc)
 
                     $file = file_get_contents($l);
 
-                    file_put_contents(Yii::$app->params['webPath'] . "\images\product_images\\" . $imageName, $file);
+                    file_put_contents(Yii::$app->params['webPath'] . "/images/product_images/" . $imageName, $file);
 
                     $this->insert("{{%product_photo}}", [
                         'image_name' => $imageName,
