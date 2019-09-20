@@ -77,7 +77,7 @@ use yii\bootstrap\ActiveForm;
                           <div class="col-xs-6">
 
                               <?= $form->field($model, 'username')
-                                  ->textInput(['autofocus' => true,'class' => 'form-control', 'id' => 'username','value' => Yii::$app->user->identity->username]) ?>
+                                  ->textInput(['autofocus' => true,'class' => 'form-control', 'id' => 'username','value' => Yii::$app->user->identity->username ?? 'no-username']) ?>
 <!--                              <input type="text" class="form-control" name="first_name" id="first_name" placeholder="first name" title="enter your first name if any.">-->
                           </div>
                       </div>
@@ -93,7 +93,7 @@ use yii\bootstrap\ActiveForm;
                           
                           <div class="col-xs-6">
                               <?= $form->field($model, 'mobile_number')
-                                  ->textInput(['class' => 'form-control', 'id' => 'mobile_number','value' => Yii::$app->user->identity->mobile_number]) ?>
+                                  ->textInput(['class' => 'form-control', 'id' => 'mobile_number','value' => Yii::$app->user->identity->mobile_number ??]) ?>
 <!--                              <label for="phone"><h4>Phone</h4></label>-->
 <!--                              <input type="text" class="form-control" name="phone" id="phone" placeholder="enter phone" title="enter your phone number if any.">-->
                           </div>
@@ -109,7 +109,7 @@ use yii\bootstrap\ActiveForm;
                           
                           <div class="col-xs-6">
                               <?= $form->field($model, 'email')
-                                  ->input('email',['class' => 'form-control', 'id' => 'email','value' => Yii::$app->user->identity->email]) ?>
+                                  ->input('email',['class' => 'form-control', 'id' => 'email','value' => Yii::$app->user->identity->emailch ?? 'no-email']) ?>
 <!--                              <label for="email"><h4>Email</h4></label>-->
 <!--                              <input type="email" class="form-control" name="email" id="email" placeholder="you@email.com" title="enter your email.">-->
                           </div>
@@ -117,7 +117,7 @@ use yii\bootstrap\ActiveForm;
                       <div class="form-group">
                           
                           <div class="col-xs-6">
-                              <?= $form->field($model, 'location')->textInput(['class' => 'form-control', 'id' => 'location','value' => Yii::$app->user->identity->location]) ?>
+                              <?= $form->field($model, 'location')->textInput(['class' => 'form-control', 'id' => 'location','value' => Yii::$app->user->identity->location ?? 'no-location']) ?>
 <!--                              <label for="email"><h4>Location</h4></label>-->
 <!--                              <input type="email" class="form-control" id="location" placeholder="somewhere" title="enter a location">-->
                           </div>

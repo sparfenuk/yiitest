@@ -31,7 +31,7 @@ class AdminController extends AppController
     public function actionUsers()
     {
         $users = User::find()->indexBy('id')->all();
-        if (\Yii::$app->user->identity->status >= 2) {
+        if (\Yii::$app->user->identity && Yii::$app->user->identity->status >= 2) {
             return $this->render('users',[
                 'users' => $users,
             ]);

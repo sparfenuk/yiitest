@@ -86,7 +86,7 @@ foreach ($photos as $photo) {
     echo '
   
                           <div class="product-view slick-slide slick-current slick-active" data-slick-index="' . $slickIndex . '" aria-hidden="false" tabindex="' . $tabIndex . '" style="width: 555px; position: relative; left: 0px; top: 0px; z-index: 999; opacity: 1;">
-								<img style="width:300px" src="' . Yii::$app->params['basePath'] . '/images/product_images/' . HTML::encode($photo->image_name) . '" alt="">
+								<img style="width:300px" src="' .'/images/product_images/' . HTML::encode($photo->image_name) . '" alt="">
 							</div>';
     $tabIndex = -1;
     $slickIndex++;
@@ -114,11 +114,11 @@ foreach ($photos as $photo) {
     if ($tabIndex === -1) {
 
         echo '<div class = "product-view slick-slide slick-cloned slick-active" data-slick-index="' . $slickIndex . '" aria-hidden="true" tabindex="-1" style="width: 73px;">
-							                     	<img src = "' . Yii::$app->params['photos_path']  . HTML::encode($photo->image_name) . '" alt="">
+							                     	<img src = "' . '/images/product_images/' . HTML::encode($photo->image_name) . '" alt="">
 							                    </div>';
     } else {
         echo '<div class = "product-view slick-slide slick-cloned" data-slick-index="' . $slickIndex . '" aria-hidden="true" tabindex="-1" style="width: 73px;">
-							                     	<img  src = "' . Yii::$app->params['photos_path'] . HTML::encode($photo->image_name) . '" alt="">
+							                     	<img  src = "' . '/images/product_images/' . HTML::encode($photo->image_name) . '" alt="">
 							                    </div>';
     }
     $tabIndex++;

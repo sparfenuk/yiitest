@@ -50,15 +50,15 @@ use yii\helpers\Html;
                             <label class="badge badge-inverse-primary"><?= $user->status ?></label>
                         </td>
                         <td>
-                            <?php if(Yii::$app->user->identity->status > $user->status){
+                            <?php if(Yii::$app->user->identity && Yii::$app->user->identity->status > $user->status){
                                 echo Html::a('<i class="fa fa-edit">',['/admin/user-edit?id='.$user->id]).'</i>';
                                 echo Html::a('<i class="fa fa-ban">',['/admin/user-ban?id='.$user->id]).'</i>';
                             }
                             else echo 'not enough permissions';
                             ?>
-                            <?php if(Yii::$app->user->identity->status > 2 && $user->status < 2)
+                            <?php if(Yii::$app->user->identity && Yii::$app->user->identity->status > 2 && $user->status < 2)
                                 echo Html::a('<i class="fa fa-level-up">',['/admin/user-up?id='.$user->id]).'</i>' ?>
-                            <?php if(Yii::$app->user->identity->status > 3 && $user->status < 3)
+                            <?php if(Yii::$app->user->identity && Yii::$app->user->identity->status > 3 && $user->status < 3)
                                 echo Html::a('<i class="fa fa-level-down">',['/admin/user-down?id='.$user->id]).'</i>' ?>
                         </td>
                     </tr>

@@ -306,7 +306,7 @@ function firstLevel($doc)
 
 
 
-    public function safeUp()
+    public function up()
     {
         ini_set('memory_limit','2048M');
         libxml_use_internal_errors(true);
@@ -326,7 +326,7 @@ function firstLevel($doc)
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function down()
     {
         echo "m190120_205405_allo_cat cannot be reverted.\n";
 

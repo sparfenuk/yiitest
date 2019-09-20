@@ -280,7 +280,7 @@ if(!Yii::$app->user->isGuest)
                 <ul class="menu-list">
                     <li><?= Html::a('Home',['/']) ?></li>
                     <li><?= Html::a('Shop',['/goods/index']) ?></li>
-                    <?php if (Yii::$app->user->identity->status > 1) { ?>
+                    <?php if (Yii::$app->user->identity && Yii::$app->user->identity->status > 1) { ?>
                     <li class="dropdown default-dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Admin panel <i class="fa fa-caret-down"></i></a>
                     <ul class="custom-menu">
                         <li> <?= Html::a('Create',['/goods/create']) ?></li>
