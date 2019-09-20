@@ -25,9 +25,7 @@ composer.phar
 .DS_Store
 
 # config (password) dir
-**/config
-/config
-config/
+/config/web.php
 
 
 # project photos
