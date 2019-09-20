@@ -35,21 +35,21 @@ use yii\helpers\Url;
 							</div>
 
 							<div class="form-group">
-								<input class="input" type="text" name="last-name" placeholder="Username" value="<?= Yii::$app->user->identity->username ?? 0 ?>">
+								<input class="input" type="text" name="last-name" placeholder="Username" value="<?= Yii::$app->user->identity->username ?? '' ?>">
 							</div>
 							<div class="form-group">
-								<input class="input" type="email" name="email" placeholder="Email" value="<?= Yii::$app->user->identity->email ?? 'no-email'?>">
+								<input class="input" type="email" name="email" placeholder="Email" value="<?= Yii::$app->user->identity->email ?? ''?>">
 							</div>
 							<div class="form-group">
 								<input class="input" type="text" name="address" placeholder="Address">
 							</div>
 
 							<div class="form-group">
-								<input class="input" type="text" name="country" placeholder="Country" value="<?= Yii::$app->user->identity->location ?? 'no-location'?>">
+								<input class="input" type="text" name="country" placeholder="Country" value="<?= Yii::$app->user->identity->location ?? ''?>">
 							</div>
 
 							<div class="form-group">
-								<input class="input" type="tel" name="tel" placeholder="Telephone" value="<?= Yii::$app->user->identity->mobile_number ?? 'no-mobile-number' ?>">
+								<input class="input" type="tel" name="tel" placeholder="Telephone" value="<?= Yii::$app->user->identity->mobile_number ?? '' ?>">
 							</div>
 							<div class="form-group">
 								<div class="input-checkbox">
