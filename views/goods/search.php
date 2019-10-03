@@ -81,10 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         if($goods->prev_price != 0)
                         {
                             echo'<del class="product-old-price">'.round($goods->prev_price).'</del>';
-
                         }
-
-
                         ?>
 
                     </h3>
