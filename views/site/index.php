@@ -97,7 +97,7 @@ $this->title = 'E-Shop';
                 <div class="row">
                     <div id="product-slick-1" class="product-slick">
                         <!-- Product Single -->
-                        <? foreach ($picker1->all() as $picker) { ?>
+                        <? foreach ($picker1->all() as $picker)  { ?>
 
                             <div class="product product-single">
                                 <div class="product-thumbbbb">

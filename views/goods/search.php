@@ -69,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
 
                     <button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
-                    <img style = "width: 100%;" src="<?=Yii::$app->params['basePath'] . '/images/product_images/' . HTML::encode($name->image_name)?>" >
+                    <img style = "width: 100%;" src="/images/product_images/<?= HTML::encode($name->image_name)?>" >
 
                 </div>
 
@@ -81,10 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         if($goods->prev_price != 0)
                         {
                             echo'<del class="product-old-price">'.round($goods->prev_price).'</del>';
-
                         }
-
-
                         ?>
 
                     </h3>
@@ -123,7 +120,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         echo 'Out of stock';
 
                     }
-                    else if(Yii::$app->user->identity->status >= 2)
+                    else if(Yii::$app->user->identity && Yii::$app->user->identity->status >= 2)
                     {
 
 

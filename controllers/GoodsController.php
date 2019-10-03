@@ -44,7 +44,7 @@ class GoodsController extends AppController
         $categories = new Category();
         $uploader = new UploadProductFile();
         $productFrom = new Product();
-        if (Yii::$app->user->identity->status >= 2 && $id !== null) {
+        if (Yii::$app->user->identity && Yii::$app->user->identity->status >= 2 && $id !== null) {
 
             $product = Product::findProductById($id);
             // self::debug($product);
@@ -138,7 +138,7 @@ class GoodsController extends AppController
 
     public function actionCreate()
     {
-        if (Yii::$app->user->identity->status >= 2) {
+        if (Yii::$app->user->identity && Yii::$app->user->identity->status >= 2) {
 
             $categories = new Category();
             $product = new Product();

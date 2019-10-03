@@ -74,7 +74,7 @@ class AppController extends Controller{
 
 
     public function isAdmin(){
-        return  \Yii::$app->user->identity->status > 1 ? true:false;
+        return  \Yii::$app->user->identity && Yii::$app->user->identity->status > 1 ? true:false;
     }
 
 

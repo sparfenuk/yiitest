@@ -192,7 +192,7 @@ function firstLevel($doc)
                     $catPage = new \DOMDocument();
                     $catPage->loadHTML(mb_convert_encoding(file_get_contents('https:' . $l3Links->item($i)->nodeValue), 'HTML-ENTITIES', 'UTF-8'));
                     $catPageXpath = new \DOMXPath($catPage);
-                    $productLinks = $catPageXpath->query('//div[@class="item-inner"]/a/@href');
+                    $productLinks = $catPageXpath->query('//div[@class="item-picture-blk"]/a/@href');
                     $ch = \random_int(5, 20);
 
                     for ($j = 0; $j < $ch; $j++)
@@ -217,7 +217,7 @@ function firstLevel($doc)
 
 
         try {
-
+            $prev_price = null;
             $productDoc = new \DOMDocument();
             $productDoc->loadHTML(mb_convert_encoding(file_get_contents($link), 'HTML-ENTITIES', 'UTF-8'));
 
@@ -237,11 +237,12 @@ function firstLevel($doc)
             $price = str_replace("&nbsp;", '', $price);
 
 
-            $q = $productXpath->query('//td/div[contains(@class,\'price\')]/span[contains(@class,\'price\')]/span[@class="sum"]');
-            $prev_price = preg_replace('/ {2,}/', ' ', trim($q->item(0)->nodeValue));
-            $prev_price = htmlentities($prev_price, null, 'utf-8');
-            $prev_price = str_replace("&nbsp;", '', $prev_price);
-
+            $q = $productXpath->query('//div[@class="buy-box-price"]/div[@class="old-price-box"]/span/span[@class="sum"]');
+            if($q->item(0)) {
+                $prev_price = preg_replace('/ {2,}/', ' ', trim($q->item(0)->nodeValue));
+                $prev_price = htmlentities($prev_price, null, 'utf-8');
+                $prev_price = str_replace("&nbsp;", '', $prev_price);
+            }
 
             $q = $productXpath->query('//div[@class="attr-content"]');
 
@@ -281,7 +282,7 @@ function firstLevel($doc)
 
                     $file = file_get_contents($l);
 
-                    file_put_contents(Yii::$app->params['webPath'] . "\images\product_images\\" . $imageName, $file);
+                    file_put_contents(Yii::$app->params['webPath'] . "/images/product_images/" . $imageName, $file);
 
                     $this->insert("{{%product_photo}}", [
                         'image_name' => $imageName,
@@ -291,7 +292,7 @@ function firstLevel($doc)
             }
         }
         catch (\Exception $e){
-            echo "product save exception: ".$e->getMessage();
+            echo "product save exception: ".$e->getMessage().' '. $e->getLine();
         }
 
 
@@ -305,7 +306,7 @@ function firstLevel($doc)
 
 
 
-    public function safeUp()
+    public function up()
     {
         ini_set('memorky_limit','2048M');
         libxml_use_internal_errors(true);
@@ -325,7 +326,7 @@ function firstLevel($doc)
     /**
      * {@inheritdoc}
      */
-    public function safeDown()
+    public function down()
     {
         $this->reCreateTables();
 
