@@ -177,7 +177,7 @@ use yii\helpers\Url;
 							</table>
 
 							<div class="pull-right">
-                                <?= Html::a('<button class="primary-btn">Place Order',['product/send-email']) ?></button>
+                                <?= Html::a('<button class="primary-btn" type="button">Place Order</button>',['/site/send-checkout-email']) ?>
 							</div>
 
 						</div>

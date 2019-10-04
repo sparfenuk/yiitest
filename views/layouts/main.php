@@ -89,7 +89,7 @@ if(!Yii::$app->user->isGuest)
 
                 <!-- Search -->
                 <div class="header-search">
-                    <form action="/goods/search" method="GET">  <?php //todo better url ?>
+                    <form action="/goods/search" method="GET">
                         <input class="input search-input" type="text" placeholder="Enter your keyword"  name="search_param">
                         <select name="category" class="input search-categories">
                             <option value="0">
@@ -177,7 +177,7 @@ if(!Yii::$app->user->isGuest)
                                             <div class="product product-widget">
                                                 <div class="product-thumb">
                                                     <?php $image = \app\models\ProductPhoto::find()->where(['product_id' => $product->id])->one(); ?>
-                                                    <?= Html::img('@web/images/product_images/'.$image->image_name,['alt' => '']); ?><!-- todo:: make normal relationship in product -  product_photo and return first photo-->
+                                                    <?= Html::img('@web/images/product_images/'.$image->image_name,['alt' => '']); ?>
                                                 </div>
                                                 <div class="product-body">
                                                     <h3 class="product-price"><?= round($product->price) ?>₴ <span class="qty">x<?= $product->cartQuantity ?></span>  <?= $product->cartColor ?></h3>
@@ -201,7 +201,7 @@ if(!Yii::$app->user->isGuest)
                                 </div>
                                 <div class="shopping-cart-btns">
                                     <!--                                    <button class="main-btn" onclick="window.location.href='product/site';">View Cart</button>-->
-                                    <?= Html::a('<button class="primary-btn">Checkout<i class="fa fa-arrow-circle-right"></i></button>',['product/checkout']) ?>
+                                    <?= Html::a('<button class="primary-btn">Checkout<i class="fa fa-arrow-circle-right"></i></button>',['site/checkout']) ?>
                                 </div>
                             </div>
                         </div>

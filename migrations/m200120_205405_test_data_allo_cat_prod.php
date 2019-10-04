@@ -6,7 +6,7 @@ use yii\db\Migration;
 /**
  * Class m190120_205405_allo_cat
  */
-class m190120_205405_allo_cat extends Migration
+class m200120_205405_test_data_allo_cat_prod extends Migration
 {
    
 
@@ -308,7 +308,7 @@ function firstLevel($doc)
 
     public function up()
     {
-        ini_set('memory_limit','2048M');
+        ini_set('memorky_limit','2048M');
         libxml_use_internal_errors(true);
         $doc = new \DOMDocument();
         $doc->loadHTML(mb_convert_encoding(file_get_contents('https://allo.ua/'), 'HTML-ENTITIES', 'UTF-8'));
@@ -328,9 +328,9 @@ function firstLevel($doc)
      */
     public function down()
     {
-        echo "m190120_205405_allo_cat cannot be reverted.\n";
+        $this->reCreateTables();
 
-        return false;
+        return true;
     }
 
     /*
