@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
             $url = Url::toRoute(['goods/product', 'id' => $goods->id]);
             $name = ProductPhoto::find()->where(['product_id' => $goods->id])->one();;
             ?>
-            <div class="col-12 col-md-6 col-lg-4">
+            <div class="col-md-4 col-sm-6 col-xs-6">
                 <div class="product product-single">
                     <div class="product-thumb">
                         <div class="product-label">
@@ -62,8 +62,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
 
                         <button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
-                        <div style="width: 350px; max-height: 300px;">
-                            <img style="width: 100%;"
+                        <div style="width: 300px; height: 500px;">
+                            <img style="width: 100%; height: 100%; object-fit: contain;"
                                  src="<?= '/images/product_images/' . HTML::encode($name->image_name) ?>">
                         </div>
 
