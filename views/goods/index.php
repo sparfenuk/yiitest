@@ -18,9 +18,7 @@ use app\models\Category;
 use yii\widgets\Pjax;
 
 $this->title = 'Goods';
-$this->params['breadcrumbs'][] = $this->title;
-
-
+$this->params['breadcrumbs'][0] = ['label' => $this->title, 'link' => Yii::$app->request->url];
 
     ?>
 

@@ -8,7 +8,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
 $this->title = 'Sign Up';
-
+$this->params['breadcrumbs'][0] = ['label' => $this->title, 'link' => Yii::$app->request->url];
 
 //$this->params['breadcrumbs'][] = $this->title;
 ?>

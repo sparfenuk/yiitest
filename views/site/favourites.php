@@ -2,8 +2,11 @@
 /**
  */
 use yii\helpers\Html;
-?>
 
+$this->title = 'Favourites';
+$this->params['breadcrumbs'][0] = ['label' => $this->title, 'link' => Yii::$app->request->url];
+
+?>
 
 
 <?php if ($favourites != null){ ?>

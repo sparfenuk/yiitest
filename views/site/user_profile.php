@@ -3,16 +3,12 @@
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model app\models\User */
 ?>
-<!--  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
-<!--  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
-<!--  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
-<!--  <script>-->
 <?php
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-
-
+$this->title = 'Edit profile';
+$this->params['breadcrumbs'][0] = ['label' => $this->title, 'link' => Yii::$app->request->url];
     $this->registerCssFile("https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css");
     $this->registerJsFile("https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js");
     $this->registerJsFile("https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js");

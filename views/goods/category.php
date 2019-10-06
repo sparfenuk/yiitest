@@ -16,8 +16,8 @@ use yii\helpers\Url;
 use yii\widgets\LinkPager;
 
 
-$this->title = 'Goods';
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = $category;
+$this->params['breadcrumbs'][0] = ['label' => $category, 'link' => $url];
 
 ?>
 <div class="col-md-12">
@@ -25,22 +25,17 @@ $this->params['breadcrumbs'][] = $this->title;
         <h2 class="title"><?= $category ?></h2>
         <div class="pull-right">
             <h3 class="title"> Order by: </h3>
-
-            <ul style="float: right; margin-top: 12px;">
+            <ul class="order-by">
                 <li>  <?= $sort->link('name') ?>  </li>
                 <li>  <?= $sort->link('price') ?>   </li>
 
             </ul>
-
-
         </div>
     </div>
 </div>
 
 <div class="container">
     <div class="row">
-
-
         <?php
         foreach ($dataProvider->models as $goods) {
             $url = Url::toRoute(['goods/product', 'id' => $goods->id]);
@@ -126,7 +121,6 @@ $this->params['breadcrumbs'][] = $this->title;
         }
         ?>
         <div class="col-md-12">
-
             <?= LinkPager::widget(['pagination' => $dataProvider->pagination]) ?>
         </div>
     </div>

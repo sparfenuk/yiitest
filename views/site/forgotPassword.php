@@ -7,7 +7,8 @@
  */
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-
+$this->title = 'Password recovery';
+$this->params['breadcrumbs'][0] = ['label' => $this->title, 'link' => Yii::$app->request->url];
 ?>
 <?php $form = ActiveForm::begin([
     'id' => 'changePassword-form',

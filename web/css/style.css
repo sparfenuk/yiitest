@@ -61,8 +61,8 @@ Table OF Contents
 \*----------------------------*/
 
 body {
-  font-family: 'Hind', sans-serif;
-  color: #4A4E5A;
+  font-family: 'Hind', sans-serif !important;
+  color: #4A4E5A !important;
   overflow-x: hidden;
 }
 
@@ -73,19 +73,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 a {
-  color: #30323A;
+  color: #30323A !important;
   -webkit-transition: 0.3s color;
   transition: 0.3s color;
 }
 
 a:hover, a:focus {
-  color: #F8694A;
+  color: #F8694A !important;
   text-decoration: none;
   outline: none;
 }
 
 .primary-color {
-  color: #F8694A;
+  color: #F8694A !important;
 }
 
 .white-color {
@@ -143,7 +143,7 @@ hr {
 }
 
 .main-btn:hover, .main-btn:focus {
-  color: #F8694A;
+  color: #F8694A !important;
   -webkit-box-shadow: 0px 0px 0px 1px #F8694A inset, 0px 0px 0px 0px #F8694A;
   box-shadow: 0px 0px 0px 1px #F8694A inset, 0px 0px 0px 0px #F8694A;
 }
@@ -288,19 +288,19 @@ textarea.input {
 }
 
 .breadcrumb {
-  background-color: transparent;
-  border: none;
-  border-radius: 0px;
-  padding: 15px 0px;
-  margin: 0;
+  background-color: transparent !important;
+  border: none                  !important;
+  border-radius: 0px            !important;
+  padding: 15px 0px             !important;
+  margin: 0                     !important;
 }
 
 .breadcrumb>.active {
-  color: #F8694A;
+  color: #F8694A !important;
 }
 
 .breadcrumb>li+li:before {
-  color: #DADADA;
+  color: #DADADA !important;
 }
 
 /*=========================================================
@@ -468,6 +468,7 @@ textarea.input {
 
 #navigation {
   background-color: #30323A;
+  height: 49px;
 }
 
 #navigation .container {
@@ -541,7 +542,7 @@ textarea.input {
 }
 
 .category-nav .category-list>li>a:hover, .category-nav .category-list>li>a:focus, .category-nav .category-list>li.dropdown.open>a {
-  color: #F8694A;
+  color: #F8694A !important;
 }
 
 /*----------------------------*\
@@ -906,6 +907,7 @@ textarea.input {
 
 .product.product-single .product-thumb>img {
   width: 100%;
+  height: 100%;
 }
 
 .product.product-single .product-thumb:after {
@@ -1663,6 +1665,11 @@ textarea.input {
 
 .slick-next {
   right: 15px;
+}
+
+.order-by {
+  float: right;
+  margin: 13px;
 }
 
 .custom-nav .slick-prev, .custom-nav .slick-next {

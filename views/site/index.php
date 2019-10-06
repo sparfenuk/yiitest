@@ -9,35 +9,65 @@ use yii\helpers\Html;
 use yii\web\view;
 
 $this->title = 'E-Shop';
-
+$this->params['breadcrumbs'] = 'none';
 ?>
 
+<!-- HOME -->
+<div id="home">
+    <!-- container -->
+    <div class="container">
+        <!-- home wrap -->
+        <div class="home-wrap">
+            <!-- home slick -->
+            <div id="home-slick">
+                <!-- banner -->
+                <div class="banner banner-1">
+                    <img src="./img/banner01.jpg" alt="">
+                    <div class="banner-caption text-center">
+                        <h1>Bags sale</h1>
+                        <h3 class="white-color font-weak">Up to 50% Discount</h3>
+                        <button class="primary-btn">Shop Now</button>
+                    </div>
+                </div>
+                <!-- /banner -->
 
+                <!-- banner -->
+                <div class="banner banner-1">
+                    <img src="./img/banner02.jpg" alt="">
+                    <div class="banner-caption">
+                        <h1 class="primary-color">HOT DEAL<br><span class="white-color font-weak">Up to 50% OFF</span></h1>
+                        <button class="primary-btn">Shop Now</button>
+                    </div>
+                </div>
+                <!-- /banner -->
+
+                <!-- banner -->
+                <div class="banner banner-1">
+                    <img src="./img/banner03.jpg" alt="">
+                    <div class="banner-caption">
+                        <h1 class="white-color">New Product <span>Collection</span></h1>
+                        <button class="primary-btn">Shop Now</button>
+                    </div>
+                </div>
+                <!-- /banner -->
+            </div>
+            <!-- /home slick -->
+        </div>
+        <!-- /home wrap -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /HOME -->
 <!-- section -->
-<div class="section section-grey">
+<div class="section">
     <!-- container -->
     <div class="container">
         <!-- row -->
         <div class="row">
             <!-- banner -->
-            <div class="col-md-8">
-                <div class="banner banner-1">
-                    <?php echo Html::img('@web/img/banner13.jpg', ['alt' => '']); ?>
-
-                    <div class="banner-caption text-center">
-                        <h1 class="primary-color">HOT DEAL<br><span class="white-color font-weak">Up to 50% OFF</span>
-                        </h1>
-                        <button class="primary-btn">Shop Now</button>
-                    </div>
-                </div>
-            </div>
-            <!-- /banner -->
-
-            <!-- banner -->
             <div class="col-md-4 col-sm-6">
                 <a class="banner banner-1" href="#">
-                    <?php echo Html::img('@web/img/banner11.jpg', ['alt' => '']); ?>
-
+                    <img src="./img/banner10.jpg" alt="">
                     <div class="banner-caption text-center">
                         <h2 class="white-color">NEW COLLECTION</h2>
                     </div>
@@ -48,21 +78,31 @@ $this->title = 'E-Shop';
             <!-- banner -->
             <div class="col-md-4 col-sm-6">
                 <a class="banner banner-1" href="#">
-                    <?php echo Html::img('@web/img/banner12.jpg', ['alt' => '']); ?>
-
+                    <img src="./img/banner11.jpg" alt="">
                     <div class="banner-caption text-center">
                         <h2 class="white-color">NEW COLLECTION</h2>
                     </div>
                 </a>
             </div>
             <!-- /banner -->
+
+            <!-- banner -->
+            <div class="col-md-4 col-md-offset-0 col-sm-6 col-sm-offset-3">
+                <a class="banner banner-1" href="#">
+                    <img src="./img/banner12.jpg" alt="">
+                    <div class="banner-caption text-center">
+                        <h2 class="white-color">NEW COLLECTION</h2>
+                    </div>
+                </a>
+            </div>
+            <!-- /banner -->
+
         </div>
         <!-- /row -->
     </div>
     <!-- /container -->
 </div>
 <!-- /section -->
-
 <!-- section -->
 <div class="section">
     <!-- container -->
@@ -100,7 +140,7 @@ $this->title = 'E-Shop';
                         <? foreach ($picker1->all() as $picker)  { ?>
 
                             <div class="product product-single">
-                                <div class="product-thumbbbb">
+                                <div class="product-thumb">
                                     <div class="product-label">
                                         <?php if ($picker->isNew()) echo '<span>New</span>'; ?>
                                         <span class="sale">-<?= $picker->prev_price - $picker->price ?>₴</span>
@@ -203,7 +243,7 @@ $this->title = 'E-Shop';
                         <? foreach ($picker2->all() as $picker) { ?>
 
                             <div class="product product-single">
-                                <div class="product-thumbbbb">
+                                <div class="product-thumb">
                                     <div class="product-label">
                                         <?php if ($picker->isNew()) echo '<span>New</span>'; ?>
                                         <span class="sale">-<?= $picker->getDiscount() ?>%</span>
@@ -252,6 +292,54 @@ $this->title = 'E-Shop';
 <div class="section section-grey">
     <!-- container -->
     <div class="container">
+        <!-- row -->
+        <div class="row">
+            <!-- banner -->
+            <div class="col-md-8">
+                <div class="banner banner-1">
+                    <?php echo Html::img('@web/img/banner13.jpg', ['alt' => '']); ?>
+                    <div class="banner-caption text-center">
+                        <h1 class="primary-color">HOT DEAL<br><span class="white-color font-weak">Up to 50% OFF</span>
+                        </h1>
+                        <button class="primary-btn">Shop Now</button>
+                    </div>
+                </div>
+            </div>
+            <!-- /banner -->
+
+            <!-- banner -->
+            <div class="col-md-4 col-sm-6">
+                <a class="banner banner-1" href="#">
+                    <?php echo Html::img('@web/img/banner11.jpg', ['alt' => '']); ?>
+
+                    <div class="banner-caption text-center">
+                        <h2 class="white-color">NEW COLLECTION</h2>
+                    </div>
+                </a>
+            </div>
+            <!-- /banner -->
+
+            <!-- banner -->
+            <div class="col-md-4 col-sm-6">
+                <a class="banner banner-1" href="#">
+                    <?php echo Html::img('@web/img/banner12.jpg', ['alt' => '']); ?>
+
+                    <div class="banner-caption text-center">
+                        <h2 class="white-color">NEW COLLECTION</h2>
+                    </div>
+                </a>
+            </div>
+            <!-- /banner -->
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /section -->
+<!-- section -->
+<div class="section section-grey">
+    <!-- container -->
+    <div class="container">
 
         <!-- row -->
         <?php if ($latestProducts != null) { ?>
@@ -270,7 +358,7 @@ $this->title = 'E-Shop';
                     <!-- Product Single -->
                     <div class="col-md-3 col-sm-6 col-xs-6">
                         <div class="product product-single">
-                            <div class="product-thumbbbb">
+                            <div class="product-thumb">
                                 <?php
                                 $discount = $product->getDiscount();
                                 $isNew = $product->isNew();
@@ -468,7 +556,7 @@ $this->title = 'E-Shop';
                     <!-- Product Single -->
                     <div class="col-md-3 col-sm-6 col-xs-6">
                         <div class="product product-single">
-                            <div class="product-thumbbbb">
+                            <div class="product-thumb">
                                 <?php
                                 $discount = $product->getDiscount();
                                 $isNew = $product->isNew();

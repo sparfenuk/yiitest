@@ -295,12 +295,6 @@ function firstLevel($doc)
             echo "product save exception: ".$e->getMessage().' '. $e->getLine();
         }
 
-
-
-
-////div[@class="product-img-box"]//a/@href
-
-
     }
 
 
@@ -310,6 +304,16 @@ function firstLevel($doc)
     {
         ini_set('memorky_limit','2048M');
         libxml_use_internal_errors(true);
+
+        $path = realpath(Yii::$app->params['webPath'] . "/images/product_images/");
+        if(!($path !== false AND is_dir($path))){
+            mkdir(Yii::$app->params['webPath'] . "/images/product_images/");
+        }
+        $path = realpath(Yii::$app->params['webPath'] . "/images/user_images/");
+        if(!($path !== false AND is_dir($path))){
+            mkdir(Yii::$app->params['webPath'] . "/images/user_images/");
+        }
+
         $doc = new \DOMDocument();
         $doc->loadHTML(mb_convert_encoding(file_get_contents('https://allo.ua/'), 'HTML-ENTITIES', 'UTF-8'));
 

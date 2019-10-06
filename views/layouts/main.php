@@ -41,7 +41,7 @@ if(!Yii::$app->user->isGuest)
 
 </head>
 <body>
-<?php $this->beginBody(); ?>
+<?php $this->beginBody();?>
 
 <!--header-->
 <header>
@@ -230,7 +230,7 @@ if(!Yii::$app->user->isGuest)
             <!-- category nav -->
             <div class="category-nav show-on-click">
                 <span class="category-header">Categories <i class="fa fa-list"></i></span>
-                <ul class="category-list">
+                <ul class="category-list <?= $this->params['breadcrumbs'] == 'none'? 'open' :'' ?>">
                     <?php
 
                     $categories = Category::find()->where('id = parent_id')->all();
@@ -306,13 +306,34 @@ if(!Yii::$app->user->isGuest)
     <!-- /container -->
 </div>
 <!-- /NAVIGATION -->
-
+<?php  if($this->params['breadcrumbs'] != 'none') { ?>
+<!-- BREADCRUMB -->
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="/">Home</a></li>
+                <?php //foreach ($this->params['breadcrumbs'] as $breadcrumb) {}?>
+                <?php if(isset($this->params['breadcrumbs'][0]['label'])) {
+                        if($this->params['breadcrumbs'][1]['label']) {?>
+                            <li><a href="<?= $this->params['breadcrumbs'][0]['link'] ?>"><?= $this->params['breadcrumbs'][0]['label'] ?></a></li>
+                        <?php } else { ?>
+                            <li class="active"><?= $this->params['breadcrumbs'][0]['label'] ?>
+                        <?php } ?>
+                <?php } ?>
+                <?php if(isset($this->params['breadcrumbs'][1]['label'])) { ?>
+                    <li class="active"><?= $this->params['breadcrumbs'][1]['label'] ?></li>
+                <?php } ?>
+            </ul>
+        </div>
+    </div>
+<!-- /BREADCRUMB -->
+<?php } ?>
 <!--content-->
 <div class="wrap">
     <div class="container">
-        <!--                --><?//= Breadcrumbs::widget([
-        //                    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        //                ]) ?>
+<?//= Breadcrumbs::widget([
+//            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+//        ]) ?>
         <?php
         if (Yii::$app->session->hasFlash('success')): ?>
             <div class="alert alert-success" role="alert">

@@ -26,7 +26,9 @@
     "alexandernst/yii2-device-detect": "0.0.12",
     "cviebrock/eloquent-sluggable": "^4.6",
     "sintret/yii2-chat-adminlte": "dev-master",
-    "igogo5yo/yii2-upload-from-url": "^1.4"
+    "igogo5yo/yii2-upload-from-url": "^1.4",
+    "ext-libxml": "*",
+    "ext-dom": "*"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",

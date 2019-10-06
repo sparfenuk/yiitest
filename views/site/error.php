@@ -8,7 +8,7 @@
 use yii\helpers\Html;
 
 $this->title = $name;
-
+$this->params['breadcrumbs'][0] = ['label' => $this->title, 'link' => Yii::$app->request->url];
 /* @var $this \yii\web\View */
 $this->registerCssFile('https://fonts.googleapis.com/css?family=Cabin:400,700" rel="stylesheet');
 $this->registerCssFile('https://fonts.googleapis.com/css?family=Montserrat:900" rel="stylesheet');

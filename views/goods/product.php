@@ -18,9 +18,9 @@ use yii\widgets\LinkPager;
 use app\models\Review;
 
 
-$this->title = 'Goods';
-$this->params['breadcrumbs'][] = $this->title;
-
+$this->title = 'E-Shop' . $product->name;
+$this->params['breadcrumbs'][0] = ['label' => $product->category->name, 'link' => '/goods/category?id='.$product->category->id];
+$this->params['breadcrumbs'][1] = ['label' => $product->name, 'link' => Yii::$app->request->url];
 
 $name = ProductPhoto::findByProductId($product->id);
 $photos = ProductPhoto::findByProductId($product->id);

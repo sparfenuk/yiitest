@@ -591,7 +591,7 @@ class SiteController extends AppController
         if (Yii::$app->user->isGuest) {
 
             Yii::$app->session->setFlash('error',
-                'You have to register ro watch favourites!');
+                'You have to register to watch favourites!');
             return $this->goHome();
         }
 

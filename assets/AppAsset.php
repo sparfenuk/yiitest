@@ -25,7 +25,7 @@ class AppAsset extends AssetBundle
         'css/slick.css',
         'css/nouislider.min.css',
         'css/font-awesome.min.css',
-        'https://fonts.googleapis.com/css?family=Hind:400,700'
+        'css/slick-theme.css',
     ];
     public $cssOptions =[
         'type' => 'text/css',

@@ -5,21 +5,11 @@
 
 
 use yii\helpers\Html;
-use yii\helpers\Url;
+
+$this->title = 'Checkout';
+$this->params['breadcrumbs'][0] = ['label' => $this->title, 'link' => Yii::$app->request->url];
+
 ?>
-
-
-	<!-- BREADCRUMB -->
-<!--	<div id="breadcrumb">-->
-<!--		<div class="container">-->
-<!--			<ul class="breadcrumb">-->
-<!--				<li><a href="#">Home</a></li>-->
-<!--				<li class="active">Checkout</li>-->
-<!--			</ul>-->
-<!--		</div>-->
-<!--	</div>-->
-	<!-- /BREADCRUMB -->
-
 	<!-- section -->
 	<div class="section">
 		<!-- container -->
