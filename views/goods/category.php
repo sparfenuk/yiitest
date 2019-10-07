@@ -17,7 +17,7 @@ use yii\widgets\LinkPager;
 
 
 $this->title = $category;
-$this->params['breadcrumbs'][0] = ['label' => $category, 'link' => $url];
+$this->params['breadcrumbs'][0] = ['label' => $category, 'link' => Yii::$app->request->url];
 
 ?>
 <div class="col-md-12">

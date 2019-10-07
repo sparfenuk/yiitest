@@ -314,7 +314,7 @@ if(!Yii::$app->user->isGuest)
                 <li><a href="/">Home</a></li>
                 <?php //foreach ($this->params['breadcrumbs'] as $breadcrumb) {}?>
                 <?php if(isset($this->params['breadcrumbs'][0]['label'])) {
-                        if($this->params['breadcrumbs'][1]['label']) {?>
+                        if(array_key_exists(1,$this->params['breadcrumbs']) && $this->params['breadcrumbs'][1]['label']) {?>
                             <li><a href="<?= $this->params['breadcrumbs'][0]['link'] ?>"><?= $this->params['breadcrumbs'][0]['label'] ?></a></li>
                         <?php } else { ?>
                             <li class="active"><?= $this->params['breadcrumbs'][0]['label'] ?>
