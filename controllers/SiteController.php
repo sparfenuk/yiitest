@@ -29,11 +29,6 @@ class SiteController extends AppController
     /**
      * {@inheritdoc}
      */
-
-
-
-
-
     public function behaviors()
     {
         return [
@@ -65,6 +60,7 @@ class SiteController extends AppController
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
+                //'view' => '@yiister/gentelella/views/error',
             ],
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
@@ -293,7 +289,7 @@ class SiteController extends AppController
 //                    self::debug($_FILES);
                     $model->password2 = $_POST['User']['password2']; // kostil'
                     if ($_FILES['User']['error']['image'] === 0) {
-                        if ($model->photo_name != 'noimage.png')
+                        if ($model->photo_name != 'no_avatar.png')
                             unlink(Yii::$app->basePath . '/web/images/user_images/' . $model->photo_name);
                         $model->photo_name = self::saveImage($model);
                     }

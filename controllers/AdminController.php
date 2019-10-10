@@ -4,9 +4,12 @@ namespace app\controllers;
 
 use app\models\Order;
 use app\models\User;
+use Yii;
 
 class AdminController extends AppController
 {
+    public $layout = 'admin.php';
+
     public function actionIndex()
     {
         $orders = Order::find()->limit(30)->all();
@@ -41,7 +44,7 @@ class AdminController extends AppController
         $model = User::findIdentity($id);
         if ($model->load(\Yii::$app->request->post())) {
             if ($_FILES['User']['error']['image'] === 0) {
-                if ($model->photo_name != 'noimage.png')
+                if ($model->photo_name != 'no_avatar.png')
                     unlink(Yii::$app->basePath . '/web/images/user_images/' . $model->photo_name);
                 $model->photo_name = self::saveImage($model);
             }

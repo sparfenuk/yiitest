@@ -25,7 +25,7 @@ class UploadAvatarFile extends Model
             $this->imageFile->saveAs('images/user_images/' . $this->imageFile->baseName.'_'.$uniq. '.' . $this->imageFile->extension);
             return $this->imageFile->baseName.'_'.$uniq. '.' . $this->imageFile->extension;
         } else {
-            return 'noimage.png';
+            return 'no_avatar.png';
         }
     }
 }

@@ -19,7 +19,7 @@ use yii\web\IdentityInterface;
  * @property int $bought_items_count
  * @property string $created_at
  * @property string $updated_at
- *  @property string $auth_key
+ * @property string $auth_key
  * @property Favourites[] $favourites
  */
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
