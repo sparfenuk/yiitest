@@ -280,17 +280,7 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
             <?= $content ?>
         </div>
         <!-- /page content -->
-        <!-- footer content -->
-        <footer>
-            <div class="pull-right">
-                Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com" rel="nofollow" target="_blank">Colorlib</a><br />
-                Extension for Yii framework 2 by <a href="http://yiister.ru" rel="nofollow" target="_blank">Yiister</a>
-            </div>
-            <div class="clearfix"></div>
-        </footer>
-        <!-- /footer content -->
     </div>
-
 </div>
 
 <div id="custom_notifications" class="custom-notifications dsp_none">

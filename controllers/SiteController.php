@@ -15,6 +15,7 @@ use Yii;
 use yii\base\ErrorException;
 use yii\db\Exception;
 use yii\filters\AccessControl;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
@@ -243,12 +244,12 @@ class SiteController extends AppController
             }
             $model->image = $model->photo_name;
             try {
-                Yii::$app->mailer->compose()
+                $message = 'Welcome to E-Shop.
+                 To confirm your email press this <a href="'.Url::to(['site/email-confirm', 'authKey' => $model->auth_key], true).'">CONFIRM EMAIL</a>';
+                Yii::$app->mailer->compose('layouts/html', ['content' => $message])
                     ->setFrom(Yii::$app->params['mailEmail'])
                     ->setTo($model->email)
                     ->setSubject('Registration on E-Shop')
-                    ->setHtmlBody('Welcome to E-Shop.
-                 To confirm your email press this <a href="http:/yiitest/site/email-confirm?authKey=' . $model->auth_key . '">LINK</a>')
                     ->send();
 
             }

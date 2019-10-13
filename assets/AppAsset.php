@@ -38,6 +38,7 @@ class AppAsset extends AssetBundle
         'js/nouislider.min.js',
         'js/jquery.zoom.min.js',
         'js/main.js',
+        'js/bootstrap-notify.js'
     ];
     public $depends = [
     ];

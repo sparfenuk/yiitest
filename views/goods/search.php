@@ -110,7 +110,7 @@ $this->params['breadcrumbs'][0] = ['label' => $this->title, 'link' => Yii::$app-
                             echo 'Out of stock';
 
                         } else if (Yii::$app->user->identity && Yii::$app->user->identity->status >= 2) {
-                            echo '<form method="get" action="/goods/update">
+                            echo '<form method="get" action="/admin/product-update">
                        <input type="hidden" name="id" value="' . $goods->id . '">
                         <button type="submit">Update</button>
                        </form>';

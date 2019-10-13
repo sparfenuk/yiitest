@@ -132,8 +132,8 @@ $this->params['breadcrumbs'][0] = ['label' => $this->title, 'link' => Yii::$app-
              {
 
 
-                 // goods/update?id=1
-                 echo '<form method="get" action="/goods/update">
+                 // admin/product-update?id=1
+                 echo '<form method="get" action="/admin/product-update">
                <input type="hidden" name="id" value="'.$goods->id.'">
                 <button type="submit">Update</button>
                </form>';
