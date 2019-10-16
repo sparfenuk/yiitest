@@ -1,6 +1,6 @@
 {
-  "name": "P-Shop",
-  "description": "P-Shop",
+  "name": "p-shop",
+  "description": "p-shop",
   "keywords": [
     "yii2",
     "framework",
@@ -28,7 +28,11 @@
     "sintret/yii2-chat-adminlte": "dev-master",
     "igogo5yo/yii2-upload-from-url": "^1.4",
     "ext-libxml": "*",
-    "ext-dom": "*"
+    "ext-dom": "*",
+    "yiister/yii2-gentelella": "~1.0",
+    "tebazil/yii2-db-seeder": "^0.0.0",
+    "codeception/codeception": "^3.1",
+    "yiisoft/yii2-codeception": "^2.0"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",

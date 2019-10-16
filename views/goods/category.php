@@ -49,14 +49,15 @@ $this->params['breadcrumbs'][0] = ['label' => $category, 'link' => Yii::$app->re
                             $d = $goods->getDiscount();
                             if ($d !== null) {
                                 echo '<span class="sale">-' . $d . '%</span>';
-                            } else if ($goods->isNew()) {
+                            }
+                            if ($goods->isNew()) {
                                 echo '	<span>New</span>';
                             }
                             ?>
 
                         </div>
 
-                        <button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
+                        <?= Html::a('<button class="main-btn quick-view"><i class="fa fa-search-plus"></i>View</button>', ['/goods/product?id=' . $goods->id]) ?>
                         <div style="width: 300px; height: 500px;">
                             <img style="width: 100%; height: 100%; object-fit: contain;"
                                  src="<?= '/images/product_images/' . HTML::encode($name->image_name) ?>">
@@ -108,7 +109,7 @@ $this->params['breadcrumbs'][0] = ['label' => $category, 'link' => Yii::$app->re
                             echo 'Out of stock';
 
                         } else if (Yii::$app->user->identity && Yii::$app->user->identity->status >= 2) {
-                            echo '<form method="get" action="/goods/update">
+                            echo '<form method="get" action="/admin/product-update">
                        <input type="hidden" name="id" value="' . $goods->id . '">
                         <button type="submit">Update</button>
                        </form>';

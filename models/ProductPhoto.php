@@ -22,7 +22,7 @@ class ProductPhoto extends \yii\db\ActiveRecord
     public static function findByProductId($productId)
     {
         $productPhoto = self::find()->where(['product_id' => $productId])->all();
-        if ($productPhoto === null) return 'No_image_3x4.svg.png';
+        if ($productPhoto === null) return 'no_avatar.png';
         return $productPhoto;
 
     }

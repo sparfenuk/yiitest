@@ -126,17 +126,19 @@ if(!Yii::$app->user->isGuest)
             <div class="pull-right">
                 <ul class="header-btns">
                     <!-- Account -->
-                    <li class="header-account dropdown default-dropdown" style="width: 250px overflow: hidden">
+                    <li class="header-account dropdown default-dropdown">
                         <div class="dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="true">
                             <div class="header-btns-icon">
                                 <i class="fa fa-user-o"></i>
                             </div>
                             <strong class="text-uppercase">My Account <i class="fa fa-caret-down"></i></strong>
                         </div>
+                        <div class="profile-username">
                         <?php echo Yii::$app->user->isGuest?
                             Html::a('Login', ['/site/login'], ['class'=>'text-uppercase']).'/'.Html::a('Join', ['/site/sign-up'], ['class'=>'text-uppercase']):
-                            Html::a('Loged as',['site/edit-profile'],['class'=>'text-uppercase']).':'.Html::a(Yii::$app->user->identity->username, ['site/edit-profile'], ['class'=>'text-uppercase'])
+                            /*Html::a('Loged as',['site/edit-profile'],['class'=>'text-uppercase']).':'.*/Html::a(Yii::$app->user->identity->username, ['site/edit-profile'], ['class'=>'text-uppercase'])
                         ?>
+                        </div>
                         <ul class="custom-menu">
                             <?php echo !Yii::$app->user->isGuest?
                                 '<li><a href="/site/edit-profile"><i class="fa fa-user-o"></i> My Account</a></li>
@@ -284,7 +286,7 @@ if(!Yii::$app->user->isGuest)
                     <?php if (Yii::$app->user->identity && Yii::$app->user->identity->status > 1) { ?>
                     <li class="dropdown default-dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Admin panel <i class="fa fa-caret-down"></i></a>
                     <ul class="custom-menu">
-                        <li> <?= Html::a('Create',['/goods/create']) ?></li>
+                        <li> <?= Html::a('Create product',['/admin/product-create']) ?></li>
                         <li> <?= Html::a('Orders',['/admin/index']) ?></li>
                         <li> <?= Html::a('Users',['/admin/users']) ?></li>
 
@@ -335,24 +337,6 @@ if(!Yii::$app->user->isGuest)
 <?//= Breadcrumbs::widget([
 //            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
 //        ]) ?>
-        <?php
-        if (Yii::$app->session->hasFlash('success')): ?>
-            <div class="alert alert-success" role="alert">
-                <?= Yii::$app->session->getFlash('success'); ?>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        <?php elseif (Yii::$app->session->hasFlash('error')): ?>
-            <div class="alert alert-danger" role="alert">
-                <?= Yii::$app->session->getFlash('error'); ?>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        <?php endif; ?>
-
-
 
         <?= $content ?>
 
@@ -443,10 +427,38 @@ if(!Yii::$app->user->isGuest)
     <!-- /container -->
 </footer>
 <!-- /FOOTER -->
-
-
 <?php $this->endBody(); ?>
+<script>
+    $(document).ready(function() {
+        <?php
+        if (Yii::$app->session->hasFlash('success')): ?>
+        $.notify({
+            message: "<?= Yii::$app->session->getFlash('success'); ?>",
+        }, {
+            type: "success",
+            template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-success" role="alert">' +
+                '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                '<span data-notify="icon"></span> ' +
+                '<span data-notify="message">{2}</span>' +
+                '</div>' +
+                '</div>'
+        });
+        <?php elseif (Yii::$app->session->hasFlash('error')): ?>
+        $.notify({
+            message: "<?= Yii::$app->session->getFlash('error'); ?>",
+        }, {
+            type: "error",
+            template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-error" role="alert">' +
+                '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                '<span data-notify="icon"></span> ' +
+                '<span data-notify="message">{2}</span>' +
+                '</div>' +
+                '</div>'
+        });
+        <?php endif; ?>
 
+    });
+</script>
 </body>
 </html>
 <?php $this->endPage(); ?>

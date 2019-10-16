@@ -274,10 +274,11 @@ class GoodsController extends AppController
     public function actionIndex()
     {
 
-//        Yii::$app->session->setFlash('success', "User created successfully.");
+
         $categories = Category::find()->where(['in', 'id', [17,65,174]])->all();
 
-     /** @var Product $products */
+
+        /** @var Product[] $products */
         $products = null;
 
         foreach ($categories as $category) {
@@ -354,11 +355,6 @@ class GoodsController extends AppController
        return $array;
 
     }
-
-
-
-
-
 
     public function actionSearch($search_param=null,$category=null)
     {
