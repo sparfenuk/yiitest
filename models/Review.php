@@ -35,7 +35,7 @@ class Review extends \yii\db\ActiveRecord
             [['user_id', 'product_id', 'mark'], 'required'],
             [['user_id', 'product_id', 'mark'], 'integer'],
             [['created_at'], 'safe'],
-            [['description'], 'string', 'max' => 1000],
+            [['description'], 'string', 'max' => 1000, 'min' => 5],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Product::className(), 'targetAttribute' => ['product_id' => 'id']],
         ];
     }
@@ -55,8 +55,6 @@ class Review extends \yii\db\ActiveRecord
         ];
     }
 
-
-
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -64,12 +62,9 @@ class Review extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Product::className(), ['id' => 'product_id']);
     }
-
     public function getUser()
     {
      return User::find()->where(['id'=>$this->user_id])->one();
-       // return $this->hasOne(User::className(), ['id' => 'user_id']);
-
     }
     public static function getAverageReview($id)
     {

@@ -12,6 +12,7 @@ use yii\data\ActiveDataProvider;
 use yii\db\Query;
 use yii\debug\models\search\User;
 use yii\debug\panels\EventPanel;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -112,20 +113,13 @@ class GoodsController extends AppController
                         $photo->image_name = $imageFile->baseName . '.' . $imageFile->extension;
                         $photo->product_id = $product->id;
                         if ($photo->validate()) {
-
                             $photo->save(false);
                         } else {
-
                             return $this->render('update', ['product' => $product, 'uploader' => $uploader, 'categories' => $categories]);
                         }
-
                     }
-
                 }
-
-
                 return $this->redirect(['product', 'id' => $product->id]);
-
             }
             if ($product !== null)
                 return $this->render('update', ['product' => $product, 'uploader' => $uploader, 'categories' => $categories]);
@@ -144,58 +138,35 @@ class GoodsController extends AppController
             $product = new Product();
             $uploader = new UploadProductFile();
 
-
             if ($product->load(Yii::$app->request->post())) {
                 $product->category_id = (int)$_POST['Category']['name'];
-
-
                 if (is_array($product->colors)) {
                     $colors = '';
                     foreach ($product->colors as $color) {
                         $colors = $colors . $color . ';';
-
                     }
                     $product->colors = $colors;
                 }
-
-
                 if ($product->validate()) {
-
-
                     $product->save(false);
-
                 } else {
-                    //  Yii::$app->session->setFlash('success', $product->errors['name'][0]);
                     return $this->render('create', ['product' => $product, 'uploader' => $uploader, 'categories' => $categories]);
-
-                    //return var_dump($product->errors);
                 }
 
-
                 $uploader->imageFiles = UploadedFile::getInstances($uploader, 'imageFiles');
-//                self::debug($uploader);
                 if ($uploader->uploadImages()) {
-
                     foreach ($uploader->imageFiles as $imageFile) {
-
                         $photo = new ProductPhoto();
                         $photo->image_name = $imageFile->baseName . '.' . $imageFile->extension;
                         $photo->product_id = $product->id;
                         if ($photo->validate()) {
-
                             $photo->save(false);
                         } else {
-
                             return $this->render('create', ['product' => $product, 'uploader' => $uploader, 'categories' => $categories]);
                         }
-
                     }
-
                 }
-
-
                 return $this->redirect(['product', 'id' => $product->id]);
-
             }
             return $this->render('create', ['product' => $product, 'uploader' => $uploader, 'categories' => $categories]);
         }
@@ -237,7 +208,6 @@ class GoodsController extends AppController
                     ]
                 ]);
 
-
                 return $this->render('category', [
                     'dataProvider' => $dataProvider, 'sort' => $sort,
                     'category' => Category::categoryName($id)
@@ -246,13 +216,7 @@ class GoodsController extends AppController
 
                 $this->goHome();
             }
-
         }
-
-
-
-
-
     }
 
 
@@ -310,11 +274,10 @@ class GoodsController extends AppController
     public function actionIndex()
     {
 
-
+//        Yii::$app->session->setFlash('success', "User created successfully.");
         $categories = Category::find()->where(['in', 'id', [17,65,174]])->all();
 
-//           var_dump($categories);
-     /** @var TYPE_NAME $products */
+     /** @var Product $products */
         $products = null;
 
         foreach ($categories as $category) {
@@ -324,51 +287,42 @@ class GoodsController extends AppController
             else
                 $products[$category->name] = null;
         }
-
-//        $query = Product::find();
-//
-//        $dataProvider = new ActiveDataProvider([
-//            'query' => $query,
-//
-//        ]);
         if ($products !== null)
             return $this->render('index', [
                 'products' => $products,
             ]);
         else
-            $this->goHome();
+         return $this->goHome();
     }
 
-
+    /**
+     *  action for ajax
+     */
     public function actionAddReview()
     {
         if (!Yii::$app->user->isGuest) {
 
             $review = new Review();
 
-            if ( $review->load(Yii::$app->request->post()) ) {
+            if ( $review->load(Yii::$app->request->post()) && isset($_POST['mark'])) {
 
                  $review->user_id = Yii::$app->user->id;
                  $review->product_id = $_POST['product_id'];
                  $review->mark = $_POST['mark'];
 
-                // self::debug($review);
-
-                 if ($review->validate()) {
+                if ($review->validate()) {
                     $review->save();
-
-                    $this->goBack(Yii::$app->request->referrer);
-
-                } else {
-
-                    self::debug($review->getErrors());
-
+                     \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+                     return Json::encode('success', ['code' => 200]);
+                 }
+                else if($review->hasErrors())
+                {
+                    $errors = $review->getErrors();
+                    return Json::encode('alllooo', 500);
                 }
             }
         }
-        return;
-
-
+        return  Json::encode('', 500);
     }
 
     public function actionCommentGet($page,$id)
@@ -428,9 +382,6 @@ class GoodsController extends AppController
                 ],
             ]);
 
-
-
-
                 $query = Product::find();
                 $query->andFilterWhere(['like', 'name', $search_param])->all();
 
@@ -440,28 +391,17 @@ class GoodsController extends AppController
                     $query->andFilterWhere(['in', 'category_id', $arr])->all();
 
                 }
-
                 $dataProvider = new ActiveDataProvider([
                     'query' => $query,
                     'pagination' => [
                         'pageSize' => 20
                     ]
                 ]);
-
                 return $this->render('search', [
                     'dataProvider' => $dataProvider, 'sort' => $sort,
                     'search_param' => $search_param
                 ]);
-
-
-
-
         }
-
-
     }
-
-
-
 }
 

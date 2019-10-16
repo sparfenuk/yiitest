@@ -37,6 +37,7 @@ if(!Yii::$app->user->isGuest)
 
     <title><?= Html::encode($this->title) ?>
     </title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <?php $this->head(); ?>
 
 </head>
@@ -45,7 +46,7 @@ if(!Yii::$app->user->isGuest)
 
 <!--header-->
 <header>
-    <!--    <!-- top Header -->
+    <!--  top Header -->
     <!--    <div id="top-header">-->
     <!--        <div class="container">-->
     <!--            <div class="pull-left">-->
@@ -76,7 +77,7 @@ if(!Yii::$app->user->isGuest)
     <!--            </div>-->
     <!--        </div>-->
     <!--    </div>-->
-    <!--    <!-- /top Header -->
+    <!--     /top Header -->
     <!-- header -->
     <div id="header">
         <div class="container">

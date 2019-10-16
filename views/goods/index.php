@@ -19,24 +19,12 @@ use yii\widgets\Pjax;
 
 $this->title = 'Goods';
 $this->params['breadcrumbs'][0] = ['label' => $this->title, 'link' => Yii::$app->request->url];
-
-    ?>
-
-
-
-
-
+?>
                  <div id="main" class="col-md-12"  >
-
                      <div id="store">
-
-
-
                              <?php
                              foreach ($products as $key=>$value) {
-
                                  if ($value !== null) {
-
                                      $curl = Url::toRoute(['goods/category', 'id' => Category::getCategoryId($key)]);
 
                                      echo '
