@@ -33,45 +33,62 @@ Review::getAverageReview(11); // todo: вивести для товару зір
 				<!--  Product Details -->
 				<div class="product product-details clearfix">
 					<div class="col-md-6">
-						<div id="product-main-view" class="slick-initialized slick-slider">
-						<button class="slick-prev slick-arrow" aria-label="Previous" type="button" style="display: block;">Previous</button>
-							<div class="slick-list draggable">
-                                <div class="slick-track" style="opacity: 1; width: 2220px;">
-                                <?php
-                                    $slickIndex = 0;
-                                    $tabIndex = 0;
-                                    foreach ($photos as $photo) {
-                                    echo '<div class="product-view slick-slide slick-current slick-active" data-slick-index="' . $slickIndex . '" aria-hidden="false" tabindex="' . $tabIndex . '" style="width: 555px; position: relative; left: 0px; top: 0px; z-index: 999; opacity: 1;">'
-                                          .'<img style="width:300px" src="' . '/images/product_images/' . HTML::encode($photo->image_name) . '" alt="">'
-                                          .'</div>';
-                                    $tabIndex = -1;
-                                    $slickIndex++;
-                                }
-                                ?>
-                                </div>
-                                <button class="slick-prev slick-arrow" aria-label="Previous" type="button" style="display: block;">Previous</button>
-                            </div>
-                        </div>
-                        <div id="product-view" class="slick-initialized slick-slider">
-                            <div class="slick-list draggable" style="padding: 0px 50px;">
-                                <div class="slick-track" style="opacity: 1; width: 876px; transform: translate3d(-219px, 0px, 0px);">
-                                    <?php
-                                        $slickIndex = -1 * count($photos);
-                                        foreach ($photos as $photo) {
-                                        if ($tabIndex === -1) {
-                                        echo '<div class = "product-view slick-slide slick-cloned slick-active" data-slick-index="' . $slickIndex . '" aria-hidden="true" tabindex="-1" style="width: 73px;">'
-                                          .'<img src = "' . '/images/product_images/' . HTML::encode($photo->image_name) . '" alt="">'
-                                          .'</div>';
-                                        } else {
-                                        echo '<div class = "product-view slick-slide slick-cloned" data-slick-index="' . $slickIndex . '" aria-hidden="true" tabindex="-1" style="width: 73px;">'
-                                            .'<img  src = "' . '/images/product_images/' . HTML::encode($photo->image_name) . '" alt="">'
-                                            .'</div>';
-                                        }
-                                        $tabIndex++;
-                                        }
-                                    ?>
-                                </div>
-                            </div>
+<!--						<div id="product-main-view" class="slick-initialized slick-slider">-->
+<!--						<button class="slick-prev slick-arrow" aria-label="Previous" type="button" style="display: block;">Previous</button>-->
+<!--							<div class="slick-list draggable">-->
+<!--                                <div class="slick-track" style="opacity: 1; width: 2220px;">-->
+<!--                               --><?php
+////                                    $slickIndex = 0;
+////                                    $tabIndex = 0;
+////                                    foreach ($photos as $photo) {
+////                                    echo '<div class="product-view slick-slide slick-current slick-active" data-slick-index="' . $slickIndex . '" aria-hidden="false" tabindex="' . $tabIndex . '" style="width: 555px; position: relative; left: 0px; top: 0px; z-index: 999; opacity: 1;">'
+////                                          .'<img style="width:300px" src="' . '/images/product_images/' . HTML::encode($photo->image_name) . '" alt="">'
+////                                          .'</div>';
+////                                    $tabIndex = -1;
+////                                    $slickIndex++;
+////                                }
+////                                ?>
+<!--                              </div>-->
+<!--                                <button class="slick-prev slick-arrow" aria-label="Previous" type="button" style="display: block;">Previous</button>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div id="product-view" class="slick-initialized slick-slider">-->
+<!--                            <div class="slick-list draggable" style="padding: 0px 50px;">-->
+<!--                                <div class="slick-track" style="opacity: 1; width: 876px; transform: translate3d(-219px, 0px, 0px);">-->
+<!--                                   --><?php
+////                                        $slickIndex = -1 * count($photos);
+////                                        foreach ($photos as $photo) {
+////                                        if ($tabIndex === -1) {
+////                                        echo '<div class = "product-view slick-slide slick-cloned slick-active" data-slick-index="' . $slickIndex . '" aria-hidden="true" tabindex="-1" style="width: 73px;">'
+////                                          .'<img src = "' . '/images/product_images/' . HTML::encode($photo->image_name) . '" alt="">'
+////                                          .'</div>';
+////                                        } else {
+////                                        echo '<div class = "product-view slick-slide slick-cloned" data-slick-index="' . $slickIndex . '" aria-hidden="true" tabindex="-1" style="width: 73px;">'
+////                                            .'<img  src = "' . '/images/product_images/' . HTML::encode($photo->image_name) . '" alt="">'
+////                                            .'</div>';
+////                                        }
+////                                        $tabIndex++;
+////                                        }
+////                                    ?>
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                        <div id="custom-transitions">
+<!--                            <a href="img/img1.jpg">-->
+<!--                                <img src="img/thumb1.jpg" />-->
+<!--                            </a>-->
+<!--                            <a href="img/img2.jpg">-->
+<!--                                <img src="img/thumb2.jpg" />-->
+<!--                            </a>-->
+                            <?php
+                            foreach ($photos as $photo) {
+                            ?>
+                                <a href="<?='/images/product_images/'. HTML::encode($photo->image_name)?>">
+                                <img style="width:300px" src="<?='/images/product_images/'. HTML::encode($photo->image_name)?>" alt="">
+                                </a>
+                            <?php
+                            }
+                            ?>
                         </div>
                     </div>
 <div class="col-md-6">
@@ -247,9 +264,18 @@ Review::getAverageReview(11); // todo: вивести для товару зір
 <!-- /container -->
 </div>
 <!--<script src="/web/js/single_prod.js"></script>-->
+<!--<script src="js/lightgallery.min.js"></script>-->
+
+<!-- lightgallery plugins -->
+<!--<script src="js/lg-thumbnail.min.js"></script>-->
+<!--<script src="js/lg-fullscreen.min.js"></script>-->
 <script>
+
     $(document).ready(function () {
 
+            lightGallery(document.getElementById('custom-transitions'), {
+                mode: 'lg-fade'
+            });
             $('#review-form').submit( function(e){
                 e.preventDefault();
                 var alert = $('.alert-block');
@@ -262,15 +288,12 @@ Review::getAverageReview(11); // todo: вивести для товару зір
                     url: url,
                     data: form.serialize(),
                     success: function(data)
-                    {
-                        console.log(data);
+                    {+
                        alert.html('').fadeIn().delay(10000).fadeOut();
                        alert.append('<div class="alert alert-success alert-dismissable"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'
                                      +'<h4><i class="icon fa fa-check"></i>Your comment will be posted after moderation</h4></div>');
                     },
                     error: function (data) {
-                        //TODO: display error
-                        console.log(data);
                         alert.html('').fadeIn().delay(10000).fadeOut();
                         alert.append('<div class="alert alert-warning alert-dismissable"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'
                             +'<h4><i class="icon fa fa-check"></i>data.errors</h4></div>');

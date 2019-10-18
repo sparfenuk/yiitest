@@ -38,6 +38,7 @@ if(!Yii::$app->user->isGuest)
     <title><?= Html::encode($this->title) ?>
     </title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/lightgallery.css">
     <?php $this->head(); ?>
 
 </head>

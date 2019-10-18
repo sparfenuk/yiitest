@@ -2,19 +2,12 @@
 
 namespace app\controllers;
 
-use app\models\Cart;
+
 use app\models\Category;
-use app\models\Goods;
 use app\models\Product;
-use phpDocumentor\Reflection\Types\Array_;
 use Yii;
 use yii\data\ActiveDataProvider;
-use yii\db\Query;
-use yii\debug\models\search\User;
-use yii\debug\panels\EventPanel;
 use yii\helpers\Json;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\UploadProductFile;
 use app\models\ProductPhoto;
@@ -314,32 +307,32 @@ class GoodsController extends AppController
                 if ($review->validate()) {
                     $review->save();
                      \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-                     return Json::encode('success', ['code' => 200]);
+                     return Yii::$app->response;
                  }
                 else if($review->hasErrors())
                 {
                     $errors = $review->getErrors();
-                    return Json::encode('alllooo', 500);
+                    return Json::encode($errors, ['code' => 200]);
                 }
             }
         }
-        return  Json::encode('', 500);
+        return Json::encode('', ['code' => 200]);
     }
 
-    public function actionCommentGet($page,$id)
-    {
-        $query = Review::find();
-        $query->andFilterWhere(['product_id' => $id])->all();
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => [
-                'pageSize' => 3
-            ]
-        ]);
-        return $this->renderAjax('comment', [
-            'reviewDataProvider' => $dataProvider,
-        ]);
-    }
+//    public function actionCommentGet($page,$id)
+//    {
+//        $query = Review::find();
+//        $query->andFilterWhere(['product_id' => $id])->all();
+//        $dataProvider = new ActiveDataProvider([
+//            'query' => $query,
+//            'pagination' => [
+//                'pageSize' => 3
+//            ]
+//        ]);
+//        return $this->renderAjax('comment', [
+//            'reviewDataProvider' => $dataProvider,
+//        ]);
+//    }
 
 
     public function  Parse($arr)
