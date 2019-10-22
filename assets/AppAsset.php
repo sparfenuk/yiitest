@@ -28,7 +28,9 @@ class AppAsset extends AssetBundle
         'css/slick-theme.css',
         'css/lg-fb-comment-box.css',
         'css/lg-transitions.css',
-        'css/lightgallery.css'
+        'css/lightgallery.css',
+        'css/image_zoom.css',
+        'css/zommer.css'
     ];
     public $cssOptions =[
         'type' => 'text/css',
@@ -43,7 +45,9 @@ class AppAsset extends AssetBundle
         'js/main.js',
         'js/bootstrap-notify.js',
         'http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js',
-        'js/lightgallery.js'
+        'js/lightgallery.js',
+        'js/image_zoom.js',
+        'js/zoomer.js'
     ];
     public $depends = [
     ];
