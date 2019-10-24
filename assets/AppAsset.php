@@ -30,7 +30,7 @@ class AppAsset extends AssetBundle
         'css/lg-transitions.css',
         'css/lightgallery.css',
         'css/image_zoom.css',
-        'css/zommer.css'
+        'css/figure-zoom.css'
     ];
     public $cssOptions =[
         'type' => 'text/css',

@@ -23,9 +23,20 @@ $this->title = 'E-Shop' . $product->name;
 $this->params['breadcrumbs'][0] = ['label' => $product->category->name, 'link' => '/goods/category?id='.$product->category->id];
 $this->params['breadcrumbs'][1] = ['label' => $product->name, 'link' => Yii::$app->request->url];
 
+//TODO: перенести в контроллер
 $name = ProductPhoto::findByProductId($product->id);
 $photos = ProductPhoto::findByProductId($product->id);
-Review::getAverageReview(11); // todo: вивести для товару зірочками
+Review::getAverageReview(11);
+
+if(isset($photos[1]->image_name))
+{
+    $mainPhoto = $photos[1]->image_name;
+}
+else
+{
+    $mainPhoto = $photos[0]->image_name;
+}
+
 
 ?>
 <div class="section">
@@ -36,10 +47,10 @@ Review::getAverageReview(11); // todo: вивести для товару зір
 				<!--  Product Details -->
 				<div class="product product-details clearfix">
 					<div class="col-md-6">
-                            <div class="main-photo" style="width: 70%; height: 400px; display: inline-block;">
-                             <img id="main-image" class="myimage myresult" style="width: 100%;" src="<?='/images/product_images/'. HTML::encode($photos[1]->image_name)?>" alt="">
-                            </div>
-                            <div class="photos" style="overflow: auto; height: 400px; float: left; width: 25%;">
+                            <figure class="main-photo zoom" style="background-image: url(<?='/images/product_images/'. HTML::encode($mainPhoto)?>);" onmousemove= zoom(event)>
+                             <img class="main-image" style="width: 100%;" src="<?='/images/product_images/'. HTML::encode($mainPhoto)?>" alt="">
+                            </figure>
+                            <div class="photos" style="overflow: auto; height: 400px; float: left; width: 25%; ">
                             <?php
                             for ($i=1; $i < count($photos); $i++) {
                             ?>
@@ -228,11 +239,20 @@ Review::getAverageReview(11); // todo: вивести для товару зір
 
 <link href="/css/image_zoom.css" rel="stylesheet">
 <script>
-    // imageZoom("myimage", "myresult");
+
+    function zoom(e){
+        var zoomer = e.currentTarget;
+        e.offsetX ? offsetX = e.offsetX : offsetX = e.touches[0].pageX;
+        e.offsetY ? offsetY = e.offsetY : offsetX = e.touches[0].pageX;
+        x = offsetX/zoomer.offsetWidth*100;
+        y = offsetY/zoomer.offsetHeight*100;
+        zoomer.style.backgroundPosition = x + '% ' + y + '%';
+    }
 
     $('.product-image').click(function (e) {
         var src = e.currentTarget.childNodes.item(1).getAttribute('src');
-        $('#main-image').attr('src',src);
+        $('.main-image').attr('src',src);
+        $('.main-photo').css('background-image', 'url('+src+')');
     });
 
     $(document).ready(function () {

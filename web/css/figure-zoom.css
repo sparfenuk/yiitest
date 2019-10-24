@@ -1,0 +1,18 @@
+figure.zoom {
+background-position: 50% 50%;
+position: relative;
+overflow: hidden;
+cursor: zoom-in;
+width: 70%;
+/*height: 400px;*/
+display: inline-block;
+}
+
+img.main-image:hover {
+    opacity: 0;
+}
+img.main-image {
+    transition: opacity .5s;
+    display: block;
+    width: 100%;
+}
