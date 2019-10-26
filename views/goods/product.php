@@ -17,13 +17,14 @@ use yii\widgets\ActiveForm;
 use yii\widgets\LinkPager;
 use app\models\Review;
 
-$this->title = 'E-Shop' . $product->name;
+\app\assets\OneProductAsset::register($this);
+$this->title = 'E-Shop ' . $product->name;
 $this->params['breadcrumbs'][0] = ['label' => $product->category->name, 'link' => '/goods/category?id='.$product->category->id];
 $this->params['breadcrumbs'][1] = ['label' => $product->name, 'link' => Yii::$app->request->url];
 
-$name = ProductPhoto::findByProductId($product->id);
-$photos = ProductPhoto::findByProductId($product->id);
-Review::getAverageReview(11); // todo: вивести для товару зірочками
+$name = ProductPhoto::findByProductId($product->id); // ????
+$photos = ProductPhoto::findByProductId($product->id); // ???? a?
+Review::getAverageReview(11); // todo: вивести для товару зірочками | шо це блять?
 ?>
 <div class="section">
 		<!-- container -->

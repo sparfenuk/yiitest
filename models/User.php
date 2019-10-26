@@ -99,7 +99,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
 
     public function getAvatarImage(){
-        return '\images\user_images\\'.$this->photo_name;
+        return '\images\user_images\\'.($this->photo_name ?? 'no_avatar.png');
     }
 
     public static function findIdentity($id)
