@@ -17,14 +17,27 @@ use yii\widgets\ActiveForm;
 use yii\widgets\LinkPager;
 use app\models\Review;
 
-\app\assets\OneProductAsset::register($this);
-$this->title = 'E-Shop ' . $product->name;
+
+
+$this->title = 'E-Shop' . $product->name;
 $this->params['breadcrumbs'][0] = ['label' => $product->category->name, 'link' => '/goods/category?id='.$product->category->id];
 $this->params['breadcrumbs'][1] = ['label' => $product->name, 'link' => Yii::$app->request->url];
 
-$name = ProductPhoto::findByProductId($product->id); // ????
-$photos = ProductPhoto::findByProductId($product->id); // ???? a?
-Review::getAverageReview(11); // todo: вивести для товару зірочками | шо це блять?
+//TODO: перенести в контроллер
+$name = ProductPhoto::findByProductId($product->id);
+$photos = ProductPhoto::findByProductId($product->id);
+Review::getAverageReview(11);
+
+if(isset($photos[1]->image_name))
+{
+    $mainPhoto = $photos[1]->image_name;
+}
+else
+{
+    $mainPhoto = $photos[0]->image_name;
+}
+
+
 ?>
 <div class="section">
 		<!-- container -->
@@ -34,63 +47,20 @@ Review::getAverageReview(11); // todo: вивести для товару зір
 				<!--  Product Details -->
 				<div class="product product-details clearfix">
 					<div class="col-md-6">
-<!--						<div id="product-main-view" class="slick-initialized slick-slider">-->
-<!--						<button class="slick-prev slick-arrow" aria-label="Previous" type="button" style="display: block;">Previous</button>-->
-<!--							<div class="slick-list draggable">-->
-<!--                                <div class="slick-track" style="opacity: 1; width: 2220px;">-->
-<!--                               --><?php
-////                                    $slickIndex = 0;
-////                                    $tabIndex = 0;
-////                                    foreach ($photos as $photo) {
-////                                    echo '<div class="product-view slick-slide slick-current slick-active" data-slick-index="' . $slickIndex . '" aria-hidden="false" tabindex="' . $tabIndex . '" style="width: 555px; position: relative; left: 0px; top: 0px; z-index: 999; opacity: 1;">'
-////                                          .'<img style="width:300px" src="' . '/images/product_images/' . HTML::encode($photo->image_name) . '" alt="">'
-////                                          .'</div>';
-////                                    $tabIndex = -1;
-////                                    $slickIndex++;
-////                                }
-////                                ?>
-<!--                              </div>-->
-<!--                                <button class="slick-prev slick-arrow" aria-label="Previous" type="button" style="display: block;">Previous</button>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div id="product-view" class="slick-initialized slick-slider">-->
-<!--                            <div class="slick-list draggable" style="padding: 0px 50px;">-->
-<!--                                <div class="slick-track" style="opacity: 1; width: 876px; transform: translate3d(-219px, 0px, 0px);">-->
-<!--                                   --><?php
-////                                        $slickIndex = -1 * count($photos);
-////                                        foreach ($photos as $photo) {
-////                                        if ($tabIndex === -1) {
-////                                        echo '<div class = "product-view slick-slide slick-cloned slick-active" data-slick-index="' . $slickIndex . '" aria-hidden="true" tabindex="-1" style="width: 73px;">'
-////                                          .'<img src = "' . '/images/product_images/' . HTML::encode($photo->image_name) . '" alt="">'
-////                                          .'</div>';
-////                                        } else {
-////                                        echo '<div class = "product-view slick-slide slick-cloned" data-slick-index="' . $slickIndex . '" aria-hidden="true" tabindex="-1" style="width: 73px;">'
-////                                            .'<img  src = "' . '/images/product_images/' . HTML::encode($photo->image_name) . '" alt="">'
-////                                            .'</div>';
-////                                        }
-////                                        $tabIndex++;
-////                                        }
-////                                    ?>
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-                        <div id="custom-transitions">
-<!--                            <a href="img/img1.jpg">-->
-<!--                                <img src="img/thumb1.jpg" />-->
-<!--                            </a>-->
-<!--                            <a href="img/img2.jpg">-->
-<!--                                <img src="img/thumb2.jpg" />-->
-<!--                            </a>-->
+                            <figure class="main-photo zoom" style="background-image: url(<?='/images/product_images/'. HTML::encode($mainPhoto)?>);" onmousemove= zoom(event)>
+                             <img class="main-image" style="width: 100%;" src="<?='/images/product_images/'. HTML::encode($mainPhoto)?>" alt="">
+                            </figure>
+                            <div class="photos" style="overflow: auto; height: 400px; float: left; width: 25%; ">
                             <?php
-                            foreach ($photos as $photo) {
+                            for ($i=1; $i < count($photos); $i++) {
                             ?>
-                                <a href="<?='/images/product_images/'. HTML::encode($photo->image_name)?>">
-                                <img style="width:300px" src="<?='/images/product_images/'. HTML::encode($photo->image_name)?>" alt="">
-                                </a>
+                                <div class="product-image" style="display: inline-block;">
+                                <img id="img" style="width: 100%;" src="<?='/images/product_images/'. HTML::encode($photos[$i]->image_name)?>" alt="">
+                                </div>
                             <?php
                             }
                             ?>
-                        </div>
+                            </div>
                     </div>
 <div class="col-md-6">
     <div class="product-body">
@@ -264,20 +234,29 @@ Review::getAverageReview(11); // todo: вивести для товару зір
 </div>
 <!-- /container -->
 </div>
-<!--<script src="/web/js/single_prod.js"></script>-->
-<!--<script src="js/lightgallery.min.js"></script>-->
 
-<!-- lightgallery plugins -->
-<!--<script src="js/lg-thumbnail.min.js"></script>-->
-<!--<script src="js/lg-fullscreen.min.js"></script>-->
+<script src="/js/image_zoom.js"></script>
+
+<link href="/css/image_zoom.css" rel="stylesheet">
 <script>
 
-    $(document).ready(function () {
+    function zoom(e){
+        var zoomer = e.currentTarget;
+        e.offsetX ? offsetX = e.offsetX : offsetX = e.touches[0].pageX;
+        e.offsetY ? offsetY = e.offsetY : offsetX = e.touches[0].pageX;
+        x = offsetX/zoomer.offsetWidth*100;
+        y = offsetY/zoomer.offsetHeight*100;
+        zoomer.style.backgroundPosition = x + '% ' + y + '%';
+    }
 
-            lightGallery(document.getElementById('custom-transitions'), {
-                mode: 'lg-fade'
-            });
-            $('#review-form').submit( function(e){
+    $('.product-image').click(function (e) {
+        var src = e.currentTarget.childNodes.item(1).getAttribute('src');
+        $('.main-image').attr('src',src);
+        $('.main-photo').css('background-image', 'url('+src+')');
+    });
+
+    $(document).ready(function () {
+        $('#review-form').submit( function(e){
                 e.preventDefault();
                 var alert = $('.alert-block');
 
