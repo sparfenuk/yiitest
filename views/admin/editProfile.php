@@ -48,7 +48,7 @@ use yii\bootstrap\ActiveForm;
 
       <div class="text-center">
         <br><br><br>
-          <?= Html::img('@web/images/user_images/'.$model->photo_name,
+          <?= Html::img('@web/images/user_images/'.($model->photo_name ?? 'no_avatar.jpg'),
               ['class'=> 'avatar img-circle img-thumbnail','alt' => 'avatar','width' =>150  ,'height' => 150]) ?>
 <!--        <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail" alt="avatar">-->
           <?= $form->field($model,'image')->label('avatar')->fileInput(['accept' => '.jpg,.png']) ?>
@@ -109,7 +109,7 @@ use yii\bootstrap\ActiveForm;
                           
                           <div class="col-xs-6">
                               <?= $form->field($model, 'email')
-                                  ->input('email',['class' => 'form-control', 'id' => 'email','value' => $model->email]) ?>
+                                  ->input('email',['class' => 'form-control', 'id' => 'email','value' => $model->email, 'readonly' => true]) ?>
 <!--                              <label for="email"><h4>Email</h4></label>-->
 <!--                              <input type="email" class="form-control" name="email" id="email" placeholder="you@email.com" title="enter your email.">-->
                           </div>

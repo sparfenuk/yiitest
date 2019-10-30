@@ -287,7 +287,7 @@ class SiteController extends AppController
         if ($model->load(Yii::$app->request->post())) {
             try {
                 if ($model->validate()) {
-//                    self::debug($_FILES);
+
                     $model->password2 = $_POST['User']['password2']; // kostil'
                     if ($_FILES['User']['error']['image'] === 0) {
                         if ($model->photo_name != 'no_avatar.png')
@@ -301,8 +301,6 @@ class SiteController extends AppController
                     } else if (!empty($model->password) && $model->password == $model->password2) {
                         $model->password = md5($model->password . Yii::$app->params['SALT']);
                     } else if (!empty($model->password)) {
-//                        echo $model->password2;
-//                        self::debug($model);
                         Yii::$app->session->setFlash('error', 'passwords not identical');
                         $this->refresh();
                     } else {
