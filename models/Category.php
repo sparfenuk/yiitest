@@ -71,25 +71,16 @@ class Category extends \yii\db\ActiveRecord
         if ($id!==null)
         {
             $arr=array();
-
             $categories = self::find()->where(['id'=>$id])->all();
         Category::getSubCategoriesId($categories,$arr);
          return $arr;
-
         }
-
-
     }
     public static function getSubCategoriesId($categories,&$arr)
     {
-        //  $arr = array();
-
         foreach ($categories as $category) {
 
             $sub = self::find()->where(['parent_id' => $category->id])->andWhere('parent_id != id')->all();
-
-//           var_dump( $sub);
-//           echo '<hr>';
 
             if(!empty($sub))
             {
@@ -97,30 +88,20 @@ class Category extends \yii\db\ActiveRecord
             }
             else
             {
-                //echo ($category->id).'<hr>';
                array_push($arr,$category->id);
-//                var_dump( $arr);
-//                echo '<hr>';
             }
-
         }
-
-        /** @var array $arr */
-//        if ($arr!=null)
-//        return $arr;
-//        else
-//            return 'aaaa';
     }
 
-
-    public static function  categoryName($id)
+    public static function categoryName($id)
     {
         $name = self::find()->where(['id'=>$id])->one();
-        return $name->name;
+        return isset($name->name)? $name->name : '';
     }
 
-
-
-
-
+    public static function getSubCategories()
+    {
+        $categories = Category::find()->where('id != parent_id')->all();
+        return $categories;
+    }
 }

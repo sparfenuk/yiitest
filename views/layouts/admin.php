@@ -114,6 +114,18 @@ $bundle = yiister\gentelella\assets\Asset::register($this);
                                         ],
                                     ],
                                     [
+                                        "label" => "Auction Products",
+                                        "url" => "#",
+                                        "icon" => "table",
+                                        "items" => [
+                                            [
+                                                'label' => "Products",
+                                                "url" => ['admin-auction/index'],
+                                            ],
+
+                                        ],
+                                    ],
+                                    [
                                         "label" => ""
                                     ]
                                 ],

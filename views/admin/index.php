@@ -41,7 +41,6 @@ use yii\helpers\Html;
 <?php foreach ($orders as $order){
     $user = \app\models\User::find()->where(['id' => $order->user_id])->one();
     $product = \app\models\Product::find()->where(['id'=>$order->product_id])->one();
-
     ?>
 
                   <tr><!-- user widget -->

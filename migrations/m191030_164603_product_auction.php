@@ -16,15 +16,13 @@ class m191030_164603_product_auction extends Migration
         $this->createTable('{{%product_auction}}',[
             'id' => $this->integer()->notNull().' PRIMARY KEY AUTO_INCREMENT',
             'name' => $this->string(100)->notNull(),
-            'brand' => $this->string(100),
             'category_id' => $this->integer()->notNull(),
             'start_price' => $this->money()->notNull(),
-            'current_price' => $this->money()->notNull(),
-            'end_price' => $this->money()->notNull(),
+            'current_price' => $this->money()->notNull()->defaultValue(0),
+            'end_price' => $this->money()->notNull()->defaultValue(0),
             'max_price' => $this->money()->defaultValue(0),
-            'availability' => $this->integer(7)->defaultValue(1), //кількість доступного товару
             'description' => $this->string(1000)->notNull(),
-            'colors' => $this->string(200), //розділювач - ";"
+            'time' => $this->time(),
             'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
             'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP').' ON UPDATE CURRENT_TIMESTAMP'
         ],
