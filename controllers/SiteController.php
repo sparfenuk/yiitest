@@ -9,6 +9,7 @@ use app\models\Category;
 use app\models\Favourites;
 use app\models\Order;
 use app\models\Product;
+use app\models\ProductAuction;
 use app\models\User;
 use PHPUnit\Framework\Error\Error;
 use Yii;
@@ -106,10 +107,9 @@ class SiteController extends AppController
         WHERE p.prev_price IS NOT NULL
         ORDER by diff DESC
         LIMIT 10");
-        $picker2 = Product::findBySql("SELECT p.*, (p.prev_price/(p.price/100)-100) as 'diff'
-            FROM `product` p
-            WHERE p.prev_price IS NOT NULL
-            ORDER by diff DESC
+        $picker2 = ProductAuction::findBySql("SELECT p.*
+            FROM `product_auction` p
+            ORDER by p.current_price DESC
             LIMIT 10");
 
         return $this->render('index', [

@@ -14,10 +14,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-<!--    --><?//= $this->render('_form', [
-//        'model' => $model,
-//    ]) ?>
     <?php $form = ActiveForm::begin(); ?>
+    <?= $form->errorSummary($model) ?>
     <?= $form->field($model, 'name') ?>
     <?= $form->field($model, 'start_price')
         ->textInput([
@@ -28,6 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'type' => 'number'
        ]) ?>
     <?= $form->field($model, 'description') ?>
+    <?= $form->field($uploader, 'imageFiles[]')->fileInput(['multiple' => true, 'accept' => 'image/*']) ?>
     <?= $form->field($model, 'category_id')->dropDownList($categories)?>
     <?= Html::submitButton('Create') ?>
     <?php ActiveForm::end(); ?>

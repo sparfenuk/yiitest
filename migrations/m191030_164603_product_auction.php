@@ -22,6 +22,7 @@ class m191030_164603_product_auction extends Migration
             'end_price' => $this->money()->notNull()->defaultValue(0),
             'max_price' => $this->money()->defaultValue(0),
             'description' => $this->string(1000)->notNull(),
+            'status' => $this->smallInteger()->notNull()->defaultValue(1),
             'time' => $this->time(),
             'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
             'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP').' ON UPDATE CURRENT_TIMESTAMP'

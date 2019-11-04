@@ -3,11 +3,15 @@
 namespace app\controllers;
 
 use app\models\Category;
+use app\models\ProductAuctionPhoto;
+use app\models\ProductPhoto;
+use app\models\UploadProductFile;
 use Yii;
 use app\models\ProductAuction;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * AdminAuctionController implements the CRUD actions for ProductAuction model.
@@ -63,19 +67,41 @@ class AdminAuctionController extends AppController
     public function actionCreate()
     {
         $model = new ProductAuction();
+        $uploader = new UploadProductFile();
 
         if ($model->load(Yii::$app->request->post())) {
 
-//            return (var_dump($_POST));
-            $model->name = $_POST['name'];
-            $model->description = $_POST['description'];
-            $model->category_id = $_POST['category_id'];
-            $model->max_price = $_POST['max_price'];
-            $model->start_price = $model->current_price = $_POST['start_price'];
 
-            $model->save();
+            $request = $_POST['ProductAuction'];
 
-            return $this->redirect(['view', 'id' => $model->id]);
+            if ($request['start_price'] >= $request['max_price'])
+            {
+                $model->addError('invalid price', ['start price can\'t be bigger then max price']);
+            }
+            else
+            {
+                $model->name = $request['name'];
+                $model->description = $request['description'];
+                $model->category_id = $request['category_id'];
+                $model->max_price = $request['max_price'];
+                $model->start_price = $model->current_price = $request['start_price'];
+
+                $model->save();
+
+                $uploader->imageFiles = UploadedFile::getInstances($uploader, 'imageFiles');
+                if ($uploader->uploadImages()) {
+                    foreach ($uploader->imageFiles as $imageFile) {
+                        $photo = new ProductAuctionPhoto();
+                        $photo->image_name = $imageFile->baseName . '.' . $imageFile->extension;
+                        $photo->product_id = $model->id;
+                        if ($photo->validate()) {
+                            $photo->save(false);
+                        }
+                    }
+                }
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+
         }
 
         $categories = Category::getSubCategories();
@@ -87,7 +113,8 @@ class AdminAuctionController extends AppController
         }
         return $this->render('create', [
             'model' => $model,
-            'categories' => $catPair
+            'categories' => $catPair,
+            'uploader' => $uploader
         ]);
     }
 

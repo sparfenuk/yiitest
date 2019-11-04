@@ -187,7 +187,7 @@ $this->params['breadcrumbs'] = 'none';
             <!-- section title -->
             <div class="col-md-12">
                 <div class="section-title">
-                    <h2 class="title">Best deals</h2>
+                    <h2 class="title">Hot products on auction</h2>
                     <div class="pull-right">
                         <div class="product-slick-dots-2 custom-dots">
                         </div>
@@ -245,8 +245,7 @@ $this->params['breadcrumbs'] = 'none';
                             <div class="product product-single">
                                 <div class="product-thumb">
                                     <div class="product-label">
-                                        <?php if ($picker->isNew()) echo '<span>New</span>'; ?>
-                                        <span class="sale">-<?= $picker->getDiscount() ?>%</span>
+
                                     </div>
                                     <?= Html::a('<button class="main-btn quick-view"><i class="fa fa-search-plus"></i>view</button>', ['/goods/product?id=' . $picker->id]) ?>
                                     <?php $image = \app\models\ProductPhoto::find()->where(['product_id' => $picker->id])->one();
@@ -254,9 +253,12 @@ $this->params['breadcrumbs'] = 'none';
                                     echo Html::img('@web/images/product_images/' . $image->image_name, ['alt' => "product", 'style' => ' height: 200px;']); ?>
                                 </div>
                                 <div class="product-body">
-                                    <h3 class="product-price"><?= round($picker->price) ?>
-                                        <del class="product-old-price"><?php if ($picker->prev_price) echo round($picker->prev_price) . '₴'; ?></del>
+                                    <h3 class="product-price">
+                                        highest bet - <?= round($picker->current_price).'₴' ?>
                                     </h3>
+                                    <h2 class="product-price">
+                                        max price - <?= round($picker->max_price).'₴' ?>
+                                    </h2>
                                     <?php $average = round(\app\models\Review::getAverageReview($picker->id));
                                     for ($i = 0; $i < 5; $i++) {
                                         if ($i < $average) {
