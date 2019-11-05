@@ -248,7 +248,7 @@ $this->params['breadcrumbs'] = 'none';
 
                                     </div>
                                     <?= Html::a('<button class="main-btn quick-view"><i class="fa fa-search-plus"></i>view</button>', ['/goods/product?id=' . $picker->id]) ?>
-                                    <?php $image = \app\models\ProductPhoto::find()->where(['product_id' => $picker->id])->one();
+                                    <?php $image = \app\models\ProductAuctionPhoto::find()->where(['product_id' => $picker->id])->one();
 
                                     echo Html::img('@web/images/product_images/' . $image->image_name, ['alt' => "product", 'style' => ' height: 200px;']); ?>
                                 </div>
@@ -270,9 +270,9 @@ $this->params['breadcrumbs'] = 'none';
                                     echo '(' . \app\models\Review::find()->where(['product_id' => $picker->id])->count('id') . ')';
 
                                     ?>
-                                    <h2 class="product-name"><?= Html::a($picker->name, ['/goods/product?id=' . $picker->id]) ?></h2>
+                                    <h2 class="product-name"><?= Html::a($picker->name, ['/auction/product?id=' . $picker->id]) ?></h2>
                                     <div class="product-btns">
-                                        <?= Html::a('<button class="main-btn icon-btn"><i class="fa fa-eye"></i></button>', ['/goods/product?id=' . $picker->id]) ?>
+                                        <?= Html::a('<button class="main-btn icon-btn"><i class="fa fa-eye"></i></button>', ['/auction/product?id=' . $picker->id]) ?>
                                         <?= Html::a('<button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>', ['/site/add-to-favourites?id=' . $picker->id]); ?>
                                         <?= Html::a('<button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>', ['site/add-to-cart?productId=' . $picker->id]) ?>
                                     </div>

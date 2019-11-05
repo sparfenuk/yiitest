@@ -36,4 +36,11 @@ class ProductAuctionPhoto extends \yii\db\ActiveRecord
             'id' => 'ID',
         ];
     }
+    public static function findByProductId($productId)
+    {
+        $productPhoto = self::find()->where(['product_id' => $productId])->all();
+        if ($productPhoto === null) return 'no_avatar.png';
+        return $productPhoto;
+
+    }
 }
