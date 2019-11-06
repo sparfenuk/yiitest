@@ -5,13 +5,14 @@ namespace app\models;
 use app\models\ProductPhoto;
 use Yii;
 
+//TODO: remove max_price
 /**
  * This is the model class for table "product_auction".
  *
  * @property int $id
  * @property string $name
  * @property int $category_id
- * @property string $price
+ * @property string $current_price
  * @property string $description
  * @property string $created_at
  * @property string $updated_at
