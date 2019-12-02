@@ -20,7 +20,6 @@ class m191030_164603_product_auction extends Migration
             'start_price' => $this->money()->notNull(),
             'current_price' => $this->money()->notNull()->defaultValue(0),
             'end_price' => $this->money()->notNull()->defaultValue(0),
-            'max_price' => $this->money()->defaultValue(0),
             'description' => $this->string(1000)->notNull(),
             'status' => $this->smallInteger()->notNull()->defaultValue(1),
             'time' => $this->time(),

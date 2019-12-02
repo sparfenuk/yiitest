@@ -8,6 +8,10 @@ use Yii;
  * This is the model class for table "product_auction_photo".
  *
  * @property int $id
+ * @property string $image_name
+ * @property int $product_id
+ *
+ * @property Product $product
  */
 class ProductAuctionPhoto extends \yii\db\ActiveRecord
 {

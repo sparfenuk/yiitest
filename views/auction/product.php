@@ -23,17 +23,12 @@ use app\models\Review;
 $this->title = 'E-Shop' . $product->name;
 $this->params['breadcrumbs'][0] = ['label' => $product->category->name, 'link' => '/goods/category?id='.$product->category->id];
 $this->params['breadcrumbs'][1] = ['label' => $product->name, 'link' => Yii::$app->request->url];
-
-if(isset($photos[1]->image_name))
-{
-    $mainPhoto = $photos[1]->image_name;
-}
-else
+$mainPhoto = '';
+if(isset($photos[0]->image_name))
 {
     $mainPhoto = $photos[0]->image_name;
 }
-
-
+echo $mainPhoto;
 ?>
 <div class="section">
 		<!-- container -->
@@ -48,7 +43,7 @@ else
                             </figure>
                             <div class="photos" style="overflow: auto; height: 400px; float: left; width: 25%; ">
                             <?php
-                            for ($i=1; $i < count($photos); $i++) {
+                            for ($i=0; $i < count($photos); $i++) {
                             ?>
                                 <div class="product-image" style="display: inline-block;">
                                 <img id="img" style="width: 100%;" src="<?='/images/product_images/'. HTML::encode($photos[$i]->image_name)?>" alt="">
@@ -67,9 +62,8 @@ else
         <h3 class="product-price"> <?= HTML::encode(round($product->current_price)) ?>
         </h3>
         <h2 class="product-price">
-            <input type="number" name="amount" id="newBidValue" value="<?= round($product->current_price) ?>"><p>₴</p>
+            <input type="number" name="amount" id="newBidValue" min="<?= round($product->current_price) ?>" value="<?= round($product->current_price) ?>"><p>₴</p>
             <button class="primary-btn">make bit!</button>
-<!--            max price - --><?//= round($product->max_price).'₴' ?>
         </h2>
         <div>
         </div>
@@ -134,7 +128,7 @@ else
     }
 
     $('.product-image').click(function (e) {
-        var src = e.currentTarget.childNodes.item(1).getAttribute('src');
+        let src = e.currentTarget.childNodes.item(1).getAttribute('src');
         $('.main-image').attr('src',src);
         $('.main-photo').css('background-image', 'url('+src+')');
     });
@@ -164,6 +158,29 @@ else
                     }
                 });
             });
+
+        conn.send(
+            {
+                'data': 'hello'
+            }
+        );
+
         });
+
+    var user = <?= Yii::$app->user->id ?>;
+    var prod = <?= $product->id ?>;
+
+
+
+    var conn = new WebSocket('ws://localhost:8083');
+    conn.onopen = function(e) {
+        console.log(e);
+    };
+
+    conn.onmessage = function(e) {
+        console.log(e.data);
+    };
+
+
 
 </script>

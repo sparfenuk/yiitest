@@ -249,8 +249,11 @@ $this->params['breadcrumbs'] = 'none';
                                     </div>
                                     <?= Html::a('<button class="main-btn quick-view"><i class="fa fa-search-plus"></i>view</button>', ['/goods/product?id=' . $picker->id]) ?>
                                     <?php $image = \app\models\ProductAuctionPhoto::find()->where(['product_id' => $picker->id])->one();
-
-                                    echo Html::img('@web/images/product_images/' . $image->image_name, ['alt' => "product", 'style' => ' height: 200px;']); ?>
+                                    if($image)
+                                    {
+                                    echo Html::img('@web/images/product_images/' . $image->image_name, ['alt' => "product", 'style' => ' height: 200px;']);
+                                    }
+                                    ?>
                                 </div>
                                 <div class="product-body">
                                     <h3 class="product-price">

@@ -89,16 +89,18 @@ class AdminAuctionController extends AppController
                 $model->save();
 
                 $uploader->imageFiles = UploadedFile::getInstances($uploader, 'imageFiles');
-                if ($uploader->uploadImages()) {
-                    foreach ($uploader->imageFiles as $imageFile) {
+                if ($uploader->uploadImages())
+                {
+                    foreach ($uploader->imageFiles as $file) {
                         $photo = new ProductAuctionPhoto();
-                        $photo->image_name = $imageFile->baseName . '.' . $imageFile->extension;
+                        $photo->image_name = $file->baseName . '.' . $file->extension;
                         $photo->product_id = $model->id;
                         if ($photo->validate()) {
                             $photo->save(false);
                         }
                     }
                 }
+
                 return $this->redirect(['view', 'id' => $model->id]);
             }
 
