@@ -86,10 +86,10 @@ class SiteController extends AppController
 
 
         //SELECT DISTINCT product_id FROM `order` order by id DESC LIMIT 5
-        $latestProducts = Order::find()->select('product_id')->distinct()->orderBy('id desc')->limit(4);
+        $latestProducts = Order::find()->select('product_id')->orderBy('id desc')->limit(4);
 
         $pickedForYou = Yii::$app->user->isGuest ? null:
-            Order::find()->select('product_id')->distinct()->where(['user_id' => Yii::$app->user->identity->id])->orderBy('id desc')->limit(4);
+            Order::find()->select('product_id')->where(['user_id' => Yii::$app->user->identity->id])->orderBy('id desc')->limit(4);
         /*найбільша різниця грн
         SELECT p.*, p.prev_price - p.price as 'diff'
         FROM `product` p
