@@ -51,7 +51,6 @@ use yii\helpers\Html;
                         <td><?= $product->category_name ?></td>
                         <td><?= $product->start_price ?></td>
                         <td><?= $product->current_price ?></td>
-                        <td><?= $product->max_price ?></td>
                         <td><?= $product->end_price ?></td>
                         <td><?= $product->description ?></td>
                         <td>

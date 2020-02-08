@@ -21,11 +21,8 @@ $this->params['breadcrumbs'][] = $this->title;
         ->textInput([
         'type' => 'number'
        ]) ?>
-    <?= $form->field($model, 'max_price')
-        ->textInput([
-        'type' => 'number'
-       ]) ?>
     <?= $form->field($model, 'description') ?>
+    <?= $form->field($model, 'date_end')->input(['type' => 'datetime-local']) ?>
     <?= $form->field($uploader, 'imageFiles[]')->fileInput(['multiple' => true, 'accept' => 'image/*']) ?>
     <?= $form->field($model, 'category_id')->dropDownList($categories)?>
     <?= Html::submitButton('Create') ?>

@@ -259,9 +259,6 @@ $this->params['breadcrumbs'] = 'none';
                                     <h3 class="product-price">
                                         highest bet - <?= round($picker->current_price).'₴' ?>
                                     </h3>
-                                    <h2 class="product-price">
-                                        max price - <?= round($picker->max_price).'₴' ?>
-                                    </h2>
                                     <?php $average = round(\app\models\Review::getAverageReview($picker->id));
                                     for ($i = 0; $i < 5; $i++) {
                                         if ($i < $average) {

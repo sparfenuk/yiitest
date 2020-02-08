@@ -73,51 +73,41 @@ class AdminAuctionController extends AppController
 
 
             $request = $_POST['ProductAuction'];
+            $model->name = $request['name'];
+            $model->description = $request['description'];
+            $model->category_id = $request['category_id'];
+            $model->date_end = $request['date_end'];
+            $model->start_price = $model->current_price = $request['start_price'];
 
-            if ($request['start_price'] >= $request['max_price'])
-            {
-                $model->addError('invalid price', ['start price can\'t be bigger then max price']);
-            }
-            else
-            {
-                $model->name = $request['name'];
-                $model->description = $request['description'];
-                $model->category_id = $request['category_id'];
-                $model->max_price = $request['max_price'];
-                $model->start_price = $model->current_price = $request['start_price'];
+            $model->save();
 
-                $model->save();
-
-                $uploader->imageFiles = UploadedFile::getInstances($uploader, 'imageFiles');
-                if ($uploader->uploadImages())
-                {
-                    foreach ($uploader->imageFiles as $file) {
-                        $photo = new ProductAuctionPhoto();
-                        $photo->image_name = $file->baseName . '.' . $file->extension;
-                        $photo->product_id = $model->id;
-                        if ($photo->validate()) {
-                            $photo->save(false);
-                        }
+            $uploader->imageFiles = UploadedFile::getInstances($uploader, 'imageFiles');
+            if ($uploader->uploadImages()) {
+                foreach ($uploader->imageFiles as $file) {
+                    $photo = new ProductAuctionPhoto();
+                    $photo->image_name = $file->baseName . '.' . $file->extension;
+                    $photo->product_id = $model->id;
+                    if ($photo->validate()) {
+                        $photo->save(false);
                     }
                 }
-
-                return $this->redirect(['view', 'id' => $model->id]);
             }
 
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        $categories = Category::getSubCategories();
-        $catPair = [];
+            $categories = Category::getSubCategories();
+            $catPair = [];
 
-        foreach ($categories as $cat)
-        {
-            $catPair[$cat->id] = $cat->name;
-        }
-        return $this->render('create', [
-            'model' => $model,
-            'categories' => $catPair,
-            'uploader' => $uploader
-        ]);
+            foreach ($categories as $cat) {
+                $catPair[$cat->id] = $cat->name;
+            }
+            return $this->render('create', [
+                'model' => $model,
+                'categories' => $catPair,
+                'uploader' => $uploader
+            ]);
+
     }
 
     /**

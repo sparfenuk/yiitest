@@ -26,8 +26,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'end_price')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'max_price')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'availability')->textInput() ?>
 
     <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
@@ -37,6 +35,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'created_at')->textInput() ?>
 
     <?= $form->field($model, 'updated_at')->textInput() ?>
+
+    <?= $form->field($model, 'date_end')->input('datetime') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
