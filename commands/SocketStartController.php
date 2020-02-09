@@ -14,14 +14,17 @@ class SocketStartController extends  Controller
     {
         require dirname(__DIR__) . '/vendor/autoload.php';
 
-        $server = IoServer::factory(
-            new HttpServer(
-                new WsServer(
-                    new SocketController()
-                )
-            ),
-            \Yii::$app->params['WSPort']
-        );
+        $server = new \Ratchet\App('localhost');
+        $server->route('/pubsub', new SocketController());
         $server->run();
+//        $server = IoServer::factory(
+//            new HttpServer(
+//                new WsServer(
+//                    new SocketController()
+//                )
+//            ),
+//            \Yii::$app->params['WSPort']
+//        );
+//        $server->run();
     }
 }
