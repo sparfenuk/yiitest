@@ -40,7 +40,6 @@ $this->params['breadcrumbs'][0] = ['label' => $this->title, 'link' => Yii::$app-
                                      foreach ($value as $goods) {
                                          $url = Url::toRoute(['goods/product', 'id' => $goods->id]);
                                          $name = ProductPhoto::find()->where(['product_id' => $goods->id])->one();
-
                                            ?>
                                         <div class="col-md-4 col-sm-6 col-xs-6">
                                             <div class="product product-single">
@@ -95,8 +94,6 @@ $this->params['breadcrumbs'][0] = ['label' => $this->title, 'link' => Yii::$app-
 
                                                        }
                                                        ?>
-
-
                                                    </div>
 
                                                    <h2 class="product-name">

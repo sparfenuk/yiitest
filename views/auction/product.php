@@ -14,10 +14,6 @@
 
 use app\models\ProductAuction;
 use yii\helpers\Html;
-use app\models\ProductPhoto;
-use yii\widgets\ActiveForm;
-use yii\widgets\LinkPager;
-use app\models\Review;
 
 
 $this->title = 'E-Shop' . $product->name;
@@ -28,7 +24,6 @@ if(isset($photos[0]->image_name))
 {
     $mainPhoto = $photos[0]->image_name;
 }
-echo $mainPhoto;
 ?>
 <div class="section">
 		<!-- container -->
@@ -59,14 +54,14 @@ echo $mainPhoto;
             <span>New</span>
         </div>
         <h2 class="product-name"> <?= HTML::encode($product->name) ?></h2>
-        <h3 class="product-price"> <?= HTML::encode(round($product->current_price)) ?>
+        <h3>time left <?= $product->time - new DateTime() ?></h3>
+        <h3 class="product-price"> <?= HTML::encode(round($product->current_price)) ?>₴ (11bids)<!--TODO: bits count-->
         </h3>
         <h2 class="product-price">
-            <input type="number" name="amount" id="newBidValue" min="<?= round($product->current_price) ?>" value="<?= round($product->current_price) ?>"><p>₴</p>
-            <button class="primary-btn">make bit!</button>
+            <input type="number" name="amount" id="newBidValue" min="<?= round($product->current_price+1) ?>" max="1000000" value="<?= round($product->current_price+1) ?>">
+            <button id="makeBid" class="primary-btn">make bit!</button>
         </h2>
-        <div>
-        </div>
+
         <p><?= $product->description ?></p>
     </div>
 </div>
@@ -133,7 +128,39 @@ echo $mainPhoto;
         $('.main-photo').css('background-image', 'url('+src+')');
     });
 
+    function preventNumberInput(e){
+        var keyCode = (e.keyCode ? e.keyCode : e.which);
+        if (keyCode > 47 && keyCode < 58 || keyCode > 95 && keyCode < 107 ){
+            e.preventDefault();
+        }
+    }
+
     $(document).ready(function () {
+
+        $('#newBidValue').keypress(function(e) {
+            if ($(this).val().length > 5)
+            {
+                preventNumberInput(e);
+            }
+        });
+
+        // var conn = new WebSocket('ws://localhost:8083');
+        // conn.onopen = function(e) {
+        //     console.log(e);
+        // };
+        //
+        // conn.onmessage = function(e) {
+        //     console.log(e.data);
+        // };
+        //
+//
+        // $('#makeBit').click(function (){
+        //     var allo = "adwdaad1wdwawd";
+        //     conn.send(allo);
+        //     console.log('al1lo');
+        // });
+
+
         $('#review-form').submit( function(e){
                 e.preventDefault();
                 var alert = $('.alert-block');
@@ -146,7 +173,7 @@ echo $mainPhoto;
                     url: url,
                     data: form.serialize(),
                     success: function(data)
-                    {+
+                    {
                        alert.html('').fadeIn().delay(10000).fadeOut();
                        alert.append('<div class="alert alert-success alert-dismissable"><button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>'
                                      +'<h4><i class="icon fa fa-check"></i>Your comment will be posted after moderation</h4></div>');
@@ -159,28 +186,27 @@ echo $mainPhoto;
                 });
             });
 
-        conn.send(
-            {
-                'data': 'hello'
-            }
-        );
+
 
         });
 
-    var user = <?= Yii::$app->user->id ?>;
-    var prod = <?= $product->id ?>;
-
-
-
-    var conn = new WebSocket('ws://localhost:8083');
-    conn.onopen = function(e) {
-        console.log(e);
-    };
-
-    conn.onmessage = function(e) {
-        console.log(e.data);
-    };
-
-
+    $('#makeBid').click(function (){
+        console.log('allo');
+        $.ajax({
+            method: 'POST',
+            url: '/auction/make_bid',
+            data: {
+                product: '<?= $product->id ?>',
+                user: '<?= Yii::$app->user->id ?>',
+                amount: $('#newBidValue').val()
+            },
+            success: function (res) {
+                console.log(res);
+            },
+            error: function (res) {
+                console.log(res);
+            }
+        })
+    });
 
 </script>

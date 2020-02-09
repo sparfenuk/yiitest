@@ -117,8 +117,7 @@ class SiteController extends AppController
             'latestProducts' => $latestProducts,
             'pickedForYou' => $pickedForYou,
             'picker1' => $picker1,
-            'picker2' => $picker2,
-
+            'picker2' => $picker2
         ]);
 
     }

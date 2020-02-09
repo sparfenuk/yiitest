@@ -2,16 +2,23 @@
 
 namespace app\controllers;
 
+use app\models\AuctionBit;
 use app\models\ProductAuction;
 use app\models\ProductAuctionPhoto;
 use app\models\ProductPhoto;
 use yii\web\NotFoundHttpException;
+use yii\web\Request;
+use yii\web\Response;
 
 class AuctionController extends \yii\web\Controller
 {
     public function actionIndex()
     {
-        return $this->render('index');
+
+        $products = ProductAuction::find()->where(['status'=>ProductAuction::STATUS_ACTIVE])->all();
+        return $this->render('index',[
+            'products' => $products,
+        ]);
     }
 
 
@@ -40,5 +47,27 @@ class AuctionController extends \yii\web\Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function makeBid()
+    {
+        $user = $_POST['user'];
+        $product = $_POST['product'];
+        $amount = $_POST['amount'];
+
+        $auctionBit = new AuctionBit();
+        $auctionBit->amount = $amount;
+        $auctionBit->product_id = $product;
+        $auctionBit->user_id = $user;
+
+        if($auctionBit->save())
+           return \Yii::$app->response->statusCode = 200;
+        else
+          return new \yii\web\ServerErrorHttpException();
+    }
+
+    public function closeAuction()
+    {
+
     }
 }
